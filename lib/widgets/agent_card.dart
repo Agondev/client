@@ -1,12 +1,20 @@
+import 'package:app2/main.dart';
+import 'package:app2/services.dart/chain.dart';
 import 'package:flutter/material.dart';
 
-class AgentCard extends StatelessWidget {
+// ignore: must_be_immutable
+class ProjectCard extends StatelessWidget {
+  Project p;
+  MyAppState appstate;
+  ProjectCard({this.p, this.appstate});
   @override
   Widget build(BuildContext context) {
     return Card(
         elevation: 4,
         child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed("/project", arguments: [p]);
+            },
             child: Container(
                 width: 400,
                 child: Column(
@@ -15,10 +23,12 @@ class AgentCard extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(20, 10, 5, 5),
                       child: Row(
                         children: [
-                          Image.network(
-                            "https://i.ibb.co/Y2CYJBd/science-icon-18.png",
-                            height: 90,
-                          ),
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.network(
+                                p.picurl,
+                                height: 90,
+                              )),
                           SizedBox(
                             width: 16,
                           ),
@@ -26,12 +36,12 @@ class AgentCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Agent title",
+                                p.name,
                                 style: TextStyle(
                                     fontSize: 21, fontWeight: FontWeight.bold),
                               ),
                               Row(
-                                children: [Text("******"), Text("\u200d")],
+                                children: [Text("******"), Text("\\u200d")],
                               )
                             ],
                           )
@@ -40,8 +50,7 @@ class AgentCard extends StatelessWidget {
                     ),
                     Container(
                       padding: EdgeInsets.all(19),
-                      child: Text(
-                          "Description text goes here and I guess it's what we all are interested to read and find out etc"),
+                      child: Text(p.description),
                     ),
                   ],
                 ))));

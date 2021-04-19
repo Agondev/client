@@ -1,5 +1,12 @@
 String projectAbi = """[
 	{
+		"inputs": [],
+		"name": "back",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -37,13 +44,6 @@ String projectAbi = """[
 	},
 	{
 		"inputs": [],
-		"name": "back",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
 		"name": "balanceATN",
 		"outputs": [
 			{
@@ -59,6 +59,29 @@ String projectAbi = """[
 		"inputs": [],
 		"name": "description",
 		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "details",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
 			{
 				"internalType": "string",
 				"name": "",
