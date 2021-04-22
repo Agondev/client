@@ -1,0 +1,8 @@
+
+Gold standard of language models. It can read, write, and act as the brain of conversational applications. Perfect as assistant framework, as it can be easily integrated with 3rd party services through custom base-level parameters
+
+https://github.com/openai/gpt-3
+
+https://i.ibb.co/dQXyGZh/gpt3.jpg
+
+

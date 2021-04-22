@@ -16,7 +16,8 @@ class _MainMenuState extends State<MainMenu> {
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(38.0), // here the desired height
             child: AppBar(
-                elevation: 2,
+                automaticallyImplyLeading: false,
+                elevation: 1.5,
                 actions: [
                   Row(children: [
                     Icon(
@@ -41,7 +42,9 @@ class _MainMenuState extends State<MainMenu> {
                       height: 38,
                       width: 145,
                       child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pushNamed("/home");
+                          },
                           child: Opacity(
                             opacity: 0.7,
                             child: Image.network(
@@ -68,8 +71,20 @@ class _MainMenuState extends State<MainMenu> {
                       height: 38,
                       width: 130,
                       child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pushNamed("/assets");
+                          },
                           child: Text("MY ASSETS",
+                              style: TextStyle(
+                                  fontFamily: "OCR-A", letterSpacing: 2)))),
+                  SizedBox(
+                      height: 38,
+                      width: 130,
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed("/node");
+                          },
+                          child: Text("NODE",
                               style: TextStyle(
                                   fontFamily: "OCR-A", letterSpacing: 2)))),
                 ]))),

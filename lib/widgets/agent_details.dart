@@ -31,9 +31,11 @@ class ProjectDetails extends StatelessWidget {
                     Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 19),
-                          child: Image.network(p.picurl, height: 114),
-                        ),
+                            padding: EdgeInsets.symmetric(horizontal: 19),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(11.0),
+                              child: Image.network(p.picurl, height: 114),
+                            )),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -46,7 +48,7 @@ class ProjectDetails extends StatelessWidget {
                                   children: [
                                     Text("Category"),
                                     Text("Developer:"),
-                                    Text("Size:"),
+                                    Text("Size Goal:"),
                                     Text("Earned:"),
                                   ],
                                 ),
@@ -59,7 +61,7 @@ class ProjectDetails extends StatelessWidget {
                                     Text("Natural Language"),
                                     Text("Alphabet inc"),
                                     Text("56BN params"),
-                                    Text("3148321 ATN"),
+                                    Text("-- ATN"),
                                   ],
                                 )
                               ],
@@ -97,7 +99,7 @@ class ProjectDetails extends StatelessWidget {
                             width: 400,
                             child: TabBar(tabs: [
                               Tab(text: "About"),
-                              Tab(text: "Run"),
+                              Tab(text: "Invest"),
                               Tab(text: "Stats"),
                             ])),
                         Container(
@@ -135,28 +137,151 @@ class ProjectDetails extends StatelessWidget {
                                 padding: EdgeInsets.all(30),
                                 child: Column(
                                   children: [
-                                    SizedBox(height: 100),
+                                    SizedBox(height: 18),
                                     Container(
-                                        height: 55,
-                                        width: 200,
-                                        child: TextButton(
-                                          style: TextButton.styleFrom(
-                                              backgroundColor:
-                                                  Theme.of(context).hoverColor),
-                                          child: Row(
+                                      child: Center(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Icon(Icons.add),
-                                                Text(
-                                                  'ADD TO CONTRACT',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    Text("Current value:"),
+                                                    Text("Funding goal:"),
+                                                    Text("Available shares:"),
+                                                    Text("Price per share:"),
+                                                    Text("Campaign deadline:"),
+                                                  ],
+                                                ),
+                                                SizedBox(width: 15),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("341 ATN"),
+                                                    Text("449104 ATN"),
+                                                    Text("9831103 (84.65%)"),
+                                                    Text("0.022 ATN"),
+                                                    Text("May 22, 2021"),
+                                                  ],
                                                 )
-                                              ]),
-                                          onPressed: () {},
-                                        ))
+                                              ],
+                                            ),
+                                            SizedBox(height: 20),
+                                            Container(
+                                                height: 55,
+                                                width: 200,
+                                                child: TextButton(
+                                                  style: TextButton.styleFrom(
+                                                      backgroundColor:
+                                                          Theme.of(context)
+                                                              .hoverColor),
+                                                  child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(Icons.school),
+                                                        SizedBox(width: 10),
+                                                        Text(
+                                                          'INVEST IN TRAINING',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        )
+                                                      ]),
+                                                  onPressed: () {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder:
+                                                            (context) =>
+                                                                AlertDialog(
+                                                                  content:
+                                                                      Container(
+                                                                    width: 600,
+                                                                    height: 600,
+                                                                    padding:
+                                                                        EdgeInsets.all(
+                                                                            20),
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceEvenly,
+                                                                      children: [
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.center,
+                                                                          children: [
+                                                                            Text("Available funds your contract:"),
+                                                                            SizedBox(width: 9),
+                                                                            Text(
+                                                                              "3124 ATN",
+                                                                              style: TextStyle(fontWeight: FontWeight.bold),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              30,
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                110,
+                                                                            child:
+                                                                                TextFormField(
+                                                                              style: TextStyle(
+                                                                                fontSize: 19,
+                                                                              ),
+                                                                              keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
+                                                                              onChanged: (value) {},
+                                                                              decoration: InputDecoration(
+                                                                                labelStyle: TextStyle(
+                                                                                  fontSize: 15,
+                                                                                ),
+                                                                                labelText: "Enter Value",
+                                                                                alignLabelWithHint: true,
+                                                                              ),
+                                                                            )),
+                                                                        SizedBox(
+                                                                            height:
+                                                                                30),
+                                                                        Column(
+                                                                          children: [
+                                                                            Container(
+                                                                              padding: EdgeInsets.symmetric(horizontal: 70),
+                                                                              child: Text("You are acquiring shares in project GPT-3. This transaction is irrevocable. You may put up your shares for sale once the training is complete, and you will be reimbursed if the model doesn't achieve the targeted accuracy within the specified timeframe."),
+                                                                            ),
+                                                                            SizedBox(height: 30),
+                                                                            SizedBox(
+                                                                              width: 290,
+                                                                              height: 50,
+                                                                              child: TextButton(
+                                                                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xff851339))),
+                                                                                  child: Text("COMMIT TO BLOCKCHAIN", style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold)),
+                                                                                  onPressed: () {
+                                                                                    Navigator.pop(context);
+                                                                                  }),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ));
+                                                  },
+                                                ))
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),

@@ -1,7 +1,9 @@
 import 'dart:ui';
-
 import 'package:app2/contracts/project.dart';
 import 'package:app2/contracts/source.dart';
+import 'package:app2/screens/landing.dart';
+import 'package:app2/screens/myassets.dart';
+import 'package:app2/screens/node.dart';
 import 'package:app2/screens/projectview.dart';
 import 'package:app2/services.dart/chain.dart';
 import 'package:app2/widgets/agent_card.dart';
@@ -44,18 +46,19 @@ class MyAppState extends State<MyApp> {
     return MaterialColor(color.value, swatch);
   }
 
-  bool lumina = false;
+  bool lumina = true;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     ThemeData light = ThemeData(
-      brightness: Brightness.light,
-      primaryColor: createMaterialColor(Color(0xffefefef)),
-      primarySwatch: createMaterialColor(Color(0xff4d4d4d)),
-      highlightColor: Color(0xff6e6e6e),
-    );
+        brightness: Brightness.light,
+        primaryColor: createMaterialColor(Color(0xffffffff)),
+        primarySwatch: createMaterialColor(Color(0xff4d4d4d)),
+        highlightColor: Color(0xff6e6e6e),
+        canvasColor: Color(0xfff0f0f0));
     ThemeData dark = ThemeData(
       brightness: Brightness.dark,
+      accentColor: createMaterialColor(Color(0xffb0b0b0)),
       primaryColor: createMaterialColor(Color(0xff4d4d4d)),
       primarySwatch: createMaterialColor(Color(0xffefefef)),
       highlightColor: Color(0xff6e6e6e),
@@ -64,6 +67,11 @@ class MyAppState extends State<MyApp> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
+          Landing.route: (context) => Landing(appstate: this, title: "Autonet"),
+          Node.route: (context) => Node(appstate: this, title: "Hopa"),
+          MyAssets.route: (context) => MyAssets(
+                appstate: this,
+              ),
           ProjectView.route: (context) => ProjectView(
                 appstate: this,
               ),
@@ -73,7 +81,7 @@ class MyAppState extends State<MyApp> {
         },
         title: 'Autonet',
         theme: lumina ? light : dark,
-        home: Market(title: 'AUTONET', appstate: this));
+        home: Landing(title: 'AUTONET', appstate: this));
   }
 }
 

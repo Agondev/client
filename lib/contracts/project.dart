@@ -1,4 +1,5 @@
-String projectAbi = """[
+String projectAbi = """
+[
 	{
 		"inputs": [],
 		"name": "back",
@@ -34,6 +35,11 @@ String projectAbi = """[
 				"type": "string"
 			},
 			{
+				"internalType": "string",
+				"name": "_category",
+				"type": "string"
+			},
+			{
 				"internalType": "address",
 				"name": "founder",
 				"type": "address"
@@ -50,6 +56,32 @@ String projectAbi = """[
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "category",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "catpicgit",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -149,4 +181,5 @@ String projectAbi = """[
 		"stateMutability": "view",
 		"type": "function"
 	}
-]""";
+]
+""";
