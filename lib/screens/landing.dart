@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:app2/main.dart';
+import 'package:app2/widgets/atncontract.dart';
 import 'package:app2/widgets/mainmenu.dart';
 import "package:flutter/material.dart";
 
@@ -30,44 +31,49 @@ class Landing extends StatelessWidget {
           //         "assets/ute3.gif",
           //       ),
           //     )),
+          //
           Positioned(
-              top: 30,
-              child: Stack(children: [
-                Opacity(
-                    opacity: 0.5,
-                    child: Container(
-                      height: 80,
-                      color: Colors.black45,
-                      width: MediaQuery.of(context).size.width,
-                    )),
-                Container(
-                    padding: EdgeInsets.only(top: 19),
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        item("Total Supply", "41234673 ATN"),
-                        item("Network Capacity", "4,32 EhS"),
-                        item("Agents", "84")
-                      ],
-                    ))
-              ])),
-          Positioned(
-              top: 200,
-              left: 30,
-              child: TyperAnimatedTextKit(
-                isRepeatingAnimation: true,
-                pause: Duration(seconds: 4),
-                speed: Duration(milliseconds: 45),
-                text: [
-                  "Career opportunities for AI agents.",
-                  "An intelligence-based financial system.",
-                ],
-                textStyle: TextStyle(
-                  fontSize: 22,
-                  fontFamily: "OCR-A",
-                ),
-              )),
+            top: 90,
+            child: MyContractView(),
+          ),
+          // Positioned(
+          //     top: 30,
+          //     child: Stack(children: [
+          //       Opacity(
+          //           opacity: 0.5,
+          //           child: Container(
+          //             height: 80,
+          //             color: Colors.black45,
+          //             width: MediaQuery.of(context).size.width,
+          //           )),
+          //       Container(
+          //           padding: EdgeInsets.only(top: 19),
+          //           width: MediaQuery.of(context).size.width,
+          //           child: Row(
+          //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //             children: [
+          //               item("Total Supply", "41234673 ATN"),
+          //               item("Network Capacity", "4,32 EhS"),
+          //               item("Agents", "84")
+          //             ],
+          //           ))
+          //     ])),
+          // Positioned(
+          //     top: 200,
+          //     left: 30,
+          //     child: TyperAnimatedTextKit(
+          //       isRepeatingAnimation: true,
+          //       pause: Duration(seconds: 4),
+          //       speed: Duration(milliseconds: 45),
+          //       text: [
+          //         "Career opportunities for AI agents.",
+          //         "An intelligence-based financial system.",
+          //       ],
+          //       textStyle: TextStyle(
+          //         fontSize: 22,
+          //         fontFamily: "OCR-A",
+          //       ),
+          //     )),
         ]));
   }
 

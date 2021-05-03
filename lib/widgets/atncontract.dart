@@ -1,11 +1,11 @@
 import 'dart:developer';
 import 'dart:js_util';
 import 'dart:ui';
-
 import 'package:app2/contracts/project.dart';
 import 'package:app2/services.dart/chain.dart';
 import 'package:app2/services.dart/webtrei.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_web3_provider/ethers.dart';
 import 'package:web3dart/contracts.dart';
 import 'package:web3dart/web3dart.dart';
@@ -62,14 +62,14 @@ class MyContractView extends StatefulWidget {
 
 class _MyContractViewState extends State<MyContractView> {
   List<Widget> assets = [];
-  Human user = us3r;
+  // Human user = us3r;
   @override
   Widget build(BuildContext context) {
     assets = [];
-    print("how many projects ${user.contract.projects.values}");
-    user.contract.projects.forEach((k, v) {
-      assets.add(asset(v, 100.0));
-    });
+    // print("how many projects ${user.contract.projects.values}");
+    // user.contract.projects.forEach((k, v) {
+    //   assets.add(asset(v, 100.0));
+    // });
     return Container(
         padding: EdgeInsets.all(30),
         width: MediaQuery.of(context).size.width * 0.7,
@@ -108,18 +108,101 @@ class _MyContractViewState extends State<MyContractView> {
                 child: Column(
                   children: [
                     Container(
-                        height: 28,
+                        height: 200,
                         color: Theme.of(context).accentColor,
                         child: Center(
-                            child: Text(
-                          "PORTFOLIO",
-                          style: TextStyle(
-                            color: Theme.of(context).canvasColor,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 19,
-                            // fontFamily: "OCR-A",
-                            letterSpacing: 3,
-                          ),
+                            child: Column(
+                          children: [
+                            SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(width: 4),
+                                Image.network(
+                                    "https://i.ibb.co/kXVw8Z2/logo64x64.png",
+                                    height: 40),
+                                Spacer(),
+                                Text(
+                                  "ATN CONTRACT",
+                                  style: TextStyle(
+                                    color: Theme.of(context).canvasColor,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 19,
+                                    fontFamily: "OCR-A",
+                                    letterSpacing: 3,
+                                  ),
+                                ),
+                                Spacer(),
+                                Image.network(
+                                    "https://i.ibb.co/kXVw8Z2/logo64x64.png",
+                                    height: 40),
+                                SizedBox(width: 4)
+                              ],
+                            ),
+                            SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text("address:",
+                                        style: TextStyle(
+                                          fontFamily: "OCR-A",
+                                          color: Theme.of(context).canvasColor,
+                                        ))
+                                  ],
+                                ),
+                                SizedBox(width: 18),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                            "0xFasdoja34dsf3fw98u34n98w3u4fnfe98uv43",
+                                            style: TextStyle(
+                                              fontFamily: "OCR-A",
+                                              color:
+                                                  Theme.of(context).canvasColor,
+                                            )),
+                                        TextButton(
+                                            onPressed: () {
+                                              Clipboard.setData(
+                                                  new ClipboardData(
+                                                      text:
+                                                          "asdijaosidjaosidj"));
+                                              final scaffold =
+                                                  Scaffold.of(context);
+                                              scaffold.showSnackBar(
+                                                SnackBar(
+                                                  duration: const Duration(
+                                                      milliseconds: 1600),
+                                                  content: Container(
+                                                      height: 70,
+                                                      child: Align(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Text(
+                                                            'Contract address was copied to cliboard.',
+                                                            style: TextStyle(
+                                                                fontSize: 20),
+                                                          ))),
+                                                ),
+                                              );
+                                            },
+                                            child: Icon(
+                                              Icons.copy,
+                                              color:
+                                                  Theme.of(context).canvasColor,
+                                            ))
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ],
                         ))),
                     SizedBox(height: 19),
                     Row(
@@ -153,7 +236,17 @@ class _MyContractViewState extends State<MyContractView> {
         children: [
           SizedBox(width: 30),
           Container(
-              width: 230, child: Text(p.name, style: TextStyle(fontSize: 17))),
+              width: 230,
+              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed("/project", arguments: [p]);
+                    },
+                    child: Text(p.name,
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.bold)))
+              ])),
           SizedBox(width: 11),
           Container(
               width: 290,

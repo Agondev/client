@@ -8,6 +8,8 @@ import 'package:app2/services.dart/webtrei.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
+//
+
 class MyAssets extends StatelessWidget {
   String title;
   static String route = "/assets";
@@ -49,45 +51,7 @@ class MyAssets extends StatelessWidget {
                                             Text("Connected with address " +
                                                 us3r.address),
                                             us3r.contract == null
-                                                ? Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        "Autonet contract not initialized",
-                                                        style: TextStyle(
-                                                            fontSize: 20),
-                                                      ),
-                                                      SizedBox(
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.5,
-                                                        child: TextButton(
-                                                            onPressed: () {},
-                                                            child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Image.network(
-                                                                      "https://i.ibb.co/kXVw8Z2/logo64x64.png",
-                                                                      height:
-                                                                          40),
-                                                                  Text(
-                                                                    "CREATE ATN CONTRACT",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            13,
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
-                                                                  )
-                                                                ])),
-                                                      ),
-                                                    ],
-                                                  )
+                                                ? CreateContractBTN()
                                                 : MyContractView()
                                           ],
                                         )
@@ -96,5 +60,52 @@ class MyAssets extends StatelessWidget {
                 ),
               ]),
         ));
+  }
+}
+
+class CreateContractBTN extends StatefulWidget {
+  @override
+  _CreateContractBTNState createState() => _CreateContractBTNState();
+}
+
+class _CreateContractBTNState extends State<CreateContractBTN> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: us3r.creatingContract
+          ? CircularProgressIndicator()
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Autonet contract not initialized",
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: TextButton(
+                      onPressed: () async {
+                        setState(() {
+                          us3r.creatingContract = true;
+                        });
+                        await us3r.createContract(this);
+                        Navigator.pushNamed(context, "/assets");
+                      },
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.network(
+                                "https://i.ibb.co/kXVw8Z2/logo64x64.png",
+                                height: 40),
+                            Text(
+                              "CREATE ATN CONTRACT",
+                              style: TextStyle(
+                                  fontSize: 13, fontWeight: FontWeight.bold),
+                            )
+                          ])),
+                ),
+              ],
+            ),
+    );
   }
 }

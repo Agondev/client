@@ -1,13 +1,18 @@
 import 'dart:developer';
+import 'dart:js_util';
+import 'dart:convert';
 import 'package:app2/contracts/project.dart';
 import 'package:app2/contracts/source.dart';
+import 'package:app2/services.dart/webtrei.dart';
 import 'package:app2/widgets/agent_card.dart';
 import 'package:app2/widgets/atncontract.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:flutter_web3_provider/ethers.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart';
 
-String sourceAddress = "0x8A4EF0f3e9F8AA6dDB2E153b9070f1EE8c25cd8c";
+String sourceAddress = "0x18A4d5A9039fd15A6576896cd7B445f9e4F3cff1";
 
 class Chain {
   List<Project> projects = [];
@@ -64,12 +69,44 @@ class Human {
   var httpClient = new Client();
   String address;
   bool fetched = false;
+  bool creatingContract = false;
   UserContract contract;
   Web3Provider web3;
   Web3Client web3infura;
   int balance;
   Human({this.address, this.web3}) {
     this.web3infura = new Web3Client(apiUrl, httpClient);
+  }
+  createContract(State state) async {
+    creatingContract = true;
+    List<String> sourceAbi = [
+      "function allProjects() view returns(address[])",
+      "function projects(address) view returns (address)",
+      "function users(address) view returns (address)",
+      "function createUser() returns(address)"
+    ];
+    var sourceContract = Contract(sursa, sourceAbi, this.web3);
+    sourceContract = sourceContract.connect(web3user.getSigner());
+    final transaction =
+        await promiseToFuture(callMethod(sourceContract, "createUser", []));
+
+    final hash = json.decode(stringify(transaction))["hash"];
+    print("hash " + hash.toString());
+    final result = await promiseToFuture(
+        callMethod(this.web3, "waitForTransaction", [hash]));
+    if (json.decode(stringify(result))["status"] == 0) {
+      throw Exception("something went so fuckcing wrong.");
+    } else {
+      print(json.decode(stringify(result)));
+      var first = await callMethod(sourceContract, "users", [this.address]);
+      print("second " + first.toString());
+      var ponse = await promiseToFuture(first);
+      print("new contract address " + ponse.toString());
+      this.contract = UserContract(user: this, assets: {});
+    }
+    state.setState(() {
+      this.creatingContract = false;
+    });
   }
 }
 

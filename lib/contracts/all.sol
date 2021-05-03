@@ -2,6 +2,7 @@ pragma solidity ^0.8.0;
 import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC777/ERC777.sol";
 
 contract Agent is ERC721{
     uint public nextTokenId;
@@ -28,9 +29,12 @@ contract Project{
     string public catpicgit;
     MainToken banu;
     bool mature=false;
-    mapping(address=>uint8) public shareholders;
+    mapping(address=>uint256) public shareholders;
     uint256 public spentOnTraining;
-    
+    uint256 public avilableShares=930000;
+    uint256 initialTrainingCost=1547000000000000000;
+    uint256 pricePerShare;
+    uint256 lastPayout;
     constructor(
         address adresaLaBanu, 
         string memory _name,
@@ -41,39 +45,97 @@ contract Project{
         address founder)
         payable{
         banu=MainToken(adresaLaBanu);
+        pricePerShare=initialTrainingCost/930000;
         name=_name;
         code=_code;
         category=_category;
         description=_description;
         picurl=_picurl;
-        shareholders[founder]=100;
+        shareholders[founder]=70000;
         catpicgit=append(category,picurl,code);
     }
     
     function balanceATN() public view returns (uint256){
         return banu.balanceOf(address(this));
     }
+    function balanceETH()public view returns(uint256){
+        return address(this).balance;
+    }
     
     function append(string memory a, string memory b, string memory c) internal pure returns (string memory) {
     return string(abi.encodePacked(a, b, c));
-}
+    }
     
     function details() public view returns (string memory,string memory,string memory){
         return (name,description,catpicgit);
     }
     
-    function back()public payable{}
+    function invest(uint256 amount)public payable hasAvailableShares{
+        require(amount/pricePerShare<=avilableShares,"Can't buy more than he available shares");
+        banu.transferFrom(msg.sender, address(this),amount);
+        if (shareholders[msg.sender]>0){
+            shareholders[msg.sender]=shareholders[msg.sender]+amount/pricePerShare;
+        }
+    }
+    
+    // function payDividends()public{
+    //     uint256 total=banu.balanceOf(address(this));
+    //     for (uint256 i=0;i<shareholders.length;i++){
+    //         // banu.transfer(shareholders[i]);
+    //     }
+    // }
+    
+    modifier noSoonerThanDaily() {
+        require(block.timestamp >= lastPayout + 86400,"Last payout was less than 24 hours ago.");
+        _;
+    }
+    
+    modifier hasAvailableShares(){
+    require (avilableShares>0,"No available shares for this project");
+    _;
+    }
 }
 
 contract User{
     address public owner;
     MainToken banu;
     Source source;
-    mapping(address=>uint) public assets;
+    asset[] assets;
+    
     constructor(address adresaLaBanu,address adresaLaOwner){
         owner=adresaLaOwner;
         source=Source(msg.sender);
         banu=MainToken(adresaLaBanu);
+    }
+
+    struct asset{
+        address cine;
+        uint ce;
+    }
+    
+    function balanceETH()public view returns(uint256){
+        return address(this).balance;
+    }
+    
+    function balanceATN() public view returns(uint256){
+        return banu.balanceOf(address(this));
+    }
+    
+    
+    function getAssets()view public returns (asset[] memory){
+     return assets;
+    }
+    
+    function sellShares(address assetAddress, uint64 amount)public onlyOwner{
+    
+        for (uint8 i=0;i<assets.length;i++){
+            if (assets[i].cine==assetAddress){
+                if(amount<=assets[i].ce){
+                    assets[i].ce=assets[i].ce-amount;
+                }
+            }
+            
+        }
     }
     
     modifier onlyOwner(){
@@ -88,13 +150,15 @@ contract User{
         string memory _iconurl,
         string memory _category
         )
-    public onlyOwner{
+    public onlyOwner {
         address project=source.createProject(_name,_description,_code,_iconurl,_category);
-        assets[project]=100;
+        asset memory bun=asset(address(project),70000);
+        assets.push(bun);
     }
 }
 
-contract Source {
+contract Source is IERC777Recipient{
+    string public ceva="nu stiu";
     mapping(address=>address) public users;
     address public sefu;
     MainToken banu;
@@ -109,15 +173,39 @@ contract Source {
         tokenAddress=address(banu);
         banu.imprima(1000000);
     }
+    function clear()public{
+        users[msg.sender]=0x0000000000000000000000000000000000000000;
+    }
+    
+    function tokensReceived(address operator,
+        address from,
+        address /*to*/,
+        uint256 amount,
+        bytes calldata /*userData*/,
+        bytes calldata /*operatorData*/
+    ) external override {
+        require(msg.sender == address(banu), "Invalid token");
+        ceva="na ca am trimis";
+        //   like approve + transferFrom, but only one tx
+    }
+
     
     function allProjects() public view returns(address[] memory)  {
         return projects;
     }
     
-    function createUser()public returns(address){
+    function createUser()public payable returns(address){
         User user=new User(tokenAddress,msg.sender);
         users[msg.sender]=address(user);
         return address(user);
+    }
+    
+    function balanceETH()public view returns(uint256){
+        return address(this).balance;
+    }
+    //https://www.youtube.com/watch?v=CVdZ09iqQj
+    function balanceATN() public view returns(uint256){
+        return banu.balanceOf(address(this));
     }
     
     function createProject(
@@ -139,11 +227,17 @@ contract Source {
         require(cashu<500000000000000000000, "Can't buy more than 500 ATN.");
         banu.transfer(msg.sender,cashu);
     }
+    
+    function sell(uint256 amount)public payable{
+        banu.operatorSend(msg.sender,address(this),amount,"asda","asd");
+    }
 }
 
-contract MainToken is ERC20 {
-    address owner;
-    constructor ()  ERC20("AUTONET", "ATN") {
+    contract MainToken is ERC777 {
+        address owner;
+        address[] ops=[msg.sender];
+        
+    constructor ()  ERC777("AUTONET", "ATN",ops) {
         owner=msg.sender;
     }
 
@@ -153,9 +247,8 @@ contract MainToken is ERC20 {
     }
     
     function imprima(uint256 amount)public onlyOwner{
-         _mint(msg.sender, amount * (10 ** uint256(decimals())));
+         _mint(msg.sender, amount * (10 ** uint256(decimals())),"","");
     }
-    
 }
 
 
