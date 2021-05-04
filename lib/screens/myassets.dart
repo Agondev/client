@@ -6,6 +6,7 @@ import 'package:app2/widgets/mainmenu.dart';
 import 'package:app2/widgets/metabutton.dart';
 import 'package:app2/services.dart/webtrei.dart';
 import 'package:flutter/material.dart';
+import 'package:web3dart/web3dart.dart';
 
 // ignore: must_be_immutable
 //
@@ -36,7 +37,7 @@ class MyAssets extends StatelessWidget {
                               alignment: Alignment.topCenter,
                               child: Column(
                                 children: [
-                                  SizedBox(height: 50),
+                                  SizedBox(height: 20),
                                   us3r == null
                                       ? Column(children: [
                                           Text(
@@ -48,8 +49,19 @@ class MyAssets extends StatelessWidget {
                                         ])
                                       : Column(
                                           children: [
-                                            Text("Connected with address " +
-                                                us3r.address),
+                                            Row(children: [
+                                              Text("Connected with address " +
+                                                  us3r.address),
+                                              SizedBox(width: 40),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    us3r.buyATN(EtherAmount
+                                                        .fromUnitAndValue(
+                                                            EtherUnit.finney,
+                                                            8));
+                                                  },
+                                                  child: Text("BUY ATN"))
+                                            ]),
                                             us3r.contract == null
                                                 ? CreateContractBTN()
                                                 : MyContractView()

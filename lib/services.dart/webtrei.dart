@@ -34,6 +34,7 @@ class Web3 extends ChangeNotifier {
   ];
 
   List<String> userAbi = [
+    "function balanceATN() view returns (uint256)",
     "function getAssets() view returns (tuple(address,uint256)[])",
   ];
 
@@ -48,6 +49,9 @@ class Web3 extends ChangeNotifier {
     String se = ethereum.selectedAddress;
     print("selectedAddress: $se");
     web3user = Web3Provider(ethereum);
+    var catAre =
+        await promiseToFuture(web3user.getBalance(ethereum.selectedAddress));
+    print("de curiozitate " + catAre.toString());
     owner = se;
     var sourceContract = Contract(sursa, sourceAbi, web3user);
     var first = await callMethod(sourceContract, "users", [se]);
@@ -55,8 +59,12 @@ class Web3 extends ChangeNotifier {
     var ponse = await promiseToFuture(first);
     print("user address is " + ponse.toString());
     Map<String, double> assets = {};
+    var tonse;
     if (!ponse.toString().contains('000000')) {
       var userContract = Contract(ponse.toString(), userAbi, web3user);
+      var firstAndAHaldf = await callMethod(userContract, "balanceATN", []);
+      tonse = await promiseToFuture(firstAndAHaldf);
+      print("from conse we have " + tonse.toString());
       var second = await callMethod(userContract, "getAssets", []);
       var donse = await promiseToFuture(second);
       print("from donse we have $donse " + " |||and||| " + donse.toString());
@@ -68,8 +76,13 @@ class Web3 extends ChangeNotifier {
       }
     }
     us3r = Human(address: se, web3: web3user);
+    us3r.balance = EtherAmount.fromUnitAndValue(
+        EtherUnit.wei, BigInt.parse(catAre.toString()));
     if (!ponse.toString().contains('000000')) {
-      UserContract uc = UserContract(user: us3r, assets: assets);
+      UserContract uc =
+          UserContract(address: ponse.toString(), user: us3r, assets: assets);
+      uc.valoare = EtherAmount.fromUnitAndValue(
+          EtherUnit.wei, BigInt.parse(tonse.toString()));
       us3r.contract = uc;
     }
 

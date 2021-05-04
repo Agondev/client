@@ -13,11 +13,13 @@ import 'package:web3dart/web3dart.dart';
 class UserContract {
   Web3Provider web3user;
   Human user;
+  EtherAmount valoare;
   String address;
   Map<String, double> assets;
   Map<String, Project> projects = {};
 
   UserContract({
+    this.address,
     this.user,
     this.assets,
   }) {
@@ -76,27 +78,6 @@ class _MyContractViewState extends State<MyContractView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  children: [
-                    Text("Available Funds"),
-                    SizedBox(
-                      width: 14,
-                    ),
-                    Text("124123"),
-                  ],
-                ),
-                Row(
-                  children: [
-                    TextButton(onPressed: () {}, child: Text("WITHDRAW")),
-                    SizedBox(width: 40),
-                    TextButton(onPressed: () {}, child: Text("ADD FUNDS")),
-                  ],
-                )
-              ],
-            ),
             SizedBox(
               height: 19,
             ),
@@ -128,7 +109,7 @@ class _MyContractViewState extends State<MyContractView> {
                                     color: Theme.of(context).canvasColor,
                                     fontWeight: FontWeight.w900,
                                     fontSize: 19,
-                                    fontFamily: "OCR-A",
+                                    fontFamily: "Roboto Mono",
                                     letterSpacing: 3,
                                   ),
                                 ),
@@ -146,11 +127,18 @@ class _MyContractViewState extends State<MyContractView> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
+                                    SizedBox(height: 2),
                                     Text("address:",
                                         style: TextStyle(
-                                          fontFamily: "OCR-A",
+                                          fontFamily: "Roboto Mono",
                                           color: Theme.of(context).canvasColor,
-                                        ))
+                                        )),
+                                    SizedBox(height: 13),
+                                    Text("liquid funds:",
+                                        style: TextStyle(
+                                            fontFamily: "Roboto Mono",
+                                            color:
+                                                Theme.of(context).canvasColor)),
                                   ],
                                 ),
                                 SizedBox(width: 18),
@@ -159,10 +147,9 @@ class _MyContractViewState extends State<MyContractView> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text(
-                                            "0xFasdoja34dsf3fw98u34n98w3u4fnfe98uv43",
+                                        Text(us3r.contract.address,
                                             style: TextStyle(
-                                              fontFamily: "OCR-A",
+                                              fontFamily: "Roboto Mono",
                                               color:
                                                   Theme.of(context).canvasColor,
                                             )),
@@ -170,8 +157,8 @@ class _MyContractViewState extends State<MyContractView> {
                                             onPressed: () {
                                               Clipboard.setData(
                                                   new ClipboardData(
-                                                      text:
-                                                          "asdijaosidjaosidj"));
+                                                      text: us3r
+                                                          .contract.address));
                                               final scaffold =
                                                   Scaffold.of(context);
                                               scaffold.showSnackBar(
@@ -197,13 +184,88 @@ class _MyContractViewState extends State<MyContractView> {
                                                   Theme.of(context).canvasColor,
                                             ))
                                       ],
-                                    )
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                        us3r.contract.valoare.getInEther
+                                                .toString() +
+                                            " ATN",
+                                        style: TextStyle(
+                                          fontFamily: "Roboto Mono",
+                                          color: Theme.of(context).canvasColor,
+                                        ))
                                   ],
                                 )
                               ],
                             ),
+                            SizedBox(height: 20),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color:
+                                                Theme.of(context).canvasColor)),
+                                    width: 210,
+                                    height: 40,
+                                    child: TextButton(
+                                        onPressed: () => showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                                content: withdraw())),
+                                        child: Text(
+                                          "WITHDRAW",
+                                          style: TextStyle(
+                                              color:
+                                                  Theme.of(context).canvasColor,
+                                              fontSize: 18),
+                                        ))),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color:
+                                                Theme.of(context).canvasColor)),
+                                    width: 210,
+                                    height: 40,
+                                    child: TextButton(
+                                        onPressed: () => showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                                content: addFunds())),
+                                        child: Text(
+                                          "ADD FUNDS",
+                                          style: TextStyle(
+                                              color:
+                                                  Theme.of(context).canvasColor,
+                                              fontSize: 18),
+                                        ))),
+                              ],
+                            )
                           ],
                         ))),
+                    SizedBox(height: 19),
+                    Text(
+                      "PORTFOLIO",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(height: 9),
+                    Opacity(
+                      opacity: 0.6,
+                      child: Container(
+                        height: 1,
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        color: Theme.of(context).accentColor,
+                      ),
+                    ),
                     SizedBox(height: 19),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -223,6 +285,137 @@ class _MyContractViewState extends State<MyContractView> {
                     SizedBox(height: 11),
                   ],
                 ))
+          ],
+        ));
+  }
+
+  Widget withdraw() {
+    double diff;
+    bool acceptat = false;
+    return Container(
+        height: 500,
+        width: MediaQuery.of(context).size.width * 0.5,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              "Contract is currently holding: " +
+                  us3r.contract.valoare.getInEther.toString() +
+                  " ATN",
+              style: TextStyle(color: Colors.black87, fontSize: 19),
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                "Amount to withdraw: ",
+                style: TextStyle(color: Colors.black, fontSize: 19),
+              ),
+              SizedBox(
+                  width: 100,
+                  child: TextField(
+                    style: TextStyle(
+                      fontSize: 19,
+                      color: Colors.black,
+                    ),
+                    keyboardType: TextInputType.numberWithOptions(
+                        decimal: true, signed: false),
+                    onChanged: (value) {},
+                    maxLines: 1,
+                    maxLength: 10,
+                    decoration: InputDecoration(
+                        labelStyle:
+                            TextStyle(fontSize: 15, color: Colors.black),
+                        labelText: "Enter",
+                        alignLabelWithHint: true,
+                        focusColor: Colors.black,
+                        fillColor: Colors.black),
+                  )),
+              Text(
+                "ATN",
+                style: TextStyle(color: Colors.black, fontSize: 19),
+              ),
+            ]),
+            SizedBox(height: 40),
+            SizedBox(
+              width: 290,
+              height: 50,
+              child: TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.red)),
+                child: Text("COMMIT TO BLOCKCHAIN",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold)),
+                onPressed: () {},
+              ),
+            )
+          ],
+        ));
+  }
+
+  Widget addFunds() {
+    double diff;
+    bool acceptat = false;
+    return Container(
+        height: 500,
+        width: MediaQuery.of(context).size.width * 0.5,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              "Amount available in your wallet: " +
+                  // EtherAmount.fromUnitAndValue(
+                  //         EtherUnit.finney, widget.sc.valoare)
+                  //     .getValueInUnit(EtherUnit.ether)
+                  //     .toString() +
+                  " ATN",
+              style: TextStyle(color: Colors.black87, fontSize: 19),
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                "Amount to add: ",
+                style: TextStyle(color: Colors.black, fontSize: 19),
+              ),
+              SizedBox(
+                  width: 100,
+                  child: TextField(
+                    style: TextStyle(
+                      fontSize: 19,
+                      color: Colors.black,
+                    ),
+                    keyboardType: TextInputType.numberWithOptions(
+                        decimal: true, signed: false),
+                    onChanged: (value) {},
+                    maxLines: 1,
+                    maxLength: 10,
+                    decoration: InputDecoration(
+                        labelStyle:
+                            TextStyle(fontSize: 15, color: Colors.black),
+                        labelText: "Enter",
+                        alignLabelWithHint: true,
+                        focusColor: Colors.black,
+                        fillColor: Colors.black),
+                  )),
+              Text(
+                "ATN",
+                style: TextStyle(color: Colors.black, fontSize: 19),
+              ),
+            ]),
+            SizedBox(height: 40),
+            SizedBox(
+              width: 290,
+              height: 50,
+              child: TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.red)),
+                child: Text("COMMIT TO BLOCKCHAIN",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold)),
+                onPressed: () {},
+              ),
+            )
           ],
         ));
   }

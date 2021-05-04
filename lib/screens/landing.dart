@@ -2,9 +2,11 @@ import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:app2/main.dart';
+import 'package:app2/services.dart/webtrei.dart';
 import 'package:app2/widgets/atncontract.dart';
 import 'package:app2/widgets/mainmenu.dart';
 import "package:flutter/material.dart";
+import 'package:web3dart/web3dart.dart';
 
 String ute = "https://i.ibb.co/8D8Gvq6/ute3.gif";
 
@@ -31,50 +33,111 @@ class Landing extends StatelessWidget {
           //         "assets/ute3.gif",
           //       ),
           //     )),
-          //
           Positioned(
-            top: 90,
-            child: MyContractView(),
-          ),
-          // Positioned(
-          //     top: 30,
-          //     child: Stack(children: [
-          //       Opacity(
-          //           opacity: 0.5,
-          //           child: Container(
-          //             height: 80,
-          //             color: Colors.black45,
-          //             width: MediaQuery.of(context).size.width,
-          //           )),
-          //       Container(
-          //           padding: EdgeInsets.only(top: 19),
-          //           width: MediaQuery.of(context).size.width,
-          //           child: Row(
-          //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //             children: [
-          //               item("Total Supply", "41234673 ATN"),
-          //               item("Network Capacity", "4,32 EhS"),
-          //               item("Agents", "84")
-          //             ],
-          //           ))
-          //     ])),
-          // Positioned(
-          //     top: 200,
-          //     left: 30,
-          //     child: TyperAnimatedTextKit(
-          //       isRepeatingAnimation: true,
-          //       pause: Duration(seconds: 4),
-          //       speed: Duration(milliseconds: 45),
-          //       text: [
-          //         "Career opportunities for AI agents.",
-          //         "An intelligence-based financial system.",
-          //       ],
-          //       textStyle: TextStyle(
-          //         fontSize: 22,
-          //         fontFamily: "OCR-A",
-          //       ),
-          //     )),
+              top: 30,
+              child: Stack(children: [
+                Opacity(
+                    opacity: 0.5,
+                    child: Container(
+                      height: 80,
+                      color: Colors.black45,
+                      width: MediaQuery.of(context).size.width,
+                    )),
+                Container(
+                    padding: EdgeInsets.only(top: 19),
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        item("Total Supply", "41234673 ATN"),
+                        item("Network Capacity", "4,32 EhS"),
+                        item("Agents", "84")
+                      ],
+                    ))
+              ])),
+          Positioned(
+              top: 200,
+              left: 30,
+              child: TyperAnimatedTextKit(
+                isRepeatingAnimation: true,
+                pause: Duration(seconds: 4),
+                speed: Duration(milliseconds: 45),
+                text: [
+                  "Career opportunities for AI agents.",
+                  "An intelligence-based financial system.",
+                ],
+                textStyle: TextStyle(
+                  fontSize: 22,
+                  fontFamily: "OCR-A",
+                ),
+              )),
         ]));
+  }
+
+  Widget addFunds() {
+    double diff;
+    bool acceptat = false;
+    return Container(
+        height: 500,
+        width: 500,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              "Maximum amount you can buy: " +
+                  EtherAmount.fromUnitAndValue(EtherUnit.finney, us3r.balance)
+                      .getValueInUnit(EtherUnit.ether)
+                      .toString() +
+                  " ATN",
+              style: TextStyle(color: Colors.black87, fontSize: 19),
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                "Amount to buy: ",
+                style: TextStyle(color: Colors.black, fontSize: 19),
+              ),
+              SizedBox(
+                  width: 100,
+                  child: TextField(
+                    style: TextStyle(
+                      fontSize: 19,
+                      color: Colors.black,
+                    ),
+                    keyboardType: TextInputType.numberWithOptions(
+                        decimal: true, signed: false),
+                    onChanged: (value) {},
+                    maxLines: 1,
+                    maxLength: 10,
+                    decoration: InputDecoration(
+                        labelStyle:
+                            TextStyle(fontSize: 15, color: Colors.black),
+                        labelText: "Enter",
+                        alignLabelWithHint: true,
+                        focusColor: Colors.black,
+                        fillColor: Colors.black),
+                  )),
+              Text(
+                "ATN",
+                style: TextStyle(color: Colors.black, fontSize: 19),
+              ),
+            ]),
+            SizedBox(height: 40),
+            SizedBox(
+              width: 100,
+              height: 50,
+              child: TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.red)),
+                child: Text("BUY ATN",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold)),
+                onPressed: () {},
+              ),
+            )
+          ],
+        ));
   }
 
   Widget item(ce, cat) {

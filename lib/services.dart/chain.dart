@@ -73,23 +73,39 @@ class Human {
   UserContract contract;
   Web3Provider web3;
   Web3Client web3infura;
-  int balance;
+  EtherAmount balance;
   Human({this.address, this.web3}) {
     this.web3infura = new Web3Client(apiUrl, httpClient);
   }
+  List<String> sourceAbi = [
+    "function allProjects() view returns(address[])",
+    "function projects(address) view returns (address)",
+    "function users(address) view returns (address)",
+    "function createUser() returns(address)",
+    "function buy() payable"
+  ];
+  buyATN(EtherAmount amount) async {
+    var sourceContract = Contract(sursa, sourceAbi, this.web3);
+    sourceContract = sourceContract.connect(web3user.getSigner());
+    final transaction = await promiseToFuture(callMethod(
+        sourceContract, "buy", [TxParams(value: amount.getInWei.toString())]));
+    final hash = json.decode(stringify(transaction))["hash"];
+    print("hash " + hash.toString());
+    final result = await promiseToFuture(
+        callMethod(this.web3, "waitForTransaction", [hash]));
+    if (json.decode(stringify(result))["status"] == 0) {
+      throw Exception("something went so fuckcing wrong.");
+    } else {
+      print(json.decode(stringify(result)));
+    }
+  }
+
   createContract(State state) async {
     creatingContract = true;
-    List<String> sourceAbi = [
-      "function allProjects() view returns(address[])",
-      "function projects(address) view returns (address)",
-      "function users(address) view returns (address)",
-      "function createUser() returns(address)"
-    ];
     var sourceContract = Contract(sursa, sourceAbi, this.web3);
     sourceContract = sourceContract.connect(web3user.getSigner());
     final transaction =
         await promiseToFuture(callMethod(sourceContract, "createUser", []));
-
     final hash = json.decode(stringify(transaction))["hash"];
     print("hash " + hash.toString());
     final result = await promiseToFuture(

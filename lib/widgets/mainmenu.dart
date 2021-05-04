@@ -66,7 +66,8 @@ class _MainMenuState extends State<MainMenu> {
                           },
                           child: Text("MARKET",
                               style: TextStyle(
-                                  fontFamily: "OCR-A", letterSpacing: 3)))),
+                                  fontFamily: "Roboto Mono",
+                                  letterSpacing: 3)))),
                   SizedBox(
                       height: 38,
                       width: 130,
@@ -76,7 +77,8 @@ class _MainMenuState extends State<MainMenu> {
                           },
                           child: Text("MY ASSETS",
                               style: TextStyle(
-                                  fontFamily: "OCR-A", letterSpacing: 2)))),
+                                  fontFamily: "Roboto Mono",
+                                  letterSpacing: 2)))),
                   SizedBox(
                       height: 38,
                       width: 130,
@@ -86,7 +88,8 @@ class _MainMenuState extends State<MainMenu> {
                           },
                           child: Text("NODE",
                               style: TextStyle(
-                                  fontFamily: "OCR-A", letterSpacing: 2)))),
+                                  fontFamily: "Roboto Mono",
+                                  letterSpacing: 2)))),
                 ]))),
         body: widget.porc);
   }
