@@ -8,23 +8,79 @@ import 'package:app2/widgets/metabutton.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 
-class Landing extends StatelessWidget {
+class Landing extends StatefulWidget {
   bool isUser = false;
   String title;
   static String route = "/home";
   ScrollController sc = ScrollController();
   MyAppState appstate;
   Landing({this.appstate, this.title});
+  @override
+  _LandingState createState() => _LandingState();
+}
+
+class _LandingState extends State<Landing> {
   var rng = new Random();
+  double opa0 = 0;
+  double opa1 = 0;
+  double opa2 = 0;
+  double opa3 = 0;
+  double h1 = 0;
+  double w1 = 20;
+  double h2 = 0;
+  double w2 = 20;
+  double h3 = 0;
+  double w3 = 20;
+  @override
+  void initState() {
+    Future.delayed(Duration(milliseconds: 200), () {
+      setState(() {
+        opa0 = 1;
+        w1 = 200;
+        h1 = 90;
+      });
+    });
+    Future.delayed(Duration(milliseconds: 400), () {
+      setState(() {
+        opa1 = 1;
+        w2 = 200;
+        h2 = 90;
+      });
+    });
+    Future.delayed(Duration(milliseconds: 800), () {
+      setState(() {
+        h3 = 90;
+        opa2 = 1;
+      });
+    });
+    Future.delayed(Duration(milliseconds: 1200), () {
+      setState(() {
+        opa3 = 1;
+      });
+    });
+    Future.delayed(Duration(milliseconds: 1300), () {
+      setState(() {
+        opa1 = 1;
+      });
+    });
+    Future.delayed(Duration(milliseconds: 1300), () {
+      setState(() {
+        opa1 = 1;
+      });
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     String poza = "b" + (rng.nextInt(5) + 1).toString() + ".jpg";
     return MainMenu(
         care: "landing",
-        appstate: appstate,
+        appstate: widget.appstate,
         porc: Stack(children: [
           // Container(
           //     height: MediaQuery.of(context).size.height,
@@ -36,37 +92,155 @@ class Landing extends StatelessWidget {
           //       ),
           //     )),
           Positioned(
-              top: 200,
-              child: Wrap(children: [
-                AnimatedContainer(
-                  duration: Duration(seconds: 1),
-                  child: Container(
-                      height: 120,
-                      width: 200,
-                      color: Colors.black12,
-                      child: AnimatedOpacity(
-                        opacity: opa1,
-                        duration: Duration(seconds: 1),
-                        child: item("Ceva text", "12312 BAM"),
-                      )),
-                ),
-              ])),
-          Positioned(
-              top: 45,
-              left: 30,
-              child: TyperAnimatedTextKit(
-                isRepeatingAnimation: true,
-                pause: Duration(seconds: 4),
-                speed: Duration(milliseconds: 45),
-                text: [
-                  "Career opportunities for AI agents.",
-                  "An intelligence-based financial system.",
-                ],
-                textStyle: TextStyle(
-                  fontSize: 22,
-                  fontFamily: "OCR-A",
-                ),
-              )),
+              top: 30,
+              left: 15,
+              child: Container(
+                  width: MediaQuery.of(context).size.width - 590,
+                  child: Center(
+                      child: Wrap(spacing: 30, runSpacing: 30, children: [
+                    AnimatedContainer(
+                        duration: Duration(milliseconds: 400),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Theme.of(context).backgroundColor,
+                                width: 0.2),
+                            color: Colors.black12,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        height: h1,
+                        width: 200,
+                        child: AnimatedOpacity(
+                          opacity: opa1,
+                          duration: Duration(milliseconds: 800),
+                          child: Center(
+                              child: item("Requests per second", "1392")),
+                        )),
+                    AnimatedContainer(
+                        duration: Duration(milliseconds: 400),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Theme.of(context).backgroundColor,
+                                width: 0.2),
+                            color: Colors.black12,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        height: h2,
+                        width: 200,
+                        child: AnimatedOpacity(
+                          opacity: opa2,
+                          duration: Duration(milliseconds: 800),
+                          child: Center(
+                              child: item("Network Capacity", "4783 EhS")),
+                        )),
+                    AnimatedContainer(
+                        duration: Duration(milliseconds: 400),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Theme.of(context).backgroundColor,
+                                width: 0.2),
+                            color: Colors.black12,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        height: h3,
+                        width: 200,
+                        child: AnimatedOpacity(
+                          opacity: opa3,
+                          duration: Duration(milliseconds: 1200),
+                          child: Center(child: item("Mature Agents", "221")),
+                        )),
+                    AnimatedContainer(
+                        duration: Duration(milliseconds: 400),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Theme.of(context).backgroundColor,
+                                width: 0.2),
+                            color: Colors.black12,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        height: h2,
+                        width: 200,
+                        child: AnimatedOpacity(
+                          opacity: opa2,
+                          duration: Duration(milliseconds: 700),
+                          child: Center(child: item("Active Nodes", "49882")),
+                        )),
+                    AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Theme.of(context).backgroundColor,
+                                width: 0.2),
+                            color: Colors.black12,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        height: h3,
+                        width: 200,
+                        child: AnimatedOpacity(
+                          opacity: opa3,
+                          duration: Duration(milliseconds: 800),
+                          child: Center(
+                              child: item(
+                                  "Dividends Paid / Last 24h", "3327109 ATN")),
+                        )),
+                    AnimatedContainer(
+                        duration: Duration(milliseconds: 500),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Theme.of(context).backgroundColor,
+                                width: 0.2),
+                            color: Colors.black12,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        height: h3,
+                        width: 200,
+                        child: AnimatedOpacity(
+                          opacity: opa3,
+                          duration: Duration(milliseconds: 900),
+                          child:
+                              Center(child: item("Average Latency", "19 ms")),
+                        )),
+                    Container(
+                        width: 660,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 25),
+                              TyperAnimatedTextKit(
+                                isRepeatingAnimation: true,
+                                pause: Duration(seconds: 4),
+                                speed: Duration(milliseconds: 45),
+                                text: [
+                                  "Career opportunities for AI agents.",
+                                  "An intelligence-based financial system.",
+                                ],
+                                textStyle: TextStyle(
+                                  fontSize: 22,
+                                  fontFamily: "OCR-A",
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              TextButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor:
+                                        Theme.of(context).cardColor,
+                                    elevation: 1.5,
+                                  ),
+                                  onPressed: () {
+                                    launchURL(
+                                        "https://www.autonet.tk/#/projects/atn");
+                                  },
+                                  child: Container(
+                                      height: 50,
+                                      width: 200,
+                                      child: Center(
+                                          child: Text(
+                                        "Read the whitepaper",
+                                        style: TextStyle(fontSize: 18),
+                                      ))))
+                            ]))
+                  ])))),
+
           Positioned(bottom: 50, left: 50, child: Text("hopa")),
           Positioned(
               right: 0,
@@ -78,7 +252,7 @@ class Landing extends StatelessWidget {
                           BorderRadius.only(bottomLeft: Radius.circular(170))),
                   child: BuyATN(
                     landing: this,
-                    isUser: isUser,
+                    isUser: widget.isUser,
                   )))
         ]));
   }
@@ -174,6 +348,7 @@ class Landing extends StatelessWidget {
   Widget item(ce, cat) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           ce,
@@ -193,6 +368,14 @@ class Landing extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Widget confirm() {
@@ -229,7 +412,7 @@ class Landing extends StatelessWidget {
 }
 
 class BuyATN extends StatefulWidget {
-  Landing landing;
+  _LandingState landing;
   bool isUser;
   BuyATN({this.landing, this.isUser});
   @override
@@ -238,11 +421,12 @@ class BuyATN extends StatefulWidget {
 
 class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
   double left = 0.0;
+  double opa = 0;
   double spread = 0.0;
   double down = 0.0;
   double sime = 3;
   double gro = 0;
-  double height = 30;
+  double height = 330;
   AnimationController controller;
   @override
   void initState() {
@@ -255,13 +439,14 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
       setState(() {
         left = -0.3;
         down = 1.3;
-        spread = 1.9;
+        spread = 0.3;
         sime = 500;
         gro = 0;
-        height = 465;
+        height = 425;
       });
     });
-    Future.delayed(Duration(milliseconds: 6900), () {
+    Future.delayed(Duration(milliseconds: 500), () {
+      opa = 1;
       gro = 500.0;
     });
     super.initState();
@@ -275,14 +460,14 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
     ];
     List<double> stops = [0.03, 5.8];
     return AnimatedContainer(
-        duration: Duration(milliseconds: 600),
+        duration: Duration(milliseconds: 400),
         width: sime,
         height: height,
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context).backgroundColor,
-                blurRadius: 6.0, // soften the shadow
+                color: Theme.of(context).dividerColor,
+                blurRadius: 8.0, // soften the shadow
                 spreadRadius: spread, //extend the shadow
                 offset: Offset(
                   left,
@@ -297,7 +482,7 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
           children: [
             SizedBox(height: 24),
             AnimatedContainer(
-              duration: Duration(milliseconds: 900),
+              duration: Duration(milliseconds: 700),
               padding: EdgeInsets.symmetric(vertical: 4),
               width: sime,
               color: Theme.of(context).cardColor,
@@ -308,158 +493,119 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
                 text: [
                   "INITIAL TOKEN SALE",
                 ],
-                textStyle: TextStyle(
-                  fontSize: 22,
-                  fontFamily: "OCR-A",
-                ),
+                textStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.bold
+                    // fontFamily: "OCR-A",
+                    ),
               )),
             ),
             SizedBox(height: 20),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  SizedBox(height: 4),
-                  Text("Token address: ",
-                      style: TextStyle(fontFamily: "Roboto Mono")),
-                  SizedBox(height: 5),
-                  Text("Total supply: ",
-                      style: TextStyle(fontFamily: "Roboto Mono")),
-                  Text("Current price: ",
-                      style: TextStyle(fontFamily: "Roboto Mono")),
-                  Text("Tokens sold: ",
-                      style: TextStyle(fontFamily: "Roboto Mono")),
-                  Text("Accounts: ",
-                      style: TextStyle(fontFamily: "Roboto Mono")),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextButton(
-                      onPressed: () {},
-                      child: Row(
-                        children: [
-                          Icon(Icons.copy, size: 15),
-                          Text(" Copy to clipboard",
-                              style: TextStyle(fontFamily: "Roboto Mono"))
-                        ],
-                      )),
-                  Text("10000000000",
-                      style: TextStyle(fontFamily: "Roboto Mono")),
-                  Text("1 Finney (.001 ETH)",
-                      style: TextStyle(fontFamily: "Roboto Mono")),
-                  Text("742381", style: TextStyle(fontFamily: "Roboto Mono")),
-                  Text("3324", style: TextStyle(fontFamily: "Roboto Mono")),
-                ],
-              ),
-            ]),
+            AnimatedOpacity(
+              duration: Duration(seconds: 1),
+              opacity: opa,
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    SizedBox(height: 4),
+                    Text("Token address: ",
+                        style: TextStyle(fontFamily: "Roboto Mono")),
+                    SizedBox(height: 5),
+                    Text("Total supply: ",
+                        style: TextStyle(fontFamily: "Roboto Mono")),
+                    Text("Current price: ",
+                        style: TextStyle(fontFamily: "Roboto Mono")),
+                    Text("Tokens sold: ",
+                        style: TextStyle(fontFamily: "Roboto Mono")),
+                    Text("Accounts: ",
+                        style: TextStyle(fontFamily: "Roboto Mono")),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextButton(
+                        onPressed: () {},
+                        child: Row(
+                          children: [
+                            Icon(Icons.copy, size: 15),
+                            Text(" Copy to clipboard",
+                                style: TextStyle(fontFamily: "Roboto Mono"))
+                          ],
+                        )),
+                    Text("10000000000",
+                        style: TextStyle(fontFamily: "Roboto Mono")),
+                    Text("1 Finney (.001 ETH)",
+                        style: TextStyle(fontFamily: "Roboto Mono")),
+                    Text("742381", style: TextStyle(fontFamily: "Roboto Mono")),
+                    Text("3324", style: TextStyle(fontFamily: "Roboto Mono")),
+                  ],
+                ),
+              ]),
+            ),
             SizedBox(height: 25),
-            Container(
-              width: 420,
-              decoration: BoxDecoration(color: Theme.of(context).cardColor),
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 9),
-                  Text(
-                    "Automated price increase:",
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 6),
-                  Text(
-                      "* The first 5M tokens are sold at the price of .001 ETH,"),
-                  Text(
-                      "* Each of the following 2.5M tokens told trigger a 0.00025 ETH increase in price."),
-                  SizedBox(height: 9)
-                ],
+            AnimatedOpacity(
+              duration: Duration(milliseconds: 1600),
+              opacity: opa,
+              child: Container(
+                width: 420,
+                decoration: BoxDecoration(color: Theme.of(context).cardColor),
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 9),
+                    Text(
+                      "Automated price increase:",
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                        "* The first 5M tokens are sold at the price of .001 ETH,"),
+                    Text(
+                        "* Each of the following 2.5M tokens told trigger a 0.00025 ETH increase in price."),
+                    SizedBox(height: 9)
+                  ],
+                ),
               ),
             ),
             SizedBox(height: 39),
-            TextButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                          content: !widget.isUser
-                              ? widget.landing.connect(this)
-                              : widget.landing.buyATN()));
-                },
-                child: Container(
-                  width: 170,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).backgroundColor,
-                          width: 0.8)),
-                  padding: EdgeInsets.all(10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.network("https://i.ibb.co/kXVw8Z2/logo64x64.png",
-                          height: 30),
-                      SizedBox(width: 7),
-                      Text(
-                        "Buy ATN",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                )),
+            AnimatedOpacity(
+                duration: Duration(milliseconds: 1300),
+                opacity: opa,
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(context).buttonColor,
+                        elevation: 1),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                              content: !widget.isUser
+                                  ? widget.landing.connect(this)
+                                  : widget.landing.buyATN()));
+                    },
+                    child: Container(
+                      width: 170,
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.network(
+                              "https://i.ibb.co/kXVw8Z2/logo64x64.png",
+                              height: 30),
+                          SizedBox(width: 7),
+                          Text(
+                            "Buy ATN",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                    ))),
             SizedBox(height: 30)
           ],
         ));
   }
-}
-
-class Sky extends CustomPainter {
-  var context;
-  Sky({this.context});
-  @override
-  void paint(Canvas canvas, Size size) {
-    var rect = Offset.zero & size;
-    var gradient = new RadialGradient(
-      center: const Alignment(0.0, -0.6),
-      radius: 1.2,
-      colors: [Theme.of(context).cardColor, Theme.of(context).backgroundColor],
-      stops: [0.6, 14.0],
-    );
-    canvas.drawRect(
-      rect,
-      new Paint()..shader = gradient.createShader(rect),
-    );
-  }
-
-  @override
-  SemanticsBuilderCallback get semanticsBuilder {
-    return (Size size) {
-      // Annotate a rectangle containing the picture of the sun
-      // with the label "Sun". When text to speech feature is enabled on the
-      // device, a user will be able to locate the sun on this picture by
-      // touch.
-      var rect = Offset.zero & size;
-      var width = size.shortestSide * 5.8;
-      rect = const Alignment(5.8, -13.9).inscribe(new Size(400, 900), rect);
-      return [
-        new CustomPainterSemantics(
-          rect: rect,
-          properties: new SemanticsProperties(
-            label: 'Sun',
-            textDirection: TextDirection.ltr,
-          ),
-        ),
-      ];
-    };
-  }
-
-  // Since this Sky painter has no fields, it always paints
-  // the same thing and semantics information is the same.
-  // Therefore we return false here. If we had fields (set
-  // from the constructor) then we would return true if any
-  // of them differed from the same fields on the oldDelegate.
-  @override
-  bool shouldRepaint(Sky oldDelegate) => false;
-  @override
-  bool shouldRebuildSemantics(Sky oldDelegate) => false;
 }

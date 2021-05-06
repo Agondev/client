@@ -53,6 +53,7 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     ThemeData light = ThemeData(
         brightness: Brightness.light,
+        dividerColor: createMaterialColor(Color(0xff4454238)),
         primaryColor: createMaterialColor(Color(0xffffffff)),
         primarySwatch: createMaterialColor(Color(0xff4d4d4d)),
         highlightColor: Color(0xff6e6e6e),
@@ -60,6 +61,8 @@ class MyAppState extends State<MyApp> {
         canvasColor: Color(0xfff0f0f0));
 
     ThemeData dark = ThemeData(
+      buttonColor: createMaterialColor(Color(0xff2a2e36)),
+      dividerColor: createMaterialColor(Color(0xffcfc099)),
       brightness: Brightness.dark,
       accentColor: createMaterialColor(Color(0xff383736)),
       primaryColor: createMaterialColor(Color(0xff4d4d4d)),
