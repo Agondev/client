@@ -11,6 +11,7 @@ class Node extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainMenu(
+        care: "node",
         appstate: appstate,
         porc: Container(
             padding: EdgeInsets.all(3),

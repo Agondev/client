@@ -138,6 +138,10 @@ contract User{
         }
     }
     
+    function withdraw(uint256 amount) public onlyOwner{
+        require(banu.transfer(owner,amount));
+    }
+    
     modifier onlyOwner(){
         require(msg.sender == owner,"Only the owner of the contract can call this function.");
         _;
@@ -173,6 +177,7 @@ contract Source is IERC777Recipient{
         tokenAddress=address(banu);
         banu.imprima(1000000);
     }
+    
     function clear()public{
         users[msg.sender]=0x0000000000000000000000000000000000000000;
     }
@@ -199,6 +204,7 @@ contract Source is IERC777Recipient{
         users[msg.sender]=address(user);
         return address(user);
     }
+
     
     function balanceETH()public view returns(uint256){
         return address(this).balance;

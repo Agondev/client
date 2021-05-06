@@ -10,6 +10,7 @@ import 'package:app2/widgets/agent_card.dart';
 import 'package:app2/widgets/agent_details.dart';
 import 'package:app2/widgets/mainmenu.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart';
 
@@ -55,30 +56,59 @@ class MyAppState extends State<MyApp> {
         primaryColor: createMaterialColor(Color(0xffffffff)),
         primarySwatch: createMaterialColor(Color(0xff4d4d4d)),
         highlightColor: Color(0xff6e6e6e),
+        accentColor: Color(0xffe0deda),
         canvasColor: Color(0xfff0f0f0));
+
     ThemeData dark = ThemeData(
       brightness: Brightness.dark,
-      accentColor: createMaterialColor(Color(0xffb0b0b0)),
+      accentColor: createMaterialColor(Color(0xff383736)),
       primaryColor: createMaterialColor(Color(0xff4d4d4d)),
       primarySwatch: createMaterialColor(Color(0xffefefef)),
       highlightColor: Color(0xff6e6e6e),
     );
 
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        routes: {
-          Landing.route: (context) => Landing(appstate: this, title: "Autonet"),
-          Node.route: (context) => Node(appstate: this, title: "Hopa"),
-          MyAssets.route: (context) => MyAssets(
-                appstate: this,
-              ),
-          ProjectView.route: (context) => ProjectView(
-                appstate: this,
-              ),
-          Market.route: (context) => Market(
-                appstate: this,
-              ),
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case '/node':
+              return PageTransition(
+                  child: Node(
+                    appstate: this,
+                  ),
+                  type: PageTransitionType.fade);
+
+            case '/market':
+              return PageTransition(
+                  child: Market(
+                    appstate: this,
+                  ),
+                  type: PageTransitionType.fade);
+            case '/assets':
+              return PageTransition(
+                  child: MyAssets(
+                    appstate: this,
+                  ),
+                  type: PageTransitionType.fade);
+            default:
+              return PageTransition(
+                  child: Landing(title: 'AUTONET', appstate: this),
+                  type: PageTransitionType.fade);
+          }
         },
+        debugShowCheckedModeBanner: false,
+        // routes: {
+        //   Landing.route: (context) => Landing(appstate: this, title: "Autonet"),
+        //   Node.route: (context) => Node(appstate: this, title: "Hopa"),
+        //   MyAssets.route: (context) => MyAssets(
+        //         appstate: this,
+        //       ),
+        //   ProjectView.route: (context) => ProjectView(
+        //         appstate: this,
+        //       ),
+        //   Market.route: (context) => Market(
+        //         appstate: this,
+        //       ),
+        // },
         title: 'Autonet',
         theme: lumina ? light : dark,
         home: Landing(title: 'AUTONET', appstate: this));
@@ -114,6 +144,7 @@ class _MarketState extends State<Market> {
     List<Widget> proiectili = [];
     ScrollController sc = ScrollController();
     return MainMenu(
+        care: "market",
         appstate: widget.appstate,
         porc: Container(
           padding: EdgeInsets.all(3),

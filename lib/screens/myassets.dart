@@ -20,6 +20,7 @@ class MyAssets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainMenu(
+        care: "assets",
         appstate: appstate,
         porc: Container(
           padding: EdgeInsets.all(3),
@@ -45,7 +46,7 @@ class MyAssets extends StatelessWidget {
                                             style: TextStyle(fontSize: 20),
                                           ),
                                           SizedBox(height: 20),
-                                          MetaButton()
+                                          MetaButton(landingPage: false)
                                         ])
                                       : Column(
                                           children: [
