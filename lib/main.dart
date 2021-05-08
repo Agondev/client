@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart';
+import 'package:intl/date_time_patterns.dart';
 
 Chain chain = new Chain();
 void main() {
@@ -27,6 +28,7 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
+  DateTime now = DateTime.now();
   MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];
     Map swatch = <int, Color>{};
@@ -47,10 +49,15 @@ class MyAppState extends State<MyApp> {
     return MaterialColor(color.value, swatch);
   }
 
-  bool lumina = true;
+  bool lumina;
+  bool bypass = false;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    if (!bypass) {
+      now.hour < 7 || now.hour >= 21 ? lumina = false : lumina = true;
+    }
+    print("ora este" + now.hour.toString());
     ThemeData light = ThemeData(
         brightness: Brightness.light,
         dividerColor: createMaterialColor(Color(0xff4454238)),
@@ -61,7 +68,7 @@ class MyAppState extends State<MyApp> {
         canvasColor: Color(0xfff0f0f0));
 
     ThemeData dark = ThemeData(
-      buttonColor: createMaterialColor(Color(0xff2a2e36)),
+      buttonColor: createMaterialColor(Color(0xff505663)),
       dividerColor: createMaterialColor(Color(0xffcfc099)),
       brightness: Brightness.dark,
       accentColor: createMaterialColor(Color(0xff383736)),

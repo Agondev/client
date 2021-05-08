@@ -41,6 +41,11 @@ class MyAssets extends StatelessWidget {
                                   SizedBox(height: 20),
                                   us3r == null
                                       ? Column(children: [
+                                          TextField(
+                                            onChanged: (nou) {
+                                              print("the text changed $nou");
+                                            },
+                                          ),
                                           Text(
                                             "Web3 provider not connected",
                                             style: TextStyle(fontSize: 20),

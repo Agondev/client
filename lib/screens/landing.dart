@@ -1,8 +1,7 @@
 import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:app2/main.dart';
-import 'package:app2/services.dart/webtrei.dart';
-import 'package:app2/widgets/atncontract.dart';
+import 'package:app2/services.dart/chatbot.dart';
 import 'package:app2/widgets/mainmenu.dart';
 import 'package:app2/widgets/metabutton.dart';
 import "package:flutter/material.dart";
@@ -10,6 +9,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
+import 'package:dash_chat/dash_chat.dart';
+import 'dart:async';
+import 'dart:io';
 
 class Landing extends StatefulWidget {
   bool isUser = false;
@@ -45,7 +47,6 @@ class _LandingState extends State<Landing> {
     });
     Future.delayed(Duration(milliseconds: 400), () {
       setState(() {
-        opa1 = 1;
         w2 = 200;
         h2 = 90;
       });
@@ -61,200 +62,202 @@ class _LandingState extends State<Landing> {
         opa3 = 1;
       });
     });
-    Future.delayed(Duration(milliseconds: 1300), () {
+    Future.delayed(Duration(milliseconds: 670), () {
       setState(() {
         opa1 = 1;
       });
     });
     Future.delayed(Duration(milliseconds: 1300), () {
-      setState(() {
-        opa1 = 1;
-      });
+      setState(() {});
     });
-
     super.initState();
   }
 
+  ScrollController sc = ScrollController();
+  List<Widget> multe = [];
+  Chatbot cb = Chatbot();
+  final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final textc = TextEditingController();
     String poza = "b" + (rng.nextInt(5) + 1).toString() + ".jpg";
     return MainMenu(
         care: "landing",
         appstate: widget.appstate,
-        porc: Stack(children: [
-          // Container(
-          //     height: MediaQuery.of(context).size.height,
-          //     width: MediaQuery.of(context).size.width,
-          //     child: FittedBox(
-          //       fit: BoxFit.cover,
-          //       child: Image.asset(
-          //         "assets/ute3.gif",
-          //       ),
-          //     )),
-          Positioned(
-              top: 30,
-              left: 15,
-              child: Container(
-                  width: MediaQuery.of(context).size.width - 590,
-                  child: Center(
-                      child: Wrap(spacing: 30, runSpacing: 30, children: [
-                    AnimatedContainer(
-                        duration: Duration(milliseconds: 400),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Theme.of(context).backgroundColor,
-                                width: 0.2),
-                            color: Colors.black12,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        height: h1,
-                        width: 200,
-                        child: AnimatedOpacity(
-                          opacity: opa1,
-                          duration: Duration(milliseconds: 800),
-                          child: Center(
-                              child: item("Requests per second", "1392")),
-                        )),
-                    AnimatedContainer(
-                        duration: Duration(milliseconds: 400),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Theme.of(context).backgroundColor,
-                                width: 0.2),
-                            color: Colors.black12,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        height: h2,
-                        width: 200,
-                        child: AnimatedOpacity(
-                          opacity: opa2,
-                          duration: Duration(milliseconds: 800),
-                          child: Center(
-                              child: item("Network Capacity", "4783 EhS")),
-                        )),
-                    AnimatedContainer(
-                        duration: Duration(milliseconds: 400),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Theme.of(context).backgroundColor,
-                                width: 0.2),
-                            color: Colors.black12,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        height: h3,
-                        width: 200,
-                        child: AnimatedOpacity(
-                          opacity: opa3,
-                          duration: Duration(milliseconds: 1200),
-                          child: Center(child: item("Mature Agents", "221")),
-                        )),
-                    AnimatedContainer(
-                        duration: Duration(milliseconds: 400),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Theme.of(context).backgroundColor,
-                                width: 0.2),
-                            color: Colors.black12,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        height: h2,
-                        width: 200,
-                        child: AnimatedOpacity(
-                          opacity: opa2,
-                          duration: Duration(milliseconds: 700),
-                          child: Center(child: item("Active Nodes", "49882")),
-                        )),
-                    AnimatedContainer(
-                        duration: Duration(milliseconds: 300),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Theme.of(context).backgroundColor,
-                                width: 0.2),
-                            color: Colors.black12,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        height: h3,
-                        width: 200,
-                        child: AnimatedOpacity(
-                          opacity: opa3,
-                          duration: Duration(milliseconds: 800),
-                          child: Center(
-                              child: item(
-                                  "Dividends Paid / Last 24h", "3327109 ATN")),
-                        )),
-                    AnimatedContainer(
-                        duration: Duration(milliseconds: 500),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Theme.of(context).backgroundColor,
-                                width: 0.2),
-                            color: Colors.black12,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        height: h3,
-                        width: 200,
-                        child: AnimatedOpacity(
-                          opacity: opa3,
-                          duration: Duration(milliseconds: 900),
-                          child:
-                              Center(child: item("Average Latency", "19 ms")),
-                        )),
+        porc: Container(
+            height: MediaQuery.of(context).size.height - 38,
+            child: Scrollbar(
+                controller: sc,
+                child: SingleChildScrollView(
+                    child: Column(
+                  children: [
+                    TextFormField(
+                        controller: _controller,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder())),
                     Container(
-                        width: 660,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 25),
-                              TyperAnimatedTextKit(
-                                isRepeatingAnimation: true,
-                                pause: Duration(seconds: 4),
-                                speed: Duration(milliseconds: 45),
-                                text: [
-                                  "Career opportunities for AI agents.",
-                                  "An intelligence-based financial system.",
-                                ],
-                                textStyle: TextStyle(
-                                  fontSize: 22,
-                                  fontFamily: "OCR-A",
-                                ),
-                              ),
-                              SizedBox(height: 20),
-                              TextButton(
-                                  style: TextButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).cardColor,
-                                    elevation: 1.5,
-                                  ),
-                                  onPressed: () {
-                                    launchURL(
-                                        "https://www.autonet.tk/#/projects/atn");
-                                  },
-                                  child: Container(
-                                      height: 50,
-                                      width: 200,
-                                      child: Center(
-                                          child: Text(
-                                        "Read the whitepaper",
-                                        style: TextStyle(fontSize: 18),
-                                      ))))
-                            ]))
-                  ])))),
+                        height: 500,
+                        width: MediaQuery.of(context).size.width,
+                        child: everything()),
+                  ],
+                )))));
+  }
 
-          Positioned(bottom: 50, left: 50, child: Text("hopa")),
-          Positioned(
-              right: 0,
-              top: 0,
-              child: Container(
-                  decoration: BoxDecoration(
-                      // color: Theme.of(context).cardColor,
-                      borderRadius:
-                          BorderRadius.only(bottomLeft: Radius.circular(170))),
-                  child: BuyATN(
-                    landing: this,
-                    isUser: widget.isUser,
-                  )))
-        ]));
+  Widget everything() {
+    return Stack(children: [
+      Positioned(
+          top: 30,
+          left: 15,
+          child: Container(
+              width: MediaQuery.of(context).size.width - 590,
+              child: Center(
+                  child: Wrap(spacing: 30, runSpacing: 30, children: [
+                AnimatedContainer(
+                    duration: Duration(milliseconds: 400),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Theme.of(context).backgroundColor,
+                            width: 0.2),
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    height: h1,
+                    width: 200,
+                    child: AnimatedOpacity(
+                      opacity: opa1,
+                      duration: Duration(milliseconds: 800),
+                      child: Center(child: item("Requests per second", "1392")),
+                    )),
+                AnimatedContainer(
+                    duration: Duration(milliseconds: 400),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Theme.of(context).backgroundColor,
+                            width: 0.2),
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    height: h2,
+                    width: 200,
+                    child: AnimatedOpacity(
+                      opacity: opa2,
+                      duration: Duration(milliseconds: 800),
+                      child:
+                          Center(child: item("Network Capacity", "4783 EhS")),
+                    )),
+                AnimatedContainer(
+                    duration: Duration(milliseconds: 400),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Theme.of(context).backgroundColor,
+                            width: 0.2),
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    height: h3,
+                    width: 200,
+                    child: AnimatedOpacity(
+                      opacity: opa3,
+                      duration: Duration(milliseconds: 1200),
+                      child: Center(child: item("Mature Agents", "221")),
+                    )),
+                AnimatedContainer(
+                    duration: Duration(milliseconds: 400),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Theme.of(context).backgroundColor,
+                            width: 0.2),
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    height: h2,
+                    width: 200,
+                    child: AnimatedOpacity(
+                      opacity: opa2,
+                      duration: Duration(milliseconds: 700),
+                      child: Center(child: item("Active Nodes", "49882")),
+                    )),
+                AnimatedContainer(
+                    duration: Duration(milliseconds: 300),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Theme.of(context).backgroundColor,
+                            width: 0.2),
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    height: h3,
+                    width: 200,
+                    child: AnimatedOpacity(
+                      opacity: opa3,
+                      duration: Duration(milliseconds: 800),
+                      child: Center(
+                          child:
+                              item("Dividends Paid / Last 24h", "3327109 ATN")),
+                    )),
+                AnimatedContainer(
+                    duration: Duration(milliseconds: 500),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Theme.of(context).backgroundColor,
+                            width: 0.2),
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    height: h3,
+                    width: 200,
+                    child: AnimatedOpacity(
+                      opacity: opa3,
+                      duration: Duration(milliseconds: 900),
+                      child: Center(child: item("Average Latency", "19 ms")),
+                    )),
+                Container(
+                    width: 660,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 25),
+                          TyperAnimatedTextKit(
+                            isRepeatingAnimation: true,
+                            pause: Duration(seconds: 4),
+                            speed: Duration(milliseconds: 45),
+                            text: [
+                              "Career opportunities for AI agents.",
+                              "An intelligence-based financial system.",
+                            ],
+                            textStyle: TextStyle(
+                              fontSize: 22,
+                              fontFamily: "OCR-A",
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor: Theme.of(context).cardColor,
+                                elevation: 1.5,
+                              ),
+                              onPressed: () {
+                                launchURL(
+                                    "https://www.autonet.tk/#/projects/atn");
+                              },
+                              child: Container(
+                                  height: 50,
+                                  width: 200,
+                                  child: Center(
+                                      child: Text(
+                                    "Read the whitepaper",
+                                    style: TextStyle(fontSize: 18),
+                                  ))))
+                        ]))
+              ])))),
+      Positioned(
+          right: 0,
+          top: 0,
+          child: Container(
+              decoration: BoxDecoration(
+                  // color: Theme.of(context).cardColor,
+                  borderRadius:
+                      BorderRadius.only(bottomLeft: Radius.circular(170))),
+              child: BuyATN(
+                landing: this,
+                isUser: widget.isUser,
+              )))
+    ]);
   }
 
   Widget buyATN() {

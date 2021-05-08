@@ -1,7 +1,9 @@
 import 'package:app2/main.dart';
+import 'package:app2/services.dart/chatbot.dart';
 import 'package:flutter/material.dart';
 
 class MainMenu extends StatefulWidget {
+  Chat chat = Chat();
   MyAppState appstate;
   String care;
   Widget porc;
@@ -14,6 +16,7 @@ class _MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: ChatWidget(chat: widget.chat),
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(38.0), // here the desired height
             child: AppBar(
@@ -28,6 +31,7 @@ class _MainMenuState extends State<MainMenu> {
                     Switch(
                         value: widget.appstate.lumina,
                         onChanged: (context) {
+                          widget.appstate.bypass = true;
                           widget.appstate.lumina
                               ? widget.appstate.setState(() {
                                   widget.appstate.lumina = false;
@@ -114,5 +118,110 @@ class _MainMenuState extends State<MainMenu> {
                                   letterSpacing: 2)))),
                 ]))),
         body: widget.porc);
+  }
+}
+
+class ChatWidget extends StatefulWidget {
+  Chat chat;
+  ChatWidget({this.chat});
+  bool expanded = false;
+  @override
+  _ChatWidgetState createState() => _ChatWidgetState();
+}
+
+class _ChatWidgetState extends State<ChatWidget> {
+  double height;
+  double width;
+  @override
+  void initState() {
+    widget.expanded = false;
+    height = 70;
+    width = 70;
+    super.initState();
+  }
+
+  expand() {
+    setState(() {
+      height = MediaQuery.of(context).size.height - 70;
+      width = 500;
+      widget.expanded = true;
+    });
+  }
+
+  compact() {
+    setState(() {
+      height = 70;
+      width = 70;
+      widget.expanded = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+        height: height,
+        duration: Duration(milliseconds: 300),
+        child: widget.expanded ? big() : chatBtn());
+  }
+
+  Widget big() {
+    return Container(
+      height: MediaQuery.of(context).size.height - 70,
+      width: 500,
+      child: Stack(children: [
+        Positioned(
+            bottom: 83,
+            right: 0,
+            child: AnimatedContainer(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).dividerColor,
+                        blurRadius: 5.0, // soften the shadow
+                        spreadRadius: 2, //extend the shadow
+                        offset: Offset(
+                          0,
+                          0,
+                        ),
+                      )
+                    ]),
+                duration: Duration(milliseconds: 300),
+                height: height,
+                width: width,
+                child: widget.chat)),
+        Positioned(bottom: 5, right: 3, child: chatBtn())
+      ]),
+    );
+  }
+
+  Widget chatBtn() {
+    return Container(
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).dividerColor,
+            blurRadius: 5.0, // soften the shadow
+            spreadRadius: 2, //extend the shadow
+            offset: Offset(
+              0,
+              0,
+            ),
+          )
+        ], borderRadius: BorderRadius.all(Radius.circular(50))),
+        child: TextButton(
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50.0),
+          ))),
+          onPressed: () {
+            widget.expanded ? compact() : expand();
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: Image.network(
+                "https://i.ibb.co/0n1c7ry/ezgif-com-gif-maker-1.gif"),
+          ),
+        ));
   }
 }
