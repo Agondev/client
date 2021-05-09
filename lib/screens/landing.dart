@@ -91,14 +91,36 @@ class _LandingState extends State<Landing> {
                 child: SingleChildScrollView(
                     child: Column(
                   children: [
-                    TextFormField(
-                        controller: _controller,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder())),
+                    // TextFormField(
+                    //     controller: textc,
+                    //     decoration: const InputDecoration(
+                    //         border: OutlineInputBorder())),
                     Container(
-                        height: 500,
-                        width: MediaQuery.of(context).size.width,
-                        child: everything()),
+                      width:MediaQuery.of(context).size.width,
+                      color:Theme.of(context).cardColor,
+                      height: 500,
+                      width: MediaQuery.of(context).size.width,
+                      child: everything()),
+                    Container(
+                        height: 400,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("What is Autonet?",
+                                style: TextStyle(fontSize: 29)),
+                            SizedBox(height: 19),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                      "Dmeoiasmdoas idmoa  oasmd aosid aosid i"),
+                                  SizedBox(width: 29),
+                                  Image.network(
+                                      "https://i.ibb.co/Q8JjbBC/thumb.png",
+                                      height: 130)
+                                ]),
+                          ],
+                        ))
                   ],
                 )))));
   }

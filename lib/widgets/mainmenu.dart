@@ -142,7 +142,7 @@ class _ChatWidgetState extends State<ChatWidget> {
 
   expand() {
     setState(() {
-      height = MediaQuery.of(context).size.height - 70;
+      height = MediaQuery.of(context).size.height - 18;
       width = 500;
       widget.expanded = true;
     });
@@ -166,7 +166,7 @@ class _ChatWidgetState extends State<ChatWidget> {
 
   Widget big() {
     return Container(
-      height: MediaQuery.of(context).size.height - 70,
+      height: MediaQuery.of(context).size.height - 18,
       width: 500,
       child: Stack(children: [
         Positioned(
@@ -174,18 +174,10 @@ class _ChatWidgetState extends State<ChatWidget> {
             right: 0,
             child: AnimatedContainer(
                 decoration: BoxDecoration(
-                    color: Theme.of(context).backgroundColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).dividerColor,
-                        blurRadius: 5.0, // soften the shadow
-                        spreadRadius: 2, //extend the shadow
-                        offset: Offset(
-                          0,
-                          0,
-                        ),
-                      )
-                    ]),
+                  color: Theme.of(context).backgroundColor,
+                  border: Border.all(
+                      color: Theme.of(context).cardColor, width: 1.5),
+                ),
                 duration: Duration(milliseconds: 300),
                 height: height,
                 width: width,
@@ -199,7 +191,7 @@ class _ChatWidgetState extends State<ChatWidget> {
     return Container(
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
-            color: Theme.of(context).dividerColor,
+            color: Theme.of(context).backgroundColor,
             blurRadius: 5.0, // soften the shadow
             spreadRadius: 2, //extend the shadow
             offset: Offset(

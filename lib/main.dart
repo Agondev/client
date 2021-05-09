@@ -49,7 +49,7 @@ class MyAppState extends State<MyApp> {
     return MaterialColor(color.value, swatch);
   }
 
-  bool lumina;
+  bool lumina = false;
   bool bypass = false;
   // This widget is the root of your application.
   @override
