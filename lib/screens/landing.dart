@@ -4,9 +4,12 @@ import 'package:app2/main.dart';
 import 'package:app2/services.dart/chatbot.dart';
 import 'package:app2/widgets/mainmenu.dart';
 import 'package:app2/widgets/metabutton.dart';
+// import 'package:drawing_animation/drawing_animation.dart';
+// import 'package:drawing_animation/drawing_animation.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:dash_chat/dash_chat.dart';
@@ -14,12 +17,13 @@ import 'dart:async';
 import 'dart:io';
 
 class Landing extends StatefulWidget {
+  MyAppState appstate;
   bool isUser = false;
   String title;
+  Landing({this.appstate});
   static String route = "/home";
   ScrollController sc = ScrollController();
-  MyAppState appstate;
-  Landing({this.appstate, this.title});
+
   @override
   _LandingState createState() => _LandingState();
 }
@@ -36,8 +40,20 @@ class _LandingState extends State<Landing> {
   double w2 = 20;
   double h3 = 0;
   double w3 = 20;
+  String doi = "cezice";
+  int reqpersec;
+  int netcap;
+  int activeNodes;
+  int dividents;
+  int latency;
+  Random rand = Random();
   @override
   void initState() {
+    reqpersec = 1392 + rng.nextInt(100);
+    netcap = 4783 + rng.nextInt(100);
+    activeNodes = 39134 + rng.nextInt(100);
+    dividents = 2327109 + rng.nextInt(100);
+    latency = 19 + rng.nextInt(4);
     Future.delayed(Duration(milliseconds: 200), () {
       setState(() {
         opa0 = 1;
@@ -70,68 +86,140 @@ class _LandingState extends State<Landing> {
     Future.delayed(Duration(milliseconds: 1300), () {
       setState(() {});
     });
+    Timer.periodic(Duration(seconds: 4), (timer) {
+      bool plus1 = rand.nextBool();
+      bool plus2 = rand.nextBool();
+      bool plus3 = rand.nextBool();
+      setState(() {
+        plus1
+            ? reqpersec = reqpersec + rand.nextInt(100)
+            : reqpersec - rand.nextInt(100);
+        plus2 ? netcap = netcap + rand.nextInt(50) : netcap - rand.nextInt(50);
+        plus1
+            ? activeNodes = activeNodes + rand.nextInt(100)
+            : activeNodes - rand.nextInt(100);
+        dividents = dividents + rand.nextInt(100);
+        if (latency <= 9) {
+          latency = latency + rand.nextInt(15);
+        }
+        if (latency >= 35) {
+          latency = latency - rand.nextInt(5);
+        }
+        if (latency > 9 && latency < 35) {
+          latency =
+              plus3 ? latency + rand.nextInt(5) : latency - rand.nextInt(5);
+        }
+      });
+    });
     super.initState();
   }
 
   ScrollController sc = ScrollController();
   List<Widget> multe = [];
+  bool run = true;
   Chatbot cb = Chatbot();
   final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final textc = TextEditingController();
     String poza = "b" + (rng.nextInt(5) + 1).toString() + ".jpg";
-    return MainMenu(
-        care: "landing",
-        appstate: widget.appstate,
-        porc: Container(
-            height: MediaQuery.of(context).size.height - 38,
-            child: Scrollbar(
-                controller: sc,
-                child: SingleChildScrollView(
+    return Container(
+        height: MediaQuery.of(context).size.height - 38,
+        child: Scrollbar(
+            controller: sc,
+            child: SingleChildScrollView(
+                child: Column(
+              children: [
+                // Container(
+                //   width: 1200,
+                //   height: 800,
+                //   child: Image.asset("grafica1.jpg"),
+                //   // AnimatedDrawing.svg(
+                //   //   "prima.svg",
+                //   //   run: true,
+                //   //   duration: new Duration(seconds: 3),
+                //   // )
+                // ),
+                Container(
+                    color: widget.appstate.lumina
+                        ? Color(0xffefefef)
+                        : Theme.of(context).cardColor,
+                    width: MediaQuery.of(context).size.width,
+                    height: 1300,
+                    child: everything()),
+                Container(
+                    height: 400,
                     child: Column(
-                  children: [
-                    // TextFormField(
-                    //     controller: textc,
-                    //     decoration: const InputDecoration(
-                    //         border: OutlineInputBorder())),
-                    Container(
-                      width:MediaQuery.of(context).size.width,
-                      color:Theme.of(context).cardColor,
-                      height: 500,
-                      width: MediaQuery.of(context).size.width,
-                      child: everything()),
-                    Container(
-                        height: 400,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("What is Autonet?",
-                                style: TextStyle(fontSize: 29)),
-                            SizedBox(height: 19),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                      "Dmeoiasmdoas idmoa  oasmd aosid aosid i"),
-                                  SizedBox(width: 29),
-                                  Image.network(
-                                      "https://i.ibb.co/Q8JjbBC/thumb.png",
-                                      height: 130)
-                                ]),
-                          ],
-                        ))
-                  ],
-                )))));
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("What is Autonet?",
+                            style: TextStyle(fontSize: 29)),
+                        SizedBox(height: 19),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Dmeoiasmdoas idmoa  oasmd aosid aosid i"),
+                              SizedBox(width: 29),
+                              Image.network(
+                                  "https://i.ibb.co/Q8JjbBC/thumb.png",
+                                  height: 130)
+                            ]),
+                      ],
+                    ))
+              ],
+            ))));
   }
 
+  String hopa = "ceva";
+
   Widget everything() {
+    Color c1 = widget.appstate.lumina ? Color(0xffc3c3c3) : Color(0xff4c4c4c);
+    Color c2 = widget.appstate.lumina ? Color(0xffefefef) : Color(0xff424242);
+    List<Color> colors = [c2, c1];
+    List<double> stops = [0.0, 1.0];
     return Stack(children: [
+      Positioned(
+        top: 340,
+        left: 0,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          Container(
+            height: 100,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              colors: colors,
+              stops: stops,
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            )),
+          ),
+          Container(
+            height: 600,
+            color:
+                widget.appstate.lumina ? Color(0xffc3c3c3) : Color(0xff4c4c4c),
+            child: Image.asset(
+              widget.appstate.lumina ? "light.jpg" : "dark.jpg",
+              width: MediaQuery.of(context).size.width,
+            ),
+          ),
+          Container(
+            height: 70,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              colors: colors,
+              stops: stops,
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+            )),
+          ),
+        ]),
+      ),
       Positioned(
           top: 30,
           left: 15,
           child: Container(
-              width: MediaQuery.of(context).size.width - 590,
+              width: MediaQuery.of(context).size.width - 600,
               child: Center(
                   child: Wrap(spacing: 30, runSpacing: 30, children: [
                 AnimatedContainer(
@@ -139,39 +227,47 @@ class _LandingState extends State<Landing> {
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: Theme.of(context).backgroundColor,
-                            width: 0.2),
-                        color: Colors.black12,
+                            width: 0.9),
+                        color: widget.appstate.lumina
+                            ? Color(0x54c9c9c9)
+                            : Color(0x542e2d2d),
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     height: h1,
                     width: 200,
                     child: AnimatedOpacity(
                       opacity: opa1,
                       duration: Duration(milliseconds: 800),
-                      child: Center(child: item("Requests per second", "1392")),
+                      child: Center(
+                          child: item(
+                              "Requests per second", reqpersec.toString())),
                     )),
                 AnimatedContainer(
                     duration: Duration(milliseconds: 400),
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: Theme.of(context).backgroundColor,
-                            width: 0.2),
-                        color: Colors.black12,
+                            width: 0.9),
+                        color: widget.appstate.lumina
+                            ? Color(0x54c9c9c9)
+                            : Color(0x542e2d2d),
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     height: h2,
                     width: 200,
                     child: AnimatedOpacity(
                       opacity: opa2,
                       duration: Duration(milliseconds: 800),
-                      child:
-                          Center(child: item("Network Capacity", "4783 EhS")),
+                      child: Center(
+                          child: item("Network Capacity", "$netcap EhS")),
                     )),
                 AnimatedContainer(
                     duration: Duration(milliseconds: 400),
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: Theme.of(context).backgroundColor,
-                            width: 0.2),
-                        color: Colors.black12,
+                            width: 0.9),
+                        color: widget.appstate.lumina
+                            ? Color(0x54c9c9c9)
+                            : Color(0x542e2d2d),
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     height: h3,
                     width: 200,
@@ -185,23 +281,28 @@ class _LandingState extends State<Landing> {
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: Theme.of(context).backgroundColor,
-                            width: 0.2),
-                        color: Colors.black12,
+                            width: 0.9),
+                        color: widget.appstate.lumina
+                            ? Color(0x54c9c9c9)
+                            : Color(0x542e2d2d),
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     height: h2,
                     width: 200,
                     child: AnimatedOpacity(
                       opacity: opa2,
                       duration: Duration(milliseconds: 700),
-                      child: Center(child: item("Active Nodes", "49882")),
+                      child: Center(
+                          child: item("Active Nodes", activeNodes.toString())),
                     )),
                 AnimatedContainer(
                     duration: Duration(milliseconds: 300),
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: Theme.of(context).backgroundColor,
-                            width: 0.2),
-                        color: Colors.black12,
+                            width: 0.9),
+                        color: widget.appstate.lumina
+                            ? Color(0x54c9c9c9)
+                            : Color(0x542e2d2d),
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     height: h3,
                     width: 200,
@@ -209,23 +310,26 @@ class _LandingState extends State<Landing> {
                       opacity: opa3,
                       duration: Duration(milliseconds: 800),
                       child: Center(
-                          child:
-                              item("Dividends Paid / Last 24h", "3327109 ATN")),
+                          child: item(
+                              "Dividends Paid / Last 24h", "$dividents ATN")),
                     )),
                 AnimatedContainer(
                     duration: Duration(milliseconds: 500),
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: Theme.of(context).backgroundColor,
-                            width: 0.2),
-                        color: Colors.black12,
+                            width: 0.9),
+                        color: widget.appstate.lumina
+                            ? Color(0x54c9c9c9)
+                            : Color(0x542e2d2d),
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     height: h3,
                     width: 200,
                     child: AnimatedOpacity(
                       opacity: opa3,
                       duration: Duration(milliseconds: 900),
-                      child: Center(child: item("Average Latency", "19 ms")),
+                      child:
+                          Center(child: item("Average Latency", "$latency ms")),
                     )),
                 Container(
                     width: 660,
@@ -250,7 +354,9 @@ class _LandingState extends State<Landing> {
                           SizedBox(height: 20),
                           TextButton(
                               style: TextButton.styleFrom(
-                                backgroundColor: Theme.of(context).cardColor,
+                                backgroundColor: widget.appstate.lumina
+                                    ? Color(0xffffffff)
+                                    : Color(0xff595c61),
                                 elevation: 1.5,
                               ),
                               onPressed: () {

@@ -64,6 +64,7 @@ class MyAppState extends State<MyApp> {
         primaryColor: createMaterialColor(Color(0xffffffff)),
         primarySwatch: createMaterialColor(Color(0xff4d4d4d)),
         highlightColor: Color(0xff6e6e6e),
+        backgroundColor: createMaterialColor(Color(0xeecacaca)),
         accentColor: Color(0xffe0deda),
         canvasColor: Color(0xfff0f0f0));
 
@@ -95,33 +96,25 @@ class MyAppState extends State<MyApp> {
                   type: PageTransitionType.fade);
             case '/assets':
               return PageTransition(
-                  child: MyAssets(
-                    appstate: this,
-                  ),
-                  type: PageTransitionType.fade);
+                  child: MyAssets(), type: PageTransitionType.fade);
             default:
               return PageTransition(
-                  child: Landing(title: 'AUTONET', appstate: this),
-                  type: PageTransitionType.fade);
+                  type: PageTransitionType.fade,
+                  child: MainMenu(
+                      care: "landing",
+                      appstate: this,
+                      porc: Landing(appstate: this)));
           }
         },
         debugShowCheckedModeBanner: false,
-        // routes: {
-        //   Landing.route: (context) => Landing(appstate: this, title: "Autonet"),
-        //   Node.route: (context) => Node(appstate: this, title: "Hopa"),
-        //   MyAssets.route: (context) => MyAssets(
-        //         appstate: this,
-        //       ),
-        //   ProjectView.route: (context) => ProjectView(
-        //         appstate: this,
-        //       ),
-        //   Market.route: (context) => Market(
-        //         appstate: this,
-        //       ),
-        // },
         title: 'Autonet',
         theme: lumina ? light : dark,
-        home: Landing(title: 'AUTONET', appstate: this));
+        home: MainMenu(
+            care: "landing",
+            appstate: this,
+            porc: Landing(
+              appstate: this,
+            )));
   }
 }
 
@@ -135,18 +128,32 @@ class Market extends StatefulWidget {
   _MarketState createState() => _MarketState();
 }
 
+class Testing extends StatefulWidget {
+  @override
+  _TestingState createState() => _TestingState();
+}
+
+class _TestingState extends State<Testing> {
+  ScrollController sc = ScrollController();
+  FocusNode textf = FocusNode();
+  @override
+  Widget build(BuildContext context) {
+    return Scrollbar(
+        controller: sc,
+        child: Container(
+            height: MediaQuery.of(context).size.height - 30,
+            width: MediaQuery.of(context).size.width,
+            child:
+                SingleChildScrollView(child: Container(child: TextField()))));
+  }
+}
+
 class _MarketState extends State<Market> {
   var apiUrl = "https://rinkeby.infura.io/v3/e697a6a0ac0a4a7b94b09c88770f14e6";
   final EthereumAddress sourceAddr =
       EthereumAddress.fromHex('0x6af227B1d0B976a71eb21f21Dc4C22218257a0C8');
   final EthereumAddress projAddr =
       EthereumAddress.fromHex('0x0670C0357432Ac4812463A73907Da8f94E34Ab78');
-  int _counter = 0;
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

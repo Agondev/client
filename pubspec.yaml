@@ -33,7 +33,9 @@ dependencies:
   page_transition: ^1.1.7+6
   url_launcher: ^5.6.0 
   dash_chat: ^1.1.15
-  meet_network_image: ^0.1.2
+  # drawing_animation:
+  flutter_svg: ^0.22.0
+
 
 dev_dependencies:
   flutter_test:
@@ -51,7 +53,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-
+  assets:
+    - assets/light.jpg
+    - assets/dark.jpg
   fonts:
     - family: OCR-A 
       fonts:
