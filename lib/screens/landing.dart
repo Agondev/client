@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:app2/main.dart';
 import 'package:app2/services.dart/chatbot.dart';
+import 'package:app2/services.dart/webtrei.dart';
 import 'package:app2/widgets/mainmenu.dart';
 import 'package:app2/widgets/metabutton.dart';
 // import 'package:drawing_animation/drawing_animation.dart';
@@ -20,6 +21,7 @@ class Landing extends StatefulWidget {
   MyAppState appstate;
   bool isUser = false;
   String title;
+  String error = "";
   Landing({this.appstate});
   static String route = "/home";
   ScrollController sc = ScrollController();
@@ -86,7 +88,7 @@ class _LandingState extends State<Landing> {
     Future.delayed(Duration(milliseconds: 1300), () {
       setState(() {});
     });
-    Timer.periodic(Duration(seconds: 4), (timer) {
+    Timer.periodic(Duration(seconds: 24), (timer) {
       bool plus1 = rand.nextBool();
       bool plus2 = rand.nextBool();
       bool plus3 = rand.nextBool();
@@ -148,22 +150,16 @@ class _LandingState extends State<Landing> {
                     height: 1300,
                     child: everything()),
                 Container(
-                    height: 400,
+                    height: 100,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("What is Autonet?",
-                            style: TextStyle(fontSize: 29)),
-                        SizedBox(height: 19),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Dmeoiasmdoas idmoa  oasmd aosid aosid i"),
-                              SizedBox(width: 29),
-                              Image.network(
-                                  "https://i.ibb.co/Q8JjbBC/thumb.png",
-                                  height: 130)
-                            ]),
+                        Text(
+                            "AUTONET © " +
+                                DateTime.now().year.toString() +
+                                " - All rights reserved.",
+                            style: TextStyle(fontSize: 15)),
                       ],
                     ))
               ],
@@ -197,10 +193,15 @@ class _LandingState extends State<Landing> {
             height: 600,
             color:
                 widget.appstate.lumina ? Color(0xffc3c3c3) : Color(0xff4c4c4c),
-            child: Image.asset(
-              widget.appstate.lumina ? "light.jpg" : "dark.jpg",
-              width: MediaQuery.of(context).size.width,
-            ),
+            child: SizedBox(
+                height: 600,
+                child: Image.asset(
+                  widget.appstate.lumina
+                      ? "assets/light.jpg"
+                      : "assets/dark.jpg",
+                  // fit: BoxFit.fitHeight,
+                  width: MediaQuery.of(context).size.width,
+                )),
           ),
           Container(
             height: 70,
@@ -389,52 +390,63 @@ class _LandingState extends State<Landing> {
   }
 
   Widget buyATN() {
-    double diff;
+    double diff = 0;
     bool acceptat = false;
+    String error = "";
     return Container(
         height: 500,
         width: 500,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            Text("Funds in your wallet: " +
+                us3r.balance.getValueInUnit(EtherUnit.ether).toString() +
+                " ETH"),
             Text(
-              "Maximum amount you can buy: " +
-                  EtherAmount.fromUnitAndValue(EtherUnit.finney, 300)
-                      .getValueInUnit(EtherUnit.ether)
-                      .toString() +
-                  " ATN",
-              style: TextStyle(color: Colors.black87, fontSize: 19),
+              us3r.balance.getValueInUnit(EtherUnit.finney) >= 2500
+                  ? "Maximum amount you can buy: " + 2500.toString() + " ATN"
+                  : "Maximum amount you can buy: " +
+                      us3r.balance.getValueInUnit(EtherUnit.finney).toString() +
+                      " ATN",
+              style: TextStyle(fontSize: 19),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
                 "Amount to buy: ",
-                style: TextStyle(color: Colors.black, fontSize: 19),
+                style: TextStyle(fontSize: 19),
               ),
               SizedBox(
                   width: 100,
                   child: TextField(
                     style: TextStyle(
                       fontSize: 19,
-                      color: Colors.black,
                     ),
-                    keyboardType: TextInputType.numberWithOptions(
-                        decimal: true, signed: false),
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      double.parse(value, (e) => null) != null
+                          // ignore: unnecessary_statements
+                          ? {
+                              diff = double.parse(value),
+                              if (diff > 2500) {diff = 2500}
+                            }
+                          : diff = 0;
+                    },
                     maxLines: 1,
                     maxLength: 10,
                     decoration: InputDecoration(
-                        labelStyle:
-                            TextStyle(fontSize: 15, color: Colors.black),
-                        labelText: "Enter",
-                        alignLabelWithHint: true,
-                        focusColor: Colors.black,
-                        fillColor: Colors.black),
+                      labelStyle: TextStyle(fontSize: 15),
+                      labelText: "Enter",
+                      alignLabelWithHint: true,
+                    ),
                   )),
               Text(
                 "ATN",
-                style: TextStyle(color: Colors.black, fontSize: 19),
+                style: TextStyle(fontSize: 19),
               ),
             ]),
+            Text(
+              error,
+              style: TextStyle(color: Colors.red),
+            ),
             SizedBox(height: 40),
             SizedBox(
               width: 100,
@@ -447,7 +459,20 @@ class _LandingState extends State<Landing> {
                         fontSize: 20,
                         color: Colors.white,
                         fontWeight: FontWeight.bold)),
-                onPressed: () {},
+                onPressed: () async {
+                  print(diff);
+                  if (diff != 0) {
+                    Navigator.of(context).pop();
+                    showDialog(
+                        context: context,
+                        builder: (context) =>
+                            AlertDialog(content: confirm(diff)));
+                  } else {
+                    setState(() {
+                      error = "INVALID AMOUNT";
+                    });
+                  }
+                },
               ),
             )
           ],
@@ -509,36 +534,52 @@ class _LandingState extends State<Landing> {
     }
   }
 
-  Widget confirm() {
+  Widget confirm(double diff) {
     return Container(
         width: 500,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text("Transaction complete!",
-                style: TextStyle(fontFamily: "Roboto Mono", fontSize: 18)),
-            SizedBox(width: 30),
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 85),
-                child: Text(
-                    "If you don't already have ATN in your wallet, add a custom token with the following address:",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontFamily: "Roboto Mono"))),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("0xfaa489uvna9s8djan9p438uvnp98wejn9pfj8sniov"),
-                TextButton(
-                    onPressed: () {
-                      Clipboard.setData(
-                          new ClipboardData(text: "na belea ca s-a copiat"));
-                    },
-                    child: Icon(Icons.copy)),
-              ],
-            ),
-            SizedBox(width: 30),
-          ],
-        ));
+        height: MediaQuery.of(context).size.height * 0.7,
+        child: FutureBuilder(
+            future: us3r
+                .buyATN(EtherAmount.fromUnitAndValue(EtherUnit.finney, diff)),
+            builder: (context, shapshot) {
+              if (us3r.creatingContract) {
+                return Center(
+                    child: SizedBox(
+                        height: 140,
+                        width: 140,
+                        child: CircularProgressIndicator()));
+              } else {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text("Transaction complete!",
+                        style:
+                            TextStyle(fontFamily: "Roboto Mono", fontSize: 18)),
+                    SizedBox(height: 10),
+                    SizedBox(height: 10),
+                    Container(
+                        padding: EdgeInsets.symmetric(horizontal: 85),
+                        child: Text(
+                            "If you don't already have ATN in your wallet, add a custom token with the following address:",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontFamily: "Roboto Mono"))),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("0xfaa489uvna9s8djan9p438uvnp98wejn9pfj8sniov"),
+                        TextButton(
+                            onPressed: () {
+                              Clipboard.setData(new ClipboardData(
+                                  text: "na belea ca s-a copiat"));
+                            },
+                            child: Icon(Icons.copy)),
+                      ],
+                    ),
+                    SizedBox(width: 30),
+                  ],
+                );
+              }
+            }));
   }
 }
 
@@ -713,7 +754,7 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
                       showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
-                              content: !widget.isUser
+                              content: us3r == null
                                   ? widget.landing.connect(this)
                                   : widget.landing.buyATN()));
                     },

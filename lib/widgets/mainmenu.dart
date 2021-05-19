@@ -16,9 +16,10 @@ class _MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: ChatWidget(chat: widget.chat),
+        floatingActionButton:
+            widget.care == "landing" ? ChatWidget(chat: widget.chat) : null,
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(38.0), // here the desired height
+            preferredSize: Size.fromHeight(38.0),
             child: AppBar(
                 automaticallyImplyLeading: false,
                 elevation: 1.5,

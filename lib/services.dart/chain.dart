@@ -84,7 +84,8 @@ class Human {
     "function createUser() returns(address)",
     "function buy() payable"
   ];
-  buyATN(EtherAmount amount) async {
+  Future<String> buyATN(EtherAmount amount) async {
+    creatingContract = true;
     var sourceContract = Contract(sursa, sourceAbi, this.web3);
     sourceContract = sourceContract.connect(web3user.getSigner());
     final transaction = await promiseToFuture(callMethod(
@@ -94,9 +95,13 @@ class Human {
     final result = await promiseToFuture(
         callMethod(this.web3, "waitForTransaction", [hash]));
     if (json.decode(stringify(result))["status"] == 0) {
-      throw Exception("something went so fuckcing wrong.");
+      creatingContract = false;
+      throw Exception("something went wrong and life is misery.");
     } else {
-      print(json.decode(stringify(result)));
+      var a = json.decode(stringify(result));
+      print(a);
+      creatingContract = false;
+      return a.toString();
     }
   }
 

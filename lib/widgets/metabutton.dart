@@ -36,11 +36,14 @@ class MetaButtonState extends State<MetaButton> {
             await widget.webtrei.web3sign();
             Navigator.of(context).pushNamed("/assets");
           } else {
-            await Future.delayed(Duration(seconds: 2));
-            widget.state.setState(() {
-              widget.state.widget.isUser = true;
-            });
-            Navigator.of(context).pop();
+            if (us3r == null) {
+              await widget.webtrei.web3sign();
+              widget.state.setState(() {
+                widget.state.widget.isUser = true;
+              });
+              Navigator.of(context).pop();
+            }
+
             showDialog(
                 context: context,
                 builder: (context) =>

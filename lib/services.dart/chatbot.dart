@@ -5,8 +5,7 @@ import 'dart:async';
 import 'dart:io';
 
 class Chatbot {
-  String url =
-      "http://ec2-35-178-211-27.eu-west-2.compute.amazonaws.com:5000/v1/chat";
+  String url = "https://discord-ro.tk:5000/v1/chat";
 
   Future<String> makeRequest(zice, uid) async {
     var querystring = {"zice": zice};
@@ -67,24 +66,24 @@ class _ChatState extends State<Chat> {
   void trimite(ChatMessage message) async {
     setState(() {
       messages.add(message);
-      print(messages.length);
     });
     String zice = message.text;
     String raspuns = await bot.makeRequest(zice, "site");
     print(raspuns);
     ChatMessage mesajBot = ChatMessage(text: raspuns, user: botic);
     setState(() {
+      m.add(mesajBot);
       messages.add(mesajBot);
     });
 
-    if (i == 0) {
-      systemMessage();
-      Timer(Duration(milliseconds: 600), () {
-        systemMessage();
-      });
-    } else {
-      systemMessage();
-    }
+    // if (i == 0) {
+    //   systemMessage();
+    //   Timer(Duration(milliseconds: 600), () {
+    //     systemMessage();
+    //   });
+    // } else {
+    //   systemMessage();
+    // }
   }
 
   @override
