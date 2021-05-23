@@ -33,9 +33,9 @@ dependencies:
   page_transition: ^1.1.7+6
   url_launcher: ^5.6.0 
   dash_chat: ^1.1.15
-  # drawing_animation:
-  flutter_svg: ^0.22.0
-
+  # image_picker_web: ^2.0.2
+  file_picker_cross: any
+  # filesystem_picker: ^1.0.3
 
 dev_dependencies:
   flutter_test:

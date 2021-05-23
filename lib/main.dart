@@ -23,6 +23,7 @@ void main() {
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
+    // chain.populate();
     return MyAppState();
   }
 }
@@ -61,6 +62,7 @@ class MyAppState extends State<MyApp> {
     ThemeData light = ThemeData(
         brightness: Brightness.light,
         dividerColor: createMaterialColor(Color(0xff4454238)),
+        hintColor: Colors.black87,
         primaryColor: createMaterialColor(Color(0xffffffff)),
         primarySwatch: createMaterialColor(Color(0xff4d4d4d)),
         highlightColor: Color(0xff6e6e6e),
@@ -72,11 +74,16 @@ class MyAppState extends State<MyApp> {
       buttonColor: createMaterialColor(Color(0xff505663)),
       dividerColor: createMaterialColor(Color(0xffcfc099)),
       brightness: Brightness.dark,
+      hintColor: Colors.white70,
       accentColor: createMaterialColor(Color(0xff383736)),
       primaryColor: createMaterialColor(Color(0xff4d4d4d)),
       primarySwatch: createMaterialColor(Color(0xffefefef)),
       highlightColor: Color(0xff6e6e6e),
     );
+    Map<String, Widget> routes = {
+      '/home': MainMenu(
+          care: "landing", appstate: this, porc: Landing(appstate: this))
+    };
 
     return MaterialApp(
         onGenerateRoute: (settings) {
@@ -96,14 +103,18 @@ class MyAppState extends State<MyApp> {
                   type: PageTransitionType.fade);
             case '/assets':
               return PageTransition(
-                  child: MyAssets(), type: PageTransitionType.fade);
-            default:
+                  child: MyAssets(appstate: this),
+                  type: PageTransitionType.fade);
+            case '/home':
               return PageTransition(
-                  type: PageTransitionType.fade,
                   child: MainMenu(
                       care: "landing",
                       appstate: this,
-                      porc: Landing(appstate: this)));
+                      porc: Landing(appstate: this)),
+                  type: PageTransitionType.fade);
+            default:
+              return PageTransition(
+                  type: PageTransitionType.fade, child: routes[settings.name]);
           }
         },
         debugShowCheckedModeBanner: false,
@@ -160,6 +171,16 @@ class _MarketState extends State<Market> {
     print("lungimea la proiecte ${chain.projects.length}");
     List<Widget> proiectili = [];
     ScrollController sc = ScrollController();
+    proiectili = [];
+    for (Project p in chain.projects) {
+      print("hai cu primul");
+      proiectili.add(
+        ProjectCard(
+          p: p,
+          appstate: widget.appstate,
+        ),
+      );
+    }
     return MainMenu(
         care: "market",
         appstate: widget.appstate,
@@ -178,29 +199,7 @@ class _MarketState extends State<Market> {
                           child: Column(
                             children: [
                               SizedBox(height: 50),
-                              FutureBuilder(
-                                  future: chain.populate(),
-                                  builder: (context, snapshot) {
-                                    if (chain.populating == true) {
-                                      return Center(
-                                          child: Container(
-                                              padding: EdgeInsets.all(100),
-                                              child:
-                                                  CircularProgressIndicator()));
-                                    } else {
-                                      proiectili = [];
-                                      for (Project p in chain.projects) {
-                                        print("hai cu primul");
-                                        proiectili.add(
-                                          ProjectCard(
-                                            p: p,
-                                            appstate: widget.appstate,
-                                          ),
-                                        );
-                                      }
-                                      return Wrap(children: proiectili);
-                                    }
-                                  }),
+                              Wrap(children: proiectili),
                             ],
                           )))),
             ),

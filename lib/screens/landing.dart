@@ -1,16 +1,17 @@
 import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:app2/main.dart';
+import 'package:app2/services.dart/chain.dart';
 import 'package:app2/services.dart/chatbot.dart';
 import 'package:app2/services.dart/webtrei.dart';
 import 'package:app2/widgets/mainmenu.dart';
 import 'package:app2/widgets/metabutton.dart';
+import 'package:app2/widgets/new_project.dart';
 // import 'package:drawing_animation/drawing_animation.dart';
 // import 'package:drawing_animation/drawing_animation.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:dash_chat/dash_chat.dart';
@@ -51,11 +52,11 @@ class _LandingState extends State<Landing> {
   Random rand = Random();
   @override
   void initState() {
-    reqpersec = 1392 + rng.nextInt(100);
-    netcap = 4783 + rng.nextInt(100);
-    activeNodes = 39134 + rng.nextInt(100);
-    dividents = 2327109 + rng.nextInt(100);
-    latency = 19 + rng.nextInt(4);
+    reqpersec = 392 + rng.nextInt(100);
+    netcap = 483 + rng.nextInt(100);
+    activeNodes = 3134 + rng.nextInt(8);
+    dividents = 23710 + rng.nextInt(100);
+    latency = 29 + rng.nextInt(4);
     Future.delayed(Duration(milliseconds: 200), () {
       setState(() {
         opa0 = 1;
@@ -88,31 +89,31 @@ class _LandingState extends State<Landing> {
     Future.delayed(Duration(milliseconds: 1300), () {
       setState(() {});
     });
-    Timer.periodic(Duration(seconds: 24), (timer) {
-      bool plus1 = rand.nextBool();
-      bool plus2 = rand.nextBool();
-      bool plus3 = rand.nextBool();
-      setState(() {
-        plus1
-            ? reqpersec = reqpersec + rand.nextInt(100)
-            : reqpersec - rand.nextInt(100);
-        plus2 ? netcap = netcap + rand.nextInt(50) : netcap - rand.nextInt(50);
-        plus1
-            ? activeNodes = activeNodes + rand.nextInt(100)
-            : activeNodes - rand.nextInt(100);
-        dividents = dividents + rand.nextInt(100);
-        if (latency <= 9) {
-          latency = latency + rand.nextInt(15);
-        }
-        if (latency >= 35) {
-          latency = latency - rand.nextInt(5);
-        }
-        if (latency > 9 && latency < 35) {
-          latency =
-              plus3 ? latency + rand.nextInt(5) : latency - rand.nextInt(5);
-        }
-      });
-    });
+    // Timer.periodic(Duration(seconds: 24), (timer) {
+    //   bool plus1 = rand.nextBool();
+    //   bool plus2 = rand.nextBool();
+    //   bool plus3 = rand.nextBool();
+    //   setState(() {
+    //     plus1
+    //         ? reqpersec = reqpersec + rand.nextInt(100)
+    //         : reqpersec - rand.nextInt(100);
+    //     plus2 ? netcap = netcap + rand.nextInt(50) : netcap - rand.nextInt(50);
+    //     plus1
+    //         ? activeNodes = activeNodes + rand.nextInt(100)
+    //         : activeNodes - rand.nextInt(100);
+    //     dividents = dividents + rand.nextInt(100);
+    //     if (latency <= 9) {
+    //       latency = latency + rand.nextInt(15);
+    //     }
+    //     if (latency >= 75) {
+    //       latency = latency - rand.nextInt(5);
+    //     }
+    //     if (latency > 9 && latency < 75) {
+    //       latency =
+    //           plus3 ? latency + rand.nextInt(5) : latency - rand.nextInt(5);
+    //     }
+    //   });
+    // });
     super.initState();
   }
 
@@ -132,33 +133,28 @@ class _LandingState extends State<Landing> {
             child: SingleChildScrollView(
                 child: Column(
               children: [
-                // Container(
-                //   width: 1200,
-                //   height: 800,
-                //   child: Image.asset("grafica1.jpg"),
-                //   // AnimatedDrawing.svg(
-                //   //   "prima.svg",
-                //   //   run: true,
-                //   //   duration: new Duration(seconds: 3),
-                //   // )
-                // ),
                 Container(
                     color: widget.appstate.lumina
                         ? Color(0xffefefef)
                         : Theme.of(context).cardColor,
                     width: MediaQuery.of(context).size.width,
                     height: 1300,
-                    child: everything()),
+                    child: EditProject(
+                        p: new Project(
+                            address: null,
+                            name: null,
+                            description: null,
+                            category: null,
+                            picurl: null,
+                            github: "https://github.com/openai/gpt-3"))),
+                // everything()),
                 Container(
                     height: 100,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                            "AUTONET © " +
-                                DateTime.now().year.toString() +
-                                " - All rights reserved.",
+                        Text("AUTONET © " + DateTime.now().year.toString(),
                             style: TextStyle(fontSize: 15)),
                       ],
                     ))
@@ -275,7 +271,7 @@ class _LandingState extends State<Landing> {
                     child: AnimatedOpacity(
                       opacity: opa3,
                       duration: Duration(milliseconds: 1200),
-                      child: Center(child: item("Mature Agents", "221")),
+                      child: Center(child: item("Mature Agents", "14")),
                     )),
                 AnimatedContainer(
                     duration: Duration(milliseconds: 400),
@@ -566,11 +562,11 @@ class _LandingState extends State<Landing> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("0xfaa489uvna9s8djan9p438uvnp98wejn9pfj8sniov"),
+                        Text(chain.tokenAddress),
                         TextButton(
                             onPressed: () {
-                              Clipboard.setData(new ClipboardData(
-                                  text: "na belea ca s-a copiat"));
+                              Clipboard.setData(
+                                  new ClipboardData(text: chain.tokenAddress));
                             },
                             child: Icon(Icons.copy)),
                       ],
@@ -697,7 +693,24 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Clipboard.setData(
+                              new ClipboardData(text: chain.tokenAddress));
+                          final scaffold = Scaffold.of(context);
+                          scaffold.showSnackBar(
+                            SnackBar(
+                              duration: const Duration(milliseconds: 1600),
+                              content: Container(
+                                  height: 70,
+                                  child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'Token address was copied to cliboard.',
+                                        style: TextStyle(fontSize: 20),
+                                      ))),
+                            ),
+                          );
+                        },
                         child: Row(
                           children: [
                             Icon(Icons.copy, size: 15),

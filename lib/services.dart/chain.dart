@@ -17,7 +17,9 @@ String sourceAddress = "0x18A4d5A9039fd15A6576896cd7B445f9e4F3cff1";
 class Chain {
   List<Project> projects = [];
   bool populating = false;
+  bool populated = false;
   List adreseleProiectelor;
+  String tokenAddress;
   String chainID = "";
   var apiUrl = "https://rinkeby.infura.io/v3/e697a6a0ac0a4a7b94b09c88770f14e6";
   final EthereumAddress sourceAddr = EthereumAddress.fromHex(sourceAddress);
@@ -31,6 +33,10 @@ class Chain {
       var ethClient = new Web3Client(apiUrl, httpClient);
       final contractSursa = DeployedContract(
           ContractAbi.fromJson(sourceAbi, 'Source'), sourceAddr);
+      var tokaddress = contractSursa.function('tokenAddress');
+      var raspunsLaTokenAddress = await ethClient
+          .call(contract: contractSursa, function: tokaddress, params: []);
+      tokenAddress = raspunsLaTokenAddress[0].toString();
       var proiectef = contractSursa.function('allProjects');
       var allProjects = await ethClient
           .call(contract: contractSursa, function: proiectef, params: []);
@@ -60,6 +66,7 @@ class Chain {
         projects.add(p);
       }
       populating = false;
+      populated = true;
     }
   }
 }
@@ -133,7 +140,7 @@ class Human {
 
 class Project {
   String address;
-  String developerAddress;
+  Map<String, int> team;
   String name;
   String description;
   String picurl;
@@ -148,6 +155,6 @@ class Project {
     this.github,
     this.category,
   }) {
-    developerAddress = "xojpfoajepijoaijfd";
+    team = {};
   }
 }

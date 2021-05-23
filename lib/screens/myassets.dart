@@ -10,72 +10,68 @@ import 'package:web3dart/web3dart.dart';
 
 // ignore: must_be_immutable
 //
-
 class MyAssets extends StatelessWidget {
   String title;
   static String route = "/assets";
   ScrollController sc = ScrollController();
-
+  MyAppState appstate;
+  MyAssets({this.appstate});
   @override
   Widget build(BuildContext context) {
-    FocusNode textf = FocusNode();
-    FocusScope.of(context).requestFocus(textf);
-    return Container(
-      padding: EdgeInsets.all(3),
-      width: MediaQuery.of(context).size.width,
-      child: Stack(
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Scrollbar(
-              controller: sc,
-              child: Container(
-                  height: MediaQuery.of(context).size.height - 30,
-                  width: MediaQuery.of(context).size.width,
-                  child: SingleChildScrollView(
-                      child: Container(
-                          alignment: Alignment.topCenter,
-                          child: Column(
-                            children: [
-                              SizedBox(height: 20),
-                              us3r == null
-                                  ? Column(children: [
-                                      TextField(
-                                        focusNode: textf,
-                                        onChanged: (nou) {
-                                          print("the text changed $nou");
-                                        },
-                                      ),
-                                      Text(
-                                        "Web3 provider not connected",
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                      SizedBox(height: 20),
-                                      MetaButton(landingPage: false)
-                                    ])
-                                  : Column(
-                                      children: [
-                                        Row(children: [
-                                          Text("Connected with address " +
-                                              us3r.address),
-                                          SizedBox(width: 40),
-                                          TextButton(
-                                              onPressed: () {
-                                                us3r.buyATN(EtherAmount
-                                                    .fromUnitAndValue(
-                                                        EtherUnit.finney, 8));
-                                              },
-                                              child: Text("BUY ATN"))
-                                        ]),
-                                        us3r.contract == null
-                                            ? CreateContractBTN()
-                                            : MyContractView()
-                                      ],
-                                    )
-                            ],
-                          )))),
-            ),
-          ]),
-    );
+    return MainMenu(
+        appstate: appstate,
+        care: "assets",
+        porc: Container(
+          padding: EdgeInsets.all(3),
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Scrollbar(
+                  controller: sc,
+                  child: Container(
+                      height: MediaQuery.of(context).size.height - 30,
+                      width: MediaQuery.of(context).size.width,
+                      child: SingleChildScrollView(
+                          child: Container(
+                              alignment: Alignment.topCenter,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 20),
+                                  us3r == null
+                                      ? Column(children: [
+                                          Text(
+                                            "Web3 provider not connected",
+                                            style: TextStyle(fontSize: 20),
+                                          ),
+                                          SizedBox(height: 20),
+                                          MetaButton(landingPage: false)
+                                        ])
+                                      : Column(
+                                          children: [
+                                            Row(children: [
+                                              Text("Connected with address " +
+                                                  us3r.address),
+                                              SizedBox(width: 40),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    us3r.buyATN(EtherAmount
+                                                        .fromUnitAndValue(
+                                                            EtherUnit.finney,
+                                                            8));
+                                                  },
+                                                  child: Text("BUY ATN"))
+                                            ]),
+                                            us3r.contract == null
+                                                ? CreateContractBTN()
+                                                : MyContractView()
+                                          ],
+                                        )
+                                ],
+                              )))),
+                ),
+              ]),
+        ));
   }
 }
 
