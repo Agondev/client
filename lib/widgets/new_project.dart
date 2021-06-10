@@ -1,10 +1,81 @@
 import 'dart:convert';
+
 import 'package:app2/services.dart/chain.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
 // import 'package:filesystem_picker/filesystem_picker.dart';
 import "package:flutter/material.dart";
+import 'package:flutter/painting.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:http/http.dart' as http;
+
+
+class TeamMember extends StatelessWidget {
+  String address;
+  double percent;
+  _EditProjectState state;
+  Project p;
+  TeamMember({this.p,this.address,this.percent,this.state});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(address, style: TextStyle(fontSize: 13)),
+        Row(children: [
+          SizedBox(
+              width: 300,
+              child: Slider(
+                value: p.team[address],min: 0,max: 100,
+                onChanged: (value) {
+                  int cati=p.team.keys.length-1;
+                  double sum=0;
+                  p.team.forEach((k, v) { sum=sum+v;});
+                  if (p.team.keys.length>1&&value<=100-cati){
+                  var diff=p.team[address]-value;
+                  state.setState(() {
+                    p.team[address]=value;
+                   p.team.forEach((k, v) { 
+                    if (k!=address){
+                      if ((diff<0&&p.team[k]<1)||(diff>0&&p.team[k]>99)){cati=cati-1;}
+                      if (diff<0&&p.team[k]>1||diff>0&&p.team[k]<99){
+                      p.team[k]=p.team[k]+(diff/cati);
+                      }
+                    }
+                   });
+                  });}
+                },
+              )),
+               Column(
+                  children: [
+                    Text("Team share"),
+                    Text(
+                        percent.toStringAsFixed(1),
+                        style: TextStyle(
+                            fontSize: 19,
+                            fontWeight:
+                                FontWeight.bold)),
+                        ],
+                    ),
+                    SizedBox(width:30),
+                      Column(
+                  children: [
+                    Text("Total share"),
+                    Text(
+                        (percent*(p.split/100)).toStringAsFixed(2),
+                        style: TextStyle(
+                            fontSize: 19,
+                            fontWeight:
+                                FontWeight.bold)),
+                        ],
+                    ),
+        ]),
+      ],
+    ));
+  
+  
+  }
+}
 
 class EditProject extends StatefulWidget {
   bool textfield = false;
@@ -23,8 +94,9 @@ class _EditProjectState extends State<EditProject> {
   List<Widget> ownership = [];
   @override
   Widget build(BuildContext context) {
+    ownership=[];
     for (var stakeholder in widget.p.team.keys) {
-      ownership.add(teamMember(stakeholder, widget.p.team[stakeholder]));
+      ownership.add(TeamMember(p:widget.p,percent: widget.p.team[stakeholder].toDouble(),state: this,address: stakeholder));
     }
     return Container(
       margin: EdgeInsets.all(10),
@@ -55,13 +127,14 @@ class _EditProjectState extends State<EditProject> {
                     child: Container(
                         height: 140,
                         width: 179,
-                        child: Column(
+                        child: widget.p.picurl==null? Column(
                           children: [
                             Image.network("https://i.ibb.co/2dphSM9/cogs.png",
-                                height: 120),
+                                                            height: 120),
                             Text("CHANGE ICON", style: TextStyle(fontSize: 15)),
                           ],
-                        ))),
+                        ):Image.network(widget.p.picurl)
+                        )),
               ],
             ),
             SizedBox(width: 50),
@@ -76,35 +149,13 @@ class _EditProjectState extends State<EditProject> {
     );
   }
 
-  Widget teamMember(address, percent) {
-    return Container(
-        child: Row(
-      children: [
-        Text(address, style: TextStyle(fontSize: 13)),
-        Row(children: [
-          SizedBox(
-              width: 300,
-              child: Slider(
-                value: percent,
-                min: 1,
-                max: 100,
-                onChanged: (value) {
-                  setState(() {
-                    value = percent;
-                  });
-                },
-              )),
-          Text(percent.toString())
-        ]),
-        TextButton(
-          child: Icon(Icons.delete),
-          onPressed: () {},
-        )
-      ],
-    ));
-  }
+
 
   Widget linkGit() {
+    List<Widget> team = [];
+    widget.p.team.forEach((key, value) {
+      team.add(TeamMember(address: key,percent: value.toDouble(),p: widget.p,state: this));
+    });
     return widget.p.github == null
         ? TextButton(
             onPressed: () {},
@@ -208,6 +259,9 @@ class _EditProjectState extends State<EditProject> {
                                                 children: [
                                                   Checkbox(
                                                       value: widget.textfield,
+                                                      checkColor:
+                                                          Theme.of(context)
+                                                              .errorColor,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           widget.textfield =
@@ -222,6 +276,9 @@ class _EditProjectState extends State<EditProject> {
                                                     MainAxisAlignment.start,
                                                 children: [
                                                   Checkbox(
+                                                      checkColor:
+                                                          Theme.of(context)
+                                                              .errorColor,
                                                       value: widget.filepaste,
                                                       onChanged: (value) {
                                                         setState(() {
@@ -237,6 +294,9 @@ class _EditProjectState extends State<EditProject> {
                                                     MainAxisAlignment.start,
                                                 children: [
                                                   Checkbox(
+                                                      checkColor:
+                                                          Theme.of(context)
+                                                              .errorColor,
                                                       value: widget.socket,
                                                       onChanged: (value) {
                                                         setState(() {
@@ -268,6 +328,7 @@ class _EditProjectState extends State<EditProject> {
                             decoration:
                                 BoxDecoration(border: Border.all(width: 1)),
                             child: Column(children: [
+                              SizedBox(height:20),
                               Text(
                                   "Distribution of revenue between devs and miners:",
                                   style:
@@ -282,7 +343,8 @@ class _EditProjectState extends State<EditProject> {
                                         Column(
                                           children: [
                                             Text("Devs"),
-                                            Text("3%",
+                                            Text(
+                                                widget.p.split.toStringAsFixed(1),
                                                 style: TextStyle(
                                                     fontSize: 19,
                                                     fontWeight:
@@ -295,17 +357,22 @@ class _EditProjectState extends State<EditProject> {
                                               min: 0.1,
                                               max: 9.0,
                                               divisions: 90,
-                                              value: 4.0,
-                                              onChanged: (value) {},
+                                              value: widget.p.split,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  widget.p.split = value;
+                                                });
+                                              },
                                             )),
                                         Column(
                                           children: [
                                             Text("Miners"),
-                                            Text("97%",
+                                            Text(
+                                                (100.0 - widget.p.split)
+                                                    .toStringAsFixed(1),
                                                 style: TextStyle(
                                                     fontSize: 19,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
+                                                    fontWeight:FontWeight.bold)),
                                           ],
                                         )
                                       ])),
@@ -320,17 +387,75 @@ class _EditProjectState extends State<EditProject> {
                                   "Distribution of revenue among founding team:",
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold)),
+                             SizedBox(height: 20),                        
                               Column(children: ownership),
-                              SizedBox(height: 40),
                               TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                            content: Container(
+                                                child: Container(
+                                                    
+                                                    height: 240,
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment.center,
+                                                      children: [
+                                                        SizedBox(height: 10),
+                                                       
+                                                        Text("Add team member",
+                                                            style: TextStyle(fontWeight:FontWeight.bold,fontSize: 14)),
+                                                        SizedBox(height: 40),
+                                                        Container(padding: EdgeInsets.symmetric(horizontal:100),
+                                                            child: TextField(
+                                                              maxLength: 42,
+                                                              decoration:InputDecoration(hintText:"Paste Ethereum wallet address (starting with 0x)"),
+                                          maxLines: 1,
+                                          onChanged:(address) {
+                                            if (address.length >41) {
+                                              setState(() {
+                                                widget.p.team[address]=1;
+                                                widget.p.team.forEach((k, v) { 
+                                                  if (k!=address){
+                                                    widget.p.team[k]=widget.p.team[k]-1/(widget.p.team.keys.length-1);
+                                                  }
+                                                });
+                                                
+                                                });
+                                              Navigator.of(context).pop();
+                                              }},
+                                        )),
+                                                      ],
+                                                    )))));
+                                  },
                                   child: Text("ADD TEAM MEMBER")),
                             ]))
                       ])
                     ],
                   ),
                 ),
-                SizedBox(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                  SizedBox(
+                    height: 40,
+                    width: 180,
+                    child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.black45)),
+                        child: Text("DISCARD",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
+                        onPressed: () {})),
+                        SizedBox(width:120),
+                         SizedBox(
                     height: 40,
                     width: 180,
                     child: TextButton(
@@ -342,26 +467,38 @@ class _EditProjectState extends State<EditProject> {
                                 fontSize: 20,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold)),
-                        onPressed: () {}))
+                        onPressed: () {
+                          
+                        }))
+                ],),
+               
               ]),
             ));
   }
-
+bool pressedName=false;
+bool pressedDesc=false;
   Widget agentName() {
-    return Container(
-        width: 460,
-        height: 30,
-        child: widget.p.name == null
-            ? TextButton(
+    Widget whatis=!pressedName?SizedBox(width:450, height:30,child:TextButton(
                 onPressed: () {
                   setState(() {
-                    widget.p.name = "veronica miclea";
+                    pressedName=true;
                   });
                 },
                 child: Row(children: [
                   Icon(Icons.edit),
                   Text("Set name", style: TextStyle(fontSize: 21))
-                ]))
+                ]))):TextField(
+                  maxLength: 30,
+                  style: TextStyle(fontSize: 21),
+                  decoration: InputDecoration(
+                    hintText: "Set project name") ,
+                  onChanged:(value) {widget.p.name=value;},
+                );
+    return Container(
+        width: 460,
+        height: 30,
+        child: widget.p.name == null
+            ? whatis
             : Text(
                 widget.p.name,
                 style: TextStyle(fontSize: 21),
@@ -369,23 +506,24 @@ class _EditProjectState extends State<EditProject> {
   }
 
   Widget agentDescription() {
+     Widget whatis=!pressedDesc?SizedBox(width:470, height:90,child:TextButton(
+                onPressed: () {setState(() {pressedDesc=true;});},
+                child: Row(children: [
+                  Icon(Icons.edit),
+                  Text("Set description",)
+                ]))):TextField(
+                  maxLength: 141,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    hintText: "Describe value proposition or utility function.") ,
+                  onChanged:(value) {widget.p.description=value;},
+                );
     return Container(
         width: 470,
         height: 90,
         margin: EdgeInsets.only(top: 26),
         child: widget.p.description == null
-            ? TextButton(
-                onPressed: () {
-                  setState(() {
-                    widget.p.description =
-                        "Dooj de saptamani care mai stau eu cu voi sa ma bata soarele la polul opus centrului de pod pe spatele calului am mers de fapt mai mult am stat si el mergea.";
-                  });
-                },
-                child: Row(children: [
-                  Icon(Icons.edit),
-                  Text("Set description", style: TextStyle(fontSize: 17))
-                ]))
-            : Text(
+            ? whatis:Text(
                 widget.p.description,
                 style: TextStyle(fontSize: 17),
               ));
@@ -399,8 +537,9 @@ class _EditProjectState extends State<EditProject> {
         jsonDecode(hopa["data"].substring(2, hopa['data'].length - 1))["data"]
                 ["url"]
             .replaceAll(new RegExp('\\/'), '');
-    print(picurl);
-    return (picurl);
+    String buna="https://i.ibb.co/"+picurl.replaceAll("\\","/").replaceAll("","/").split("ibb.co")[1];
+    print(buna);
+    return (buna);
   }
 }
 // SizedBox(

@@ -140,14 +140,16 @@ class _LandingState extends State<Landing> {
                     width: MediaQuery.of(context).size.width,
                     height: 1300,
                     child: EditProject(
-                        p: new Project(
+                        p: Project(
                             address: null,
-                            name: null,
                             description: null,
-                            category: null,
+                            github: "https://github.com/openai/gpt-3",
+                            name: null,
                             picurl: null,
-                            github: "https://github.com/openai/gpt-3"))),
-                // everything()),
+                            category: null))
+
+                    // everything()
+                    ),
                 Container(
                     height: 100,
                     child: Column(

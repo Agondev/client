@@ -139,25 +139,6 @@ class Market extends StatefulWidget {
   _MarketState createState() => _MarketState();
 }
 
-class Testing extends StatefulWidget {
-  @override
-  _TestingState createState() => _TestingState();
-}
-
-class _TestingState extends State<Testing> {
-  ScrollController sc = ScrollController();
-  FocusNode textf = FocusNode();
-  @override
-  Widget build(BuildContext context) {
-    return Scrollbar(
-        controller: sc,
-        child: Container(
-            height: MediaQuery.of(context).size.height - 30,
-            width: MediaQuery.of(context).size.width,
-            child:
-                SingleChildScrollView(child: Container(child: TextField()))));
-  }
-}
 
 class _MarketState extends State<Market> {
   var apiUrl = "https://rinkeby.infura.io/v3/e697a6a0ac0a4a7b94b09c88770f14e6";

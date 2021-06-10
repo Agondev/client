@@ -1,4 +1,5 @@
 import 'dart:developer';
+// import 'dart:ffi';
 import 'dart:js_util';
 import 'dart:convert';
 import 'package:app2/contracts/project.dart';
@@ -140,13 +141,15 @@ class Human {
 
 class Project {
   String address;
-  Map<String, int> team;
+  Map<String, double> team;
+  Map<String, double> shareholders;
+  Map<String, double> investors;
+  double split;
   String name;
   String description;
   String picurl;
   String github;
   String category;
-  // Map<Human, double> shareholders;
   Project({
     this.address,
     this.name,
@@ -155,6 +158,9 @@ class Project {
     this.github,
     this.category,
   }) {
-    team = {};
+    team = {"0xa9F8F9C0bf3188cEDdb9684ae28655187552bAE9":100};
+    shareholders = {"0xa9F8F9C0bf3188cEDdb9684ae28655187552bAE9":5};
+    investors = {};
+    split = 5.0;
   }
 }
