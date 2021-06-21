@@ -54,7 +54,6 @@ class _ChatState extends State<Chat> {
           setState(() {
             messages = [...messages, m[i++]];
           });
-          i++;
         }
         Timer(
           const Duration(milliseconds: 300),
