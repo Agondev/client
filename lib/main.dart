@@ -1,37 +1,37 @@
 import 'dart:ui';
-import 'package:app2/contracts/project.dart';
-import 'package:app2/contracts/source.dart';
 import 'package:app2/screens/landing.dart';
 import 'package:app2/screens/myassets.dart';
 import 'package:app2/screens/node.dart';
-import 'package:app2/screens/projectview.dart';
 import 'package:app2/services.dart/chain.dart';
 import 'package:app2/widgets/agent_card.dart';
-import 'package:app2/widgets/agent_details.dart';
 import 'package:app2/widgets/mainmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:url_strategy/url_strategy.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:http/http.dart';
-import 'package:fps_widget/fps_widget.dart';
-import 'package:intl/date_time_patterns.dart';
+// import 'package:http/http.dart';
+// import 'package:fps_widget/fps_widget.dart';
+// import 'package:intl/date_time_patterns.dart';
 
 Chain chain = new Chain();
-bool mining=false;
-void main() {runApp(MyApp());}
+bool mining = false;
+void main() {
+  setPathUrlStrategy();
+  runApp(MyApp());
+}
+
 Map<String, Widget> routes = {};
 
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    var app=MyAppState();
+    var app = MyAppState();
     // chain.populate(app);
     return app;
   }
 }
 
 class MyAppState extends State<MyApp> {
-  
   DateTime now = DateTime.now();
   MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];
@@ -84,60 +84,65 @@ class MyAppState extends State<MyApp> {
       highlightColor: Color(0xff6e6e6e),
     );
     print("printing things");
-    routes.forEach((key, value) {print("key "+key.toString()+" value "+value.toString());});
+    routes.forEach((key, value) {
+      print("key " + key.toString() + " value " + value.toString());
+    });
 
     return MaterialApp(
-        onGenerateRoute: (settings) {
-        print ("setarili" +settings.name.toString());
-          switch (settings.name) {
-            case '/node':
-              return PageTransition(
-                  child: Node(
-                    appstate: this,
-                  ),
-                  type: PageTransitionType.fade);
+      onGenerateRoute: (settings) {
+        print("setarili" + settings.name.toString());
+        switch (settings.name) {
+          case '/node':
+            return PageTransition(
+                child: Node(
+                  appstate: this,
+                ),
+                type: PageTransitionType.fade);
 
-            case '/market':
-              return PageTransition(
-                  child: Market(
+          case '/market':
+            return PageTransition(
+                child: Market(
+                  appstate: this,
+                ),
+                type: PageTransitionType.fade);
+          case '/assets':
+            return PageTransition(
+                child: MyAssets(appstate: this), type: PageTransitionType.fade);
+          case '/home':
+            return PageTransition(
+                child: MainMenu(
+                    care: "landing",
                     appstate: this,
-                  ),
-                  type: PageTransitionType.fade);
-            case '/assets':
-              return PageTransition(
-                  child: MyAssets(appstate: this),
-                  type: PageTransitionType.fade);
-            case '/home':
-              return PageTransition(
-                  child: MainMenu(
-                      care: "landing",
-                      appstate: this,
-                      porc: Landing(appstate: this)),
-                  type: PageTransitionType.fade);
-            default:
-              return PageTransition(
-                  type: PageTransitionType.fade, child: routes[settings.name]);
-          }
-        },
-        debugShowCheckedModeBanner: false,
-        title: 'Autonet',
-        theme: lumina ? light : dark,
-        home: MainMenu(
-            care: "landing",
-            appstate: this,
-            porc: Landing(
-              appstate: this,
-            )));
+                    porc: Landing(appstate: this)),
+                type: PageTransitionType.fade);
+          default:
+            return PageTransition(
+                type: PageTransitionType.fade, child: routes[settings.name]);
+        }
+      },
+      debugShowCheckedModeBanner: false,
+      title: 'Autonet',
+      theme: lumina ? light : dark,
+      home: MainMenu(
+        care: "landing",
+        appstate: this,
+        porc: Landing(
+          appstate: this,
+        ),
+      ),
+    );
   }
 }
+
 class Market extends StatefulWidget {
+  const Market({Key key, this.title, this.appstate}) : super(key: key);
   static String route = "/market";
-  Market({Key key, this.title, this.appstate}) : super(key: key);
   final String title;
-  MyAppState appstate;
+  final MyAppState appstate;
   @override
   _MarketState createState() => _MarketState();
 }
+
 class _MarketState extends State<Market> {
   var apiUrl = "https://rinkeby.infura.io/v3/e697a6a0ac0a4a7b94b09c88770f14e6";
   final EthereumAddress sourceAddr =

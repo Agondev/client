@@ -1,5 +1,3 @@
-import 'dart:developer';
-import 'dart:js_util';
 import 'dart:ui';
 import 'package:app2/contracts/project.dart';
 import 'package:app2/services.dart/chain.dart';
@@ -23,7 +21,6 @@ class UserContract {
     this.address,
     this.user,
     this.assets,
-   
   }) {
     if (user.fetched == false) {
       assets.forEach((key, value) async {
@@ -34,8 +31,8 @@ class UserContract {
         var details = await user.web3infura
             .call(contract: contractProiect, function: detailsf, params: []);
         print(details);
-        String name = details[0];
-        String desc = details[1];
+        // String name = details[0];
+        // String desc = details[1];
         String cat = details[2].toString().split("http")[0];
         String pic = "http" + details[2].toString().split("http")[1];
         String git = "http" + details[2].toString().split("http")[2];
@@ -57,10 +54,12 @@ class UserContract {
 class MyContractView extends StatefulWidget {
   // UserContract contract;
   // MyContractView({this.contract});
-  String address = "adaosijdoasdjfoasidjfpasodijfasd";
-  String value = "12312 ATN";
-  var appstate;
+  final String address = "adaosijdoasdjfoasidjfpasodijfasd";
+  final String value = "12312 ATN";
+  final appstate;
+
   MyContractView({this.appstate});
+
   @override
   _MyContractViewState createState() => _MyContractViewState();
 }
@@ -87,14 +86,17 @@ class _MyContractViewState extends State<MyContractView> {
             Container(
                 decoration: BoxDecoration(
                     border: Border.all(
-                      width: 1,
-                  color:  widget.appstate.lumina?Colors.black54:Colors.white54,
+                  width: 1,
+                  color:
+                      widget.appstate.lumina ? Colors.black54 : Colors.white54,
                 )),
                 child: Column(
                   children: [
                     Container(
                         height: 200,
-                        color: widget.appstate.lumina?Colors.black54:Colors.white54,
+                        color: widget.appstate.lumina
+                            ? Colors.black54
+                            : Colors.white54,
                         child: Center(
                             child: Column(
                           children: [
@@ -163,9 +165,8 @@ class _MyContractViewState extends State<MyContractView> {
                                                   new ClipboardData(
                                                       text: us3r
                                                           .contract.address));
-                                              final scaffold =
-                                                  Scaffold.of(context);
-                                              scaffold.showSnackBar(
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
                                                 SnackBar(
                                                   duration: const Duration(
                                                       milliseconds: 1600),
@@ -288,17 +289,32 @@ class _MyContractViewState extends State<MyContractView> {
                     ),
                     SizedBox(height: 81),
                     TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.transparent),
                         ),
-                      child: Text("Developing in TensorFlow? Add your project.",style:TextStyle(fontSize:13,color:Theme.of(context).textTheme.bodyText2.color)),
-                      onPressed:(){
-                        showDialog(context: context, 
-                        builder: (context)=>AlertDialog(
-                          content:EditProject(p: Project(address: null,description: null,github: null,name: null,category: null,picurl: null))
-                        ));
-                      }),
-                      SizedBox(height: 7)
+                        child: Text(
+                            "Developing in TensorFlow? Add your project.",
+                            style: TextStyle(
+                                fontSize: 13,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    .color)),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                  content: EditProject(
+                                      p: Project(
+                                          address: null,
+                                          description: null,
+                                          github: null,
+                                          name: null,
+                                          category: null,
+                                          picurl: null))));
+                        }),
+                    SizedBox(height: 7)
                   ],
                 ))
           ],
@@ -306,8 +322,8 @@ class _MyContractViewState extends State<MyContractView> {
   }
 
   Widget withdraw() {
-    double diff;
-    bool acceptat = false;
+    // double diff;
+    // bool acceptat = false;
     return Container(
         height: 500,
         width: MediaQuery.of(context).size.width * 0.5,
@@ -330,7 +346,6 @@ class _MyContractViewState extends State<MyContractView> {
                   child: TextField(
                     style: TextStyle(
                       fontSize: 19,
-                      
                     ),
                     keyboardType: TextInputType.numberWithOptions(
                         decimal: true, signed: false),
@@ -338,8 +353,7 @@ class _MyContractViewState extends State<MyContractView> {
                     maxLines: 1,
                     maxLength: 10,
                     decoration: InputDecoration(
-                        labelStyle:
-                            TextStyle(fontSize: 15),
+                        labelStyle: TextStyle(fontSize: 15),
                         labelText: "Enter",
                         alignLabelWithHint: true,
                         focusColor: Colors.black,
@@ -347,7 +361,7 @@ class _MyContractViewState extends State<MyContractView> {
                   )),
               Text(
                 "ATN",
-                style: TextStyle( fontSize: 19),
+                style: TextStyle(fontSize: 19),
               ),
             ]),
             SizedBox(height: 40),
@@ -370,8 +384,8 @@ class _MyContractViewState extends State<MyContractView> {
   }
 
   Widget addFunds() {
-    double diff;
-    bool acceptat = false;
+    // double diff;
+    // bool acceptat = false;
     return Container(
         height: 500,
         width: MediaQuery.of(context).size.width * 0.5,

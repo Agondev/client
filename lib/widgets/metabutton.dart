@@ -1,21 +1,24 @@
-import 'package:app2/screens/landing.dart';
+// import 'package:app2/screens/landing.dart';
 import 'package:app2/services.dart/webtrei.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_web3_provider/ethereum.dart';
-import 'package:flutter_web3_provider/ethers.dart';
+// import 'package:flutter_web3_provider/ethereum.dart';
+// import 'package:flutter_web3_provider/ethers.dart';
 
 class MetaButton extends StatefulWidget {
-  bool landingPage;
-  var state;
-  Web3 webtrei = Web3();
-  BuildContext context;
   MetaButton({this.context, this.landingPage, this.state});
+
+  final bool landingPage;
+  final state;
+  final Web3 webtrei = Web3();
+  final BuildContext context;
+
   @override
   MetaButtonState createState() => MetaButtonState();
 }
 
 class MetaButtonState extends State<MetaButton> {
   bool _isProcessing = false;
+
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
@@ -27,7 +30,7 @@ class MetaButtonState extends State<MetaButton> {
           ),
         ),
       ),
-      child: OutlineButton(
+      child: ElevatedButton(
         onPressed: () async {
           setState(() {
             _isProcessing = true;
@@ -53,10 +56,10 @@ class MetaButtonState extends State<MetaButton> {
             _isProcessing = false;
           });
         },
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-            side: BorderSide(width: 3, color: Theme.of(context).primaryColor)),
-        highlightElevation: 0,
+        // shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.circular(4),
+        //     side: BorderSide(width: 3, color: Theme.of(context).primaryColor)),
+        // highlightElevation: 0,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
           child: _isProcessing

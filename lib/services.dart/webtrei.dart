@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'dart:developer';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:js_util';
 import 'package:app2/services.dart/chain.dart';
 import 'package:app2/widgets/atncontract.dart';
@@ -22,7 +21,8 @@ String sursa = "0x18A4d5A9039fd15A6576896cd7B445f9e4F3cff1";
 class Web3 extends ChangeNotifier {
   bool hopa = false;
   changeHopa(adresa) async {
-    var balans = await promiseToFuture(web3user.getBalance(owner));
+    // var balans = await promiseToFuture(web3user.getBalance(owner));
+    await promiseToFuture(web3user.getBalance(owner));
     print("iaca s-a intamplat");
   }
 

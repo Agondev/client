@@ -1,12 +1,9 @@
 import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:app2/main.dart';
-import 'package:app2/services.dart/chain.dart';
 import 'package:app2/services.dart/chatbot.dart';
 import 'package:app2/services.dart/webtrei.dart';
-import 'package:app2/widgets/mainmenu.dart';
 import 'package:app2/widgets/metabutton.dart';
-import 'package:app2/widgets/new_project.dart';
 // import 'package:drawing_animation/drawing_animation.dart';
 // import 'package:drawing_animation/drawing_animation.dart';
 import "package:flutter/material.dart";
@@ -14,18 +11,18 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:dash_chat/dash_chat.dart';
 import 'dart:async';
-import 'dart:io';
 
 class Landing extends StatefulWidget {
-  MyAppState appstate;
-  bool isUser = false;
-  String title;
-  String error = "";
-  Landing({this.appstate});
+  Landing({this.appstate, this.title});
+
   static String route = "/home";
-  ScrollController sc = ScrollController();
+
+  final MyAppState appstate;
+  final bool isUser = false;
+  final String title;
+  final String error = "";
+  final ScrollController sc = ScrollController();
 
   @override
   _LandingState createState() => _LandingState();
@@ -96,10 +93,13 @@ class _LandingState extends State<Landing> {
       setState(() {
         plus1
             ? reqpersec = reqpersec + rand.nextInt(100)
+            // ignore: unnecessary_statements
             : reqpersec - rand.nextInt(100);
+        // ignore: unnecessary_statements
         plus2 ? netcap = netcap + rand.nextInt(50) : netcap - rand.nextInt(50);
         plus1
             ? activeNodes = activeNodes + rand.nextInt(100)
+            // ignore: unnecessary_statements
             : activeNodes - rand.nextInt(100);
         dividents = dividents + rand.nextInt(100);
         if (latency <= 9) {
@@ -121,11 +121,11 @@ class _LandingState extends State<Landing> {
   List<Widget> multe = [];
   bool run = true;
   Chatbot cb = Chatbot();
-  final TextEditingController _controller = TextEditingController();
+  // final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final textc = TextEditingController();
-    String poza = "b" + (rng.nextInt(5) + 1).toString() + ".jpg";
+    // final textc = TextEditingController();
+    // String poza = "b" + (rng.nextInt(5) + 1).toString() + ".jpg";
     return Container(
         height: MediaQuery.of(context).size.height - 38,
         child: Scrollbar(
@@ -140,17 +140,16 @@ class _LandingState extends State<Landing> {
                     width: MediaQuery.of(context).size.width,
                     height: 1300,
                     child:
-                    //  EditProject(
-                    //     p: Project(
-                    //         address: null,
-                    //         description: null,
-                    //         github: "https://github.com/openai/gpt-3",
-                    //         name: null,
-                    //         picurl: null,
-                    //         category: null))
+                        //  EditProject(
+                        //     p: Project(
+                        //         address: null,
+                        //         description: null,
+                        //         github: "https://github.com/openai/gpt-3",
+                        //         name: null,
+                        //         picurl: null,
+                        //         category: null))
 
-                    everything()
-                    ),
+                        everything()),
                 Container(
                     height: 100,
                     child: Column(
@@ -390,7 +389,7 @@ class _LandingState extends State<Landing> {
 
   Widget buyATN() {
     double diff = 0;
-    bool acceptat = false;
+    // bool acceptat = false;
     String error = "";
     return Container(
         height: 500,
@@ -421,7 +420,7 @@ class _LandingState extends State<Landing> {
                       fontSize: 19,
                     ),
                     onChanged: (value) {
-                      double.parse(value, (e) => null) != null
+                      double.parse(value) != null
                           // ignore: unnecessary_statements
                           ? {
                               diff = double.parse(value),
@@ -583,9 +582,12 @@ class _LandingState extends State<Landing> {
 }
 
 class BuyATN extends StatefulWidget {
-  _LandingState landing;
-  bool isUser;
   BuyATN({this.landing, this.isUser});
+
+  final _LandingState landing;
+
+  final bool isUser;
+
   @override
   _BuyATNState createState() => _BuyATNState();
 }
@@ -609,7 +611,7 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
     Future.delayed(Duration(milliseconds: 100), () {
       setState(() {
         left = -0.3;
-        down = 1.3;
+        down = 2.3;
         spread = 0.3;
         sime = 500;
         gro = 0;
@@ -699,8 +701,7 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
                         onPressed: () {
                           Clipboard.setData(
                               new ClipboardData(text: chain.tokenAddress));
-                          final scaffold = Scaffold.of(context);
-                          scaffold.showSnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               duration: const Duration(milliseconds: 1600),
                               content: Container(

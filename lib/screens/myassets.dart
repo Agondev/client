@@ -1,21 +1,23 @@
 import 'package:app2/main.dart';
-import 'package:app2/services.dart/chain.dart';
-import 'package:app2/widgets/agent_details.dart';
+// import 'package:app2/services.dart/chain.dart';
+// import 'package:app2/widgets/agent_details.dart';
 import 'package:app2/widgets/atncontract.dart';
 import 'package:app2/widgets/mainmenu.dart';
 import 'package:app2/widgets/metabutton.dart';
 import 'package:app2/services.dart/webtrei.dart';
 import 'package:flutter/material.dart';
-import 'package:web3dart/web3dart.dart';
+// import 'package:web3dart/web3dart.dart';
 
 // ignore: must_be_immutable
 //
 class MyAssets extends StatelessWidget {
-  String title;
+  MyAssets({this.appstate, this.title});
+
   static String route = "/assets";
-  ScrollController sc = ScrollController();
-  MyAppState appstate;
-  MyAssets({this.appstate});
+
+  final String title;
+  final ScrollController sc = ScrollController();
+  final MyAppState appstate;
   @override
   Widget build(BuildContext context) {
     return MainMenu(
@@ -40,37 +42,42 @@ class MyAssets extends StatelessWidget {
                                   SizedBox(height: 10),
                                   us3r == null
                                       ? Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          SizedBox(height: 100),
-                                          Text(
-                                            "Web3 provider not connected",
-                                            style: TextStyle(fontSize: 20),
-                                          ),
-                                          SizedBox(height: 100),
-                                          MetaButton(landingPage: false)
-                                        ])
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                              SizedBox(height: 100),
+                                              Text(
+                                                "Web3 provider not connected",
+                                                style: TextStyle(fontSize: 20),
+                                              ),
+                                              SizedBox(height: 100),
+                                              MetaButton(landingPage: false)
+                                            ])
                                       : Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                              Text("Connected with address   " +
-                                                  us3r.address),
-                                              SizedBox(width: 40),
-                                              // TextButton(
-                                              //     onPressed: () {
-                                              //       us3r.buyATN(EtherAmount
-                                              //           .fromUnitAndValue(
-                                              //               EtherUnit.finney,
-                                              //               8));
-                                              //     },
-                                              //     child: Text("BUY ATN"))
-                                            ]),
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                      "Connected with address   " +
+                                                          us3r.address),
+                                                  SizedBox(width: 40),
+                                                  // TextButton(
+                                                  //     onPressed: () {
+                                                  //       us3r.buyATN(EtherAmount
+                                                  //           .fromUnitAndValue(
+                                                  //               EtherUnit.finney,
+                                                  //               8));
+                                                  //     },
+                                                  //     child: Text("BUY ATN"))
+                                                ]),
                                             us3r.contract == null
                                                 ? CreateContractBTN()
-                                                : MyContractView(appstate:appstate)
+                                                : MyContractView(
+                                                    appstate: appstate)
                                           ],
                                         )
                                 ],

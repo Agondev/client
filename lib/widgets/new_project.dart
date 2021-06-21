@@ -8,87 +8,94 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:http/http.dart' as http;
 
-
 class TeamMember extends StatelessWidget {
-  String address;
-  double percent;
-  _EditProjectState state;
-  Project p;
-  TeamMember({this.p,this.address,this.percent,this.state});
+  TeamMember({this.p, this.address, this.percent, this.state});
+
+  final String address;
+  final double percent;
+  final _EditProjectState state;
+  final Project p;
+
   @override
   Widget build(BuildContext context) {
     return Container(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(address, style: TextStyle(fontSize: 13)),
         Row(children: [
           SizedBox(
-              width: 300,
-              child: Slider(
-                value: p.team[address],min: 0,max: 100,
-                onChanged: (value) {
-                  int cati=p.team.keys.length-1;
-                  double sum=0;
-                  p.team.forEach((k, v) { sum=sum+v;});
-                  if (p.team.keys.length>1&&value<=100-cati){
-                  var diff=p.team[address]-value;
-                  state.setState(() {
-                    p.team[address]=value;
-                   p.team.forEach((k, v) { 
-                    if (k!=address){
-                      if ((diff<0&&p.team[k]<1)||(diff>0&&p.team[k]>99)){cati=cati-1;}
-                      if (diff<0&&p.team[k]>1||diff>0&&p.team[k]<99){
-                      p.team[k]=p.team[k]+(diff/cati);
-                      }
-                    }
-                   });
-                  });}
-                },
-              )),
-               Column(
-                  children: [
-                    Text("Team share"),
-                    Text(
-                        percent.toStringAsFixed(1),
-                        style: TextStyle(
-                            fontSize: 19,
-                            fontWeight:
-                                FontWeight.bold)),
-                        ],
-                    ),
-                    SizedBox(width:30),
-                      Column(
-                  children: [
-                    Text("Total share"),
-                    Text(
-                        (percent*(p.split/100)).toStringAsFixed(2),
-                        style: TextStyle(
-                            fontSize: 19,
-                            fontWeight:
-                                FontWeight.bold)),
-                        ],
-                    ),
+            width: 300,
+            child: Slider(
+              value: p.team[address],
+              min: 0,
+              max: 100,
+              onChanged: (value) {
+                int cati = p.team.keys.length - 1;
+                double sum = 0;
+                p.team.forEach((k, v) {
+                  sum = sum + v;
+                });
+                if (p.team.keys.length > 1 && value <= 100 - cati) {
+                  var diff = p.team[address] - value;
+                  // ignore: invalid_use_of_protected_member
+                  state.setState(
+                    () {
+                      p.team[address] = value;
+                      p.team.forEach(
+                        (k, v) {
+                          if (k != address) {
+                            if ((diff < 0 && p.team[k] < 1) ||
+                                (diff > 0 && p.team[k] > 99)) {
+                              cati = cati - 1;
+                            }
+                            if (diff < 0 && p.team[k] > 1 ||
+                                diff > 0 && p.team[k] < 99) {
+                              p.team[k] = p.team[k] + (diff / cati);
+                            }
+                          }
+                        },
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          ),
+          Column(
+            children: [
+              Text("Team share"),
+              Text(
+                percent.toStringAsFixed(1),
+                style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          SizedBox(width: 30),
+          Column(
+            children: [
+              Text("Total share"),
+              Text(
+                (percent * (p.split / 100)).toStringAsFixed(2),
+                style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
         ]),
       ],
     ));
-  
-  
   }
 }
 
-
-
-
-
-
 class EditProject extends StatefulWidget {
-  bool textfield = false;
-  bool filepaste = false;
-  bool socket = false;
-  Project p;
   EditProject({this.p});
-  String url = "https://discord-ro.tk:5000/v1/post_image";
+
+  final bool textfield = false;
+  final bool filepaste = false;
+  final bool socket = false;
+  final Project p;
+  final String url = "https://discord-ro.tk:5000/v1/post_image";
+
   @override
   _EditProjectState createState() => _EditProjectState();
 }
@@ -97,13 +104,32 @@ class _EditProjectState extends State<EditProject> {
   String rootPath;
   String state = "Stare1";
   List<Widget> ownership = [];
+
+  bool textfield = false;
+  bool filepaste = false;
+  bool socket = false;
+
+  @override
+  void initState() {
+    super.initState();
+    textfield = widget.textfield;
+    filepaste = widget.filepaste;
+    socket = widget.socket;
+  }
+
   @override
   Widget build(BuildContext context) {
-    ownership=[];
+    ownership = [];
     for (var stakeholder in widget.p.team.keys) {
-      ownership.add(TeamMember(p:widget.p,percent: widget.p.team[stakeholder].toDouble(),state: this,address: stakeholder));
+      ownership.add(TeamMember(
+          p: widget.p,
+          percent: widget.p.team[stakeholder].toDouble(),
+          state: this,
+          address: stakeholder));
     }
-    return Scrollbar(child:SingleChildScrollView (child:Container(
+    return Scrollbar(
+        child: SingleChildScrollView(
+            child: Container(
       margin: EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width * 0.8,
       decoration:
@@ -132,14 +158,17 @@ class _EditProjectState extends State<EditProject> {
                     child: Container(
                         height: 140,
                         width: 179,
-                        child: widget.p.picurl==null? Column(
-                          children: [
-                            Image.network("https://i.ibb.co/2dphSM9/cogs.png",
-                                                            height: 120),
-                            Text("CHANGE ICON", style: TextStyle(fontSize: 15)),
-                          ],
-                        ):Image.network(widget.p.picurl)
-                        )),
+                        child: widget.p.picurl == null
+                            ? Column(
+                                children: [
+                                  Image.network(
+                                      "https://i.ibb.co/2dphSM9/cogs.png",
+                                      height: 120),
+                                  Text("CHANGE ICON",
+                                      style: TextStyle(fontSize: 15)),
+                                ],
+                              )
+                            : Image.network(widget.p.picurl))),
               ],
             ),
             SizedBox(width: 50),
@@ -154,83 +183,90 @@ class _EditProjectState extends State<EditProject> {
     )));
   }
 
-  Widget stillLinkGit(){
-      var c=TextEditingController();
+  Widget stillLinkGit() {
+    var c = TextEditingController();
     return Container(
-      width:600,
+      width: 600,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(height:30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-            Icon(Icons.warning,color: Colors.red),
-Text("  MIND THE FORMAT  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize:19)),Icon(Icons.warning,color:Colors.red)
+          SizedBox(height: 30),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Icon(Icons.warning, color: Colors.red),
+            Text("  MIND THE FORMAT  ",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19)),
+            Icon(Icons.warning, color: Colors.red)
           ]),
-          SizedBox(height:19),
-          SizedBox(width:400, child:Text("To ensure compatibility in both training and production environments, Autonet projects need a standardized codebase. As best practice, we recommend cloning the template project and adding your custom logic to it. Make sure your repo is implementing all required methods before committing it to the blockchain:")),
-          SizedBox(height:35),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-
-              SizedBox(height:30),
-             SizedBox(width:400,height:30,child: TextField(
-               controller:c ,
-               decoration: InputDecoration(labelText: "Paste link to repository",labelStyle: TextStyle(color: Theme.of(context).textTheme.bodyText2.color)),
-             )),
+          SizedBox(height: 19),
+          SizedBox(
+              width: 400,
+              child: Text(
+                  "To ensure compatibility in both training and production environments, Autonet projects need a standardized codebase. As best practice, we recommend cloning the template project and adding your custom logic to it. Make sure your repo is implementing all required methods before committing it to the blockchain:")),
+          SizedBox(height: 35),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            SizedBox(height: 30),
+            SizedBox(
+                width: 400,
+                height: 30,
+                child: TextField(
+                  controller: c,
+                  decoration: InputDecoration(
+                      labelText: "Paste link to repository",
+                      labelStyle: TextStyle(
+                          color: Theme.of(context).textTheme.bodyText2.color)),
+                )),
           ]),
-          SizedBox(height:30),
+          SizedBox(height: 30),
           ElevatedButton(
-            child:SizedBox(width:130,height:30,child:Center(child:Text("DONE"))),
-            onPressed: (){
-              widget.p.github=c.text;
-              Navigator.of(context).pop();}),
-      ],),
+              child: SizedBox(
+                  width: 130, height: 30, child: Center(child: Text("DONE"))),
+              onPressed: () {
+                widget.p.github = c.text;
+                Navigator.of(context).pop();
+              }),
+        ],
+      ),
     );
   }
-  
 
   Widget linkGit() {
     List<Widget> team = [];
     widget.p.team.forEach((key, value) {
-      team.add(TeamMember(address: key,percent: value.toDouble(),p: widget.p,state: this));
+      team.add(TeamMember(
+          address: key, percent: value.toDouble(), p: widget.p, state: this));
     });
     return widget.p.github == null
         ? Container(
-          margin:EdgeInsets.all(50),
-          child:TextButton(
-            onPressed: () {},
+            margin: EdgeInsets.all(50),
             child: TextButton(
-                style: TextButton.styleFrom(
-                    backgroundColor: Theme.of(context).buttonColor,
-                    elevation: 1),
-                onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                          content: stillLinkGit()));
-                },
-                child: Container(
-                  
-                  width: 290,
-                  padding: EdgeInsets.all(10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.code),
-                      SizedBox(width: 7),
-                      Text(
-                        "Link Code Repository",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                ))))
+                onPressed: () {},
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(context).buttonColor,
+                        elevation: 1),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) =>
+                              AlertDialog(content: stillLinkGit()));
+                    },
+                    child: Container(
+                      width: 290,
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.code),
+                          SizedBox(width: 7),
+                          Text(
+                            "Link Code Repository",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                    ))))
         : DefaultTabController(
             length: 3,
             child: Container(
@@ -307,8 +343,7 @@ Text("  MIND THE FORMAT  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize
                                                               .errorColor,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          widget.textfield =
-                                                              value;
+                                                          textfield = value;
                                                         });
                                                       }),
                                                   SizedBox(width: 10),
@@ -325,8 +360,7 @@ Text("  MIND THE FORMAT  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize
                                                       value: widget.filepaste,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          widget.filepaste =
-                                                              value;
+                                                          filepaste = value;
                                                         });
                                                       }),
                                                   SizedBox(width: 10),
@@ -343,7 +377,7 @@ Text("  MIND THE FORMAT  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize
                                                       value: widget.socket,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          widget.socket = value;
+                                                          socket = value;
                                                         });
                                                       }),
                                                   SizedBox(width: 10),
@@ -371,7 +405,7 @@ Text("  MIND THE FORMAT  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize
                             decoration:
                                 BoxDecoration(border: Border.all(width: 1)),
                             child: Column(children: [
-                              SizedBox(height:20),
+                              SizedBox(height: 20),
                               Text(
                                   "Distribution of revenue between devs and investors:",
                                   style:
@@ -387,7 +421,8 @@ Text("  MIND THE FORMAT  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize
                                           children: [
                                             Text("Devs"),
                                             Text(
-                                                widget.p.split.toStringAsFixed(1),
+                                                widget.p.split
+                                                    .toStringAsFixed(1),
                                                 style: TextStyle(
                                                     fontSize: 19,
                                                     fontWeight:
@@ -415,7 +450,8 @@ Text("  MIND THE FORMAT  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize
                                                     .toStringAsFixed(1),
                                                 style: TextStyle(
                                                     fontSize: 19,
-                                                    fontWeight:FontWeight.bold)),
+                                                    fontWeight:
+                                                        FontWeight.bold)),
                                           ],
                                         )
                                       ])),
@@ -430,7 +466,7 @@ Text("  MIND THE FORMAT  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize
                                   "Distribution of revenue among founding team:",
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold)),
-                             SizedBox(height: 20),                        
+                              SizedBox(height: 20),
                               Column(children: ownership),
                               TextButton(
                                   onPressed: () {
@@ -439,39 +475,62 @@ Text("  MIND THE FORMAT  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize
                                         builder: (context) => AlertDialog(
                                             content: Container(
                                                 child: Container(
-                                                    
                                                     height: 240,
                                                     child: Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .center,
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment.center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                       children: [
                                                         SizedBox(height: 10),
-                                                       
                                                         Text("Add team member",
-                                                            style: TextStyle(fontWeight:FontWeight.bold,fontSize: 14)),
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 14)),
                                                         SizedBox(height: 40),
-                                                        Container(padding: EdgeInsets.symmetric(horizontal:100),
+                                                        Container(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        100),
                                                             child: TextField(
                                                               maxLength: 42,
-                                                              decoration:InputDecoration(hintText:"Paste Ethereum wallet address (starting with 0x)"),
-                                          maxLines: 1,
-                                          onChanged:(address) {
-                                            if (address.length >41) {
-                                              setState(() {
-                                                widget.p.team[address]=1;
-                                                widget.p.team.forEach((k, v) { 
-                                                  if (k!=address){
-                                                    widget.p.team[k]=widget.p.team[k]-1/(widget.p.team.keys.length-1);
-                                                  }
-                                                });
-                                                
-                                                });
-                                              Navigator.of(context).pop();
-                                              }},
-                                        )),
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                      hintText:
+                                                                          "Paste Ethereum wallet address (starting with 0x)"),
+                                                              maxLines: 1,
+                                                              onChanged:
+                                                                  (address) {
+                                                                if (address
+                                                                        .length >
+                                                                    41) {
+                                                                  setState(() {
+                                                                    widget.p.team[
+                                                                        address] = 1;
+                                                                    widget
+                                                                        .p.team
+                                                                        .forEach((k,
+                                                                            v) {
+                                                                      if (k !=
+                                                                          address) {
+                                                                        widget.p
+                                                                            .team[k] = widget
+                                                                                .p.team[k] -
+                                                                            1 / (widget.p.team.keys.length - 1);
+                                                                      }
+                                                                    });
+                                                                  });
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                }
+                                                              },
+                                                            )),
                                                       ],
                                                     )))));
                                   },
@@ -484,59 +543,67 @@ Text("  MIND THE FORMAT  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                  SizedBox(
-                    height: 40,
-                    width: 180,
-                    child: TextButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.black45)),
-                        child: Text("DISCARD",
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold)),
-                        onPressed: () {Navigator.of(context).pop();})),
-                        SizedBox(width:120),
-                         SizedBox(
-                    height: 40,
-                    width: 180,
-                    child: TextButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.red)),
-                        child: Text("ADD PROJECT",
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold)),
-                        onPressed: () {
-                          
-                        }))
-                ],),
-               SizedBox(height:20)
+                    SizedBox(
+                        height: 40,
+                        width: 180,
+                        child: TextButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.black45)),
+                            child: Text("DISCARD",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            })),
+                    SizedBox(width: 120),
+                    SizedBox(
+                        height: 40,
+                        width: 180,
+                        child: TextButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.red)),
+                            child: Text("ADD PROJECT",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                            onPressed: () {}))
+                  ],
+                ),
+                SizedBox(height: 20)
               ]),
             ));
   }
-bool pressedName=false;
-bool pressedDesc=false;
+
+  bool pressedName = false;
+  bool pressedDesc = false;
   Widget agentName() {
-    Widget whatis=!pressedName?SizedBox(width:450, height:30,child:TextButton(
+    Widget whatis = !pressedName
+        ? SizedBox(
+            width: 450,
+            height: 30,
+            child: TextButton(
                 onPressed: () {
                   setState(() {
-                    pressedName=true;
+                    pressedName = true;
                   });
                 },
                 child: Row(children: [
                   Icon(Icons.edit),
                   Text("Set name", style: TextStyle(fontSize: 21))
-                ]))):TextField(
-                  maxLength: 30,
-                  style: TextStyle(fontSize: 21),
-                  decoration: InputDecoration(
-                    hintText: "Set project name") ,
-                  onChanged:(value) {widget.p.name=value;},
-                );
+                ])))
+        : TextField(
+            maxLength: 30,
+            style: TextStyle(fontSize: 21),
+            decoration: InputDecoration(hintText: "Set project name"),
+            onChanged: (value) {
+              widget.p.name = value;
+            },
+          );
     return Container(
         width: 460,
         height: 30,
@@ -549,24 +616,38 @@ bool pressedDesc=false;
   }
 
   Widget agentDescription() {
-     Widget whatis=!pressedDesc?SizedBox(width:470, height:90,child:TextButton(
-                onPressed: () {setState(() {pressedDesc=true;});},
+    Widget whatis = !pressedDesc
+        ? SizedBox(
+            width: 470,
+            height: 90,
+            child: TextButton(
+                onPressed: () {
+                  setState(() {
+                    pressedDesc = true;
+                  });
+                },
                 child: Row(children: [
                   Icon(Icons.edit),
-                  Text("Set description",)
-                ]))):TextField(
-                  maxLength: 141,
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                    hintText: "Describe value proposition or utility function.") ,
-                  onChanged:(value) {widget.p.description=value;},
-                );
+                  Text(
+                    "Set description",
+                  )
+                ])))
+        : TextField(
+            maxLength: 141,
+            maxLines: 3,
+            decoration: InputDecoration(
+                hintText: "Describe value proposition or utility function."),
+            onChanged: (value) {
+              widget.p.description = value;
+            },
+          );
     return Container(
         width: 470,
         height: 90,
         margin: EdgeInsets.only(top: 26),
         child: widget.p.description == null
-            ? whatis:Text(
+            ? whatis
+            : Text(
                 widget.p.description,
                 style: TextStyle(fontSize: 17),
               ));
@@ -580,7 +661,8 @@ bool pressedDesc=false;
         jsonDecode(hopa["data"].substring(2, hopa['data'].length - 1))["data"]
                 ["url"]
             .replaceAll(new RegExp('\\/'), '');
-    String buna="https://i.ibb.co/"+picurl.replaceAll("\\","/").replaceAll("","/").split("ibb.co")[1];
+    String buna = "https://i.ibb.co/" +
+        picurl.replaceAll("\\", "/").replaceAll("", "/").split("ibb.co")[1];
     print(buna);
     return (buna);
   }

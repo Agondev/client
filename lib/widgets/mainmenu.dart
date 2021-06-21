@@ -3,21 +3,35 @@ import 'package:app2/services.dart/chatbot.dart';
 import 'package:flutter/material.dart';
 
 class MainMenu extends StatefulWidget {
-  Chat chat = Chat();
-  MyAppState appstate;
-  String care;
-  Widget porc;
   MainMenu({this.porc, this.appstate, this.care});
+
+  final Chat chat = Chat();
+  final MyAppState appstate;
+  final String care;
+  final Widget porc;
+
   @override
   _MainMenuState createState() => _MainMenuState();
 }
 
 class _MainMenuState extends State<MainMenu> {
+  final Chat chat = Chat();
+  MyAppState appstate;
+  String care;
+  Widget porc;
+
+  @override
+  void initState() {
+    super.initState();
+    appstate = widget.appstate;
+    care = widget.care;
+    porc = widget.porc;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton:
-            ChatWidget(chat: widget.chat),
+        floatingActionButton: ChatWidget(chat: chat),
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(38.0),
             child: AppBar(
@@ -70,7 +84,7 @@ class _MainMenuState extends State<MainMenu> {
                           onPressed: () {
                             Navigator.of(context).pushNamed("/market");
                             setState(() {
-                              widget.care = "market";
+                              care = "market";
                             });
 //                              showDialog(
 //                       context: context,
@@ -80,7 +94,7 @@ class _MainMenuState extends State<MainMenu> {
 //                          crossAxisAlignment: CrossAxisAlignment.center,
 //                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 //                             children: [
-// Text("Soon...",style:TextStyle(fontSize: 27)), 
+// Text("Soon...",style:TextStyle(fontSize: 27)),
 // Text("We've waited for so long, we can wait a bit longer. Help is on the way.")
 //                           ],)
 //                          ))));
@@ -100,7 +114,7 @@ class _MainMenuState extends State<MainMenu> {
                           onPressed: () {
                             Navigator.of(context).pushNamed("/assets");
                             setState(() {
-                              widget.care = "assets";
+                              care = "assets";
                             });
 //                             showDialog(
 //                       context: context,
@@ -110,7 +124,7 @@ class _MainMenuState extends State<MainMenu> {
 //                          crossAxisAlignment: CrossAxisAlignment.center,
 //                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 //                             children: [
-// Text("Soon...",style:TextStyle(fontSize: 27)), 
+// Text("Soon...",style:TextStyle(fontSize: 27)),
 // Text("We've waited for so long, we can wait a bit longer. Help is on the way.")
 //                           ],)
 //                          ))));
@@ -130,7 +144,7 @@ class _MainMenuState extends State<MainMenu> {
                           onPressed: () {
                             Navigator.of(context).pushNamed("/node");
                             setState(() {
-                              widget.care = "node";
+                              care = "node";
                             });
 //                              showDialog(
 //                       context: context,
@@ -140,7 +154,7 @@ class _MainMenuState extends State<MainMenu> {
 //                          crossAxisAlignment: CrossAxisAlignment.center,
 //                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 //                             children: [
-// Text("Soon...",style:TextStyle(fontSize: 27)), 
+// Text("Soon...",style:TextStyle(fontSize: 27)),
 // Text("We've waited for so long, we can wait a bit longer. Help is on the way.")
 //                           ],)
 //                          ))));
@@ -159,9 +173,10 @@ class _MainMenuState extends State<MainMenu> {
 }
 
 class ChatWidget extends StatefulWidget {
-  Chat chat;
   ChatWidget({this.chat});
-  bool expanded = false;
+
+  final Chat chat;
+  final bool expanded = false;
   @override
   _ChatWidgetState createState() => _ChatWidgetState();
 }
@@ -169,9 +184,11 @@ class ChatWidget extends StatefulWidget {
 class _ChatWidgetState extends State<ChatWidget> {
   double height;
   double width;
+  bool expanded;
+
   @override
   void initState() {
-    widget.expanded = false;
+    expanded = false;
     height = 70;
     width = 70;
     super.initState();
@@ -181,7 +198,7 @@ class _ChatWidgetState extends State<ChatWidget> {
     setState(() {
       height = MediaQuery.of(context).size.height - 18;
       width = 500;
-      widget.expanded = true;
+      expanded = true;
     });
   }
 
@@ -189,7 +206,7 @@ class _ChatWidgetState extends State<ChatWidget> {
     setState(() {
       height = 70;
       width = 70;
-      widget.expanded = false;
+      expanded = false;
     });
   }
 

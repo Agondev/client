@@ -3,18 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:http/http.dart' as http;
 
-class ProjectDetails extends StatelessWidget {
-  Project p;
-  String gitSuffix;
-  String readme;
-  String github;
-  int size;
-  int earned;
-  bool seia = false;
-  String descriere;
-  ProjectDetails({this.p}) {
-    this.github = this.p.github.split("github.com/")[1];
-  }
+class ProjectDetails extends StatefulWidget {
+  ProjectDetails({
+    this.p,
+    this.gitSuffix,
+    this.readme,
+    this.github,
+    this.size,
+    this.earned,
+    this.descriere,
+  });
+
+  final Project p;
+  final String gitSuffix;
+  final String readme;
+  final int size;
+  final int earned;
+  final String descriere;
+  final String github;
+
+  @override
+  _ProjectDetailsState createState() => _ProjectDetailsState();
+}
+
+class _ProjectDetailsState extends State<ProjectDetails> {
+  final bool seia = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +47,13 @@ class ProjectDetails extends StatelessWidget {
                             padding: EdgeInsets.symmetric(horizontal: 19),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(11.0),
-                              child: Image.network(p.picurl, height: 114),
+                              child:
+                                  Image.network(widget.p.picurl, height: 114),
                             )),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(p.name, style: TextStyle(fontSize: 28)),
+                            Text(widget.p.name, style: TextStyle(fontSize: 28)),
                             SizedBox(height: 9),
                             Row(
                               children: [
@@ -109,9 +123,13 @@ class ProjectDetails extends StatelessWidget {
                               Container(
                                 padding: EdgeInsets.all(50),
                                 child: FutureBuilder(
-                                    future: http.get(Uri.https(
-                                        "raw.githubusercontent.com",
-                                        github + "/master/README.md")),
+                                    future: http.get(
+                                      Uri.https(
+                                          "raw.githubusercontent.com",
+                                          widget.github
+                                                  .split("github.com/")[1] +
+                                              "/master/README.md"),
+                                    ),
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState !=
                                           ConnectionState.done) {

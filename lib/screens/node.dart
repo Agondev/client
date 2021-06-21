@@ -1,26 +1,30 @@
 import 'package:app2/main.dart';
-import 'package:app2/services.dart/webtrei.dart';
+// import 'package:app2/services.dart/webtrei.dart';
 import 'package:app2/widgets/mainmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:flutter/foundation.dart';
-bool mineaza=false;
-String miningAddress="(not set)";
-bool setpressed=false;
-class Node extends StatefulWidget{
-  String title;
-  static String route = "/node";
-  MyAppState appstate;
+
+// import 'package:flutter/foundation.dart';
+bool mineaza = false;
+String miningAddress = "(not set)";
+bool setpressed = false;
+
+class Node extends StatefulWidget {
   Node({this.appstate, this.title});
-  bool status=false;
+
+  static String route = "/node";
+
+  final String title;
+  final MyAppState appstate;
+  final bool status = false;
   @override
   State<StatefulWidget> createState() {
-   return NodeState();
+    return NodeState();
   }
 }
 
 class NodeState extends State<Node> {
-ScrollController sc = ScrollController();
+  ScrollController sc = ScrollController();
   @override
   Widget build(BuildContext context) {
     return MainMenu(
@@ -46,25 +50,33 @@ ScrollController sc = ScrollController();
                               padding: EdgeInsets.symmetric(vertical: 12),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [ Text("Mining Node",style:TextStyle(fontWeight: FontWeight.bold),),
-                                  SizedBox( width: 19,),
+                                children: [
+                                  Text(
+                                    "Mining Node",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    width: 19,
+                                  ),
                                   FlutterSwitch(
-                                      width: 100.0,
-                                      height: 34.0,
-                                      valueFontSize: 15.0,
-                                      activeColor: Colors.green,
-                                      toggleSize: 34.0,
-                                      value: mineaza,
-                                      borderRadius: 30.0,
-                                      padding: 8.0,
-                                      showOnOff: true,
-                                      onToggle: (val) {
-                                        if (miningAddress!="(not set)"){
-                                          setState(() {
+                                    width: 100.0,
+                                    height: 34.0,
+                                    valueFontSize: 15.0,
+                                    activeColor: Colors.green,
+                                    toggleSize: 34.0,
+                                    value: mineaza,
+                                    borderRadius: 30.0,
+                                    padding: 8.0,
+                                    showOnOff: true,
+                                    onToggle: (val) {
+                                      if (miningAddress != "(not set)") {
+                                        setState(() {
                                           mineaza = val;
                                         });
-                                        }
-                                      },),
+                                      }
+                                    },
+                                  ),
                                 ],
                               ),
                             ),
@@ -90,28 +102,35 @@ ScrollController sc = ScrollController();
                                         CrossAxisAlignment.start,
                                     children: [
                                       Row(children: [
-                                       setpressed==false? TextButton(onPressed: (){
-                                          setState(() {  setpressed=true;  });
-                                        }, child: Icon(Icons.edit)):Text(""),
-                                        setpressed?
-                                        SizedBox(width:340,
-                                       child: TextField(
-                                          maxLength: 42,
-                                          maxLines: 1,
-                                          onChanged:(val){
-                                             if (val.length >41) {
-                                               setState(() {
-                                                 miningAddress=val;
-                                                 setpressed=false;
-                                                     });
-                                             }
-                                            },
-                                          decoration: InputDecoration(labelText: "Paste contract address"),
-                                        )):
-                                        Text(
-                                            miningAddress,
-                                            style: TextStyle(fontSize: 12)),
-                                       
+                                        setpressed == false
+                                            ? TextButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    setpressed = true;
+                                                  });
+                                                },
+                                                child: Icon(Icons.edit))
+                                            : Text(""),
+                                        setpressed
+                                            ? SizedBox(
+                                                width: 340,
+                                                child: TextField(
+                                                  maxLength: 42,
+                                                  maxLines: 1,
+                                                  onChanged: (val) {
+                                                    if (val.length > 41) {
+                                                      setState(() {
+                                                        miningAddress = val;
+                                                        setpressed = false;
+                                                      });
+                                                    }
+                                                  },
+                                                  decoration: InputDecoration(
+                                                      labelText:
+                                                          "Paste contract address"),
+                                                ))
+                                            : Text(miningAddress,
+                                                style: TextStyle(fontSize: 12)),
                                       ]),
                                       SizedBox(height: 27),
                                       Text("-- hrs, -- sec"),
@@ -124,5 +143,5 @@ ScrollController sc = ScrollController();
                             ),
                           ]))))
                 ])));
-    }
+  }
 }

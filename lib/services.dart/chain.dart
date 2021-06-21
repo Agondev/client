@@ -1,14 +1,11 @@
-import 'dart:developer';
-// import 'dart:ffi';
-import 'dart:js_util';
 import 'dart:convert';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:js_util';
 import 'package:app2/contracts/project.dart';
 import 'package:app2/contracts/source.dart';
 import 'package:app2/main.dart';
-import 'package:app2/screens/market.dart';
 import 'package:app2/screens/projectview.dart';
 import 'package:app2/services.dart/webtrei.dart';
-import 'package:app2/widgets/agent_card.dart';
 import 'package:app2/widgets/atncontract.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_web3_provider/ethereum.dart';
@@ -54,8 +51,8 @@ class Chain {
         var details = await ethClient
             .call(contract: contractProiect, function: detailsf, params: []);
         print(details);
-        String name = details[0];
-        String desc = details[1];
+        // String name = details[0];
+        // String desc = details[1];
         String cat = details[2].toString().split("http")[0];
         String pic = "http" + details[2].toString().split("http")[1];
         String git = "http" + details[2].toString().split("http")[2];
@@ -68,7 +65,8 @@ class Chain {
           github: git,
         );
         projects.add(p);
-        routes["/market/"+p.address]=ProjectView(address:p.address,appstate: state);
+        routes["/market/" + p.address] =
+            ProjectView(address: p.address, appstate: state);
       }
       populating = false;
       populated = true;
@@ -113,7 +111,7 @@ class Human {
       var a = json.decode(stringify(result));
       print(a);
       creatingContract = false;
-      // return a.toString();
+      return a.toString();
     }
   }
 
@@ -137,9 +135,10 @@ class Human {
       print("new contract address " + ponse.toString());
       this.contract = UserContract(user: this, assets: {});
     }
-    state.setState(() {
-      this.creatingContract = false;
-    });
+    this.creatingContract = false;
+    // state.setState(() {
+    //   this.creatingContract = false;
+    // });
   }
 }
 
@@ -162,8 +161,8 @@ class Project {
     this.github,
     this.category,
   }) {
-    team = {"0xa9F8F9C0bf3188cEDdb9684ae28655187552bAE9":100};
-    shareholders = {"0xa9F8F9C0bf3188cEDdb9684ae28655187552bAE9":5};
+    team = {"0xa9F8F9C0bf3188cEDdb9684ae28655187552bAE9": 100};
+    shareholders = {"0xa9F8F9C0bf3188cEDdb9684ae28655187552bAE9": 5};
     investors = {};
     split = 5.0;
   }
