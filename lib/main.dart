@@ -13,26 +13,25 @@ import 'package:web3dart/web3dart.dart';
 // import 'package:fps_widget/fps_widget.dart';
 // import 'package:intl/date_time_patterns.dart';
 
-Chain chain = new Chain();
+Chain chain = Chain();
 bool mining = false;
 void main() {
   setPathUrlStrategy();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 Map<String, Widget> routes = {};
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key key}) : super(key: key);
+
   @override
-  State<StatefulWidget> createState() {
-    var app = MyAppState();
-    // chain.populate(app);
-    return app;
-  }
+  State<StatefulWidget> createState() => MyAppState();
 }
 
 class MyAppState extends State<MyApp> {
   DateTime now = DateTime.now();
+
   MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];
     Map swatch = <int, Color>{};
@@ -55,6 +54,13 @@ class MyAppState extends State<MyApp> {
 
   bool lumina = false;
   bool bypass = false;
+
+  @override
+  void initState() {
+    super.initState();
+    chain.populate(this);
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -166,12 +172,13 @@ class _MarketState extends State<Market> {
       );
     }
     return MainMenu(
-        care: "market",
-        appstate: widget.appstate,
-        porc: Container(
-          padding: EdgeInsets.all(3),
-          width: MediaQuery.of(context).size.width,
-          child: Stack(children: [
+      care: "market",
+      appstate: widget.appstate,
+      porc: Container(
+        padding: EdgeInsets.all(3),
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          children: [
             Scrollbar(
               controller: sc,
               child: Container(
@@ -188,19 +195,19 @@ class _MarketState extends State<Market> {
                           )))),
             ),
             Opacity(
-                opacity: 0.91,
-                child: Container(
-                  height: 40,
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    border: Border(
-                        bottom: BorderSide(
-                            width: 0.3, color: Theme.of(context).primaryColor)),
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  child: Center(
-                      child: Row(
+              opacity: 0.91,
+              child: Container(
+                height: 40,
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  border: Border(
+                      bottom: BorderSide(
+                          width: 0.3, color: Theme.of(context).primaryColor)),
+                ),
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       TextButton(
@@ -222,20 +229,25 @@ class _MarketState extends State<Market> {
                                 fontFamily: "OCR-A",
                               ))),
                       TextButton(
-                          onPressed: () {},
-                          child: Row(
-                            children: [
-                              Text(
-                                "FILTER",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                              Icon(Icons.sort)
-                            ],
-                          )),
+                        onPressed: () {},
+                        child: Row(
+                          children: [
+                            Text(
+                              "FILTER",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            Icon(Icons.sort)
+                          ],
+                        ),
+                      ),
                     ],
-                  )),
-                )),
-          ]),
-        ));
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -1,15 +1,16 @@
-import 'package:http/http.dart' as http;
-import 'package:dash_chat/dash_chat.dart';
-import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:dash_chat/dash_chat.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 class Chatbot {
-  String url = "https://discord-ro.tk:5000/v1/chat";
+  String url = 'https://discord-ro.tk:5000/v1/chat';
 
   Future<String> makeRequest(zice, uid) async {
-    var querystring = {"zice": zice};
-    Uri uri = Uri.parse(url);
-    http.Response resp = await http.get(
+    var querystring = {'zice': zice};
+    var uri = Uri.parse(url);
+    var resp = await http.get(
       uri.replace(queryParameters: querystring),
     );
     print('What comes back is ${resp.body.split('"')[3]}');
@@ -18,20 +19,22 @@ class Chatbot {
 }
 
 class Chat extends StatefulWidget {
+  const Chat({Key key}) : super(key: key);
+
   @override
   _ChatState createState() => _ChatState();
 }
 
 ChatUser botic = ChatUser(
-  name: "Andrei",
-  firstName: "Andrei",
-  lastName: "Taranu",
-  uid: "12345678",
+  name: 'Andrei',
+  firstName: 'Andrei',
+  lastName: 'Taranu',
+  uid: '12345678',
 );
 List<ChatMessage> messages = [
   ChatMessage(
-      text:
-          "Hi, I'm the Autonet Natural Language Processor set on purposeless chat mode. Feel free to Turing-test me.",
+      text: '''
+Hi, I'm the Autonet Natural Language Processor set on purposeless chat mode. Feel free to Turing-test me.''',
       user: botic)
 ];
 
@@ -44,32 +47,37 @@ class _ChatState extends State<Chat> {
   var i = 0;
 
   void systemMessage() {
-    Timer(Duration(milliseconds: 300), () {
-      if (i < 6) {
-        setState(() {
-          messages = [...messages, m[i]];
-        });
-        i++;
-      }
-      Timer(Duration(milliseconds: 300), () {
-        _chatViewKey.currentState.scrollController
-          ..animateTo(
-            _chatViewKey.currentState.scrollController.position.maxScrollExtent,
-            curve: Curves.easeOut,
-            duration: const Duration(milliseconds: 300),
-          );
-      });
-    });
+    Timer(
+      const Duration(milliseconds: 300),
+      () {
+        if (i < 6) {
+          setState(() {
+            messages = [...messages, m[i++]];
+          });
+          i++;
+        }
+        Timer(
+          const Duration(milliseconds: 300),
+          () => _chatViewKey.currentState.scrollController
+            ..animateTo(
+              _chatViewKey
+                  .currentState.scrollController.position.maxScrollExtent,
+              curve: Curves.easeOut,
+              duration: const Duration(milliseconds: 300),
+            ),
+        );
+      },
+    );
   }
 
   void trimite(ChatMessage message) async {
     setState(() {
       messages.add(message);
     });
-    String zice = message.text;
-    String raspuns = await bot.makeRequest(zice, "site");
+    var zice = message.text;
+    var raspuns = await bot.makeRequest(zice, 'site');
     print(raspuns);
-    ChatMessage mesajBot = ChatMessage(text: raspuns, user: botic);
+    var mesajBot = ChatMessage(text: raspuns, user: botic);
     setState(() {
       m.add(mesajBot);
       messages.add(mesajBot);
@@ -87,12 +95,12 @@ class _ChatState extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
-    final ChatUser otherUser = ChatUser(
-      name: "Mrfatty",
-      uid: "25649654",
+    final otherUser = ChatUser(
+      name: 'Mrfatty',
+      uid: '25649654',
     );
 
-    return Container(
+    return SizedBox(
         height: 400,
         width: 600,
         child: DashChat(

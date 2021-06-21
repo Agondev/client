@@ -1,4 +1,5 @@
-String sourceAbi = """[
+String sourceAbi = '''
+[  
 	{
 		"inputs": [],
 		"name": "buy",
@@ -97,4 +98,4 @@ String sourceAbi = """[
 		"stateMutability": "view",
 		"type": "function"
 	}
-]""";
+]''';

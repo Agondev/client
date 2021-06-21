@@ -1,11 +1,16 @@
+// ignore_for_file: lines_longer_than_80_chars
 import 'package:app2/main.dart';
 import 'package:app2/services.dart/chatbot.dart';
 import 'package:flutter/material.dart';
 
 class MainMenu extends StatefulWidget {
-  MainMenu({this.porc, this.appstate, this.care});
+  const MainMenu({
+    Key key,
+    this.porc,
+    this.appstate,
+    this.care,
+  }) : super(key: key);
 
-  final Chat chat = Chat();
   final MyAppState appstate;
   final String care;
   final Widget porc;
@@ -31,61 +36,62 @@ class _MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: ChatWidget(chat: chat),
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(38.0),
-            child: AppBar(
-                automaticallyImplyLeading: false,
-                elevation: 1.5,
-                actions: [
-                  Row(children: [
-                    Icon(
-                      Icons.wb_sunny,
-                      color: Theme.of(context).primaryColorLight,
-                    ),
-                    Switch(
-                        value: widget.appstate.lumina,
-                        onChanged: (context) {
-                          widget.appstate.bypass = true;
+      floatingActionButton: ChatWidget(chat: chat),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(38.0),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          elevation: 1.5,
+          actions: [
+            Row(children: [
+              Icon(
+                Icons.wb_sunny,
+                color: Theme.of(context).primaryColorLight,
+              ),
+              Switch(
+                  value: widget.appstate.lumina,
+                  onChanged: (context) {
+                    widget.appstate.bypass = true;
+                    widget.appstate.lumina
+                        ? widget.appstate.setState(() {
+                            widget.appstate.lumina = false;
+                          })
+                        : widget.appstate.setState(() {
+                            widget.appstate.lumina = true;
+                          });
+                  })
+            ])
+          ],
+          title: Row(
+            children: [
+              SizedBox(
+                  height: 38,
+                  width: 145,
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/home');
+                      },
+                      child: Opacity(
+                        opacity: widget.care == 'landing' ? 0.9 : 0.6,
+                        child: Image.network(
                           widget.appstate.lumina
-                              ? widget.appstate.setState(() {
-                                  widget.appstate.lumina = false;
-                                })
-                              : widget.appstate.setState(() {
-                                  widget.appstate.lumina = true;
-                                });
-                        })
-                  ])
-                ],
-                title: Row(children: [
-                  SizedBox(
-                      height: 38,
-                      width: 145,
-                      child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed("/home");
-                          },
-                          child: Opacity(
-                            opacity: widget.care == "landing" ? 0.9 : 0.6,
-                            child: Image.network(
-                              widget.appstate.lumina
-                                  ? "https://i.ibb.co/Zgw89rQ/logo-normal.png"
-                                  : "https://i.ibb.co/PZcWWsD/logo-white.png",
-                              height: 19,
-                            ),
-                          ))),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  SizedBox(
-                      height: 38,
-                      width: 130,
-                      child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed("/market");
-                            setState(() {
-                              care = "market";
-                            });
+                              ? 'https://i.ibb.co/Zgw89rQ/logo-normal.png'
+                              : 'https://i.ibb.co/PZcWWsD/logo-white.png',
+                          height: 19,
+                        ),
+                      ))),
+              const SizedBox(
+                width: 10,
+              ),
+              SizedBox(
+                  height: 38,
+                  width: 130,
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/market');
+                        setState(() {
+                          care = 'market';
+                        });
 //                              showDialog(
 //                       context: context,
 //                       builder: (context) => AlertDialog(
@@ -98,24 +104,24 @@ class _MainMenuState extends State<MainMenu> {
 // Text("We've waited for so long, we can wait a bit longer. Help is on the way.")
 //                           ],)
 //                          ))));
-                          },
-                          child: Text("MARKET",
-                              style: TextStyle(
-                                  fontWeight: widget.care == "market"
-                                      ? FontWeight.bold
-                                      : FontWeight.w100,
-                                  fontSize: widget.care == "market" ? 17 : 16,
-                                  fontFamily: "Roboto Mono",
-                                  letterSpacing: 3)))),
-                  SizedBox(
-                      height: 38,
-                      width: 130,
-                      child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed("/assets");
-                            setState(() {
-                              care = "assets";
-                            });
+                      },
+                      child: Text('MARKET',
+                          style: TextStyle(
+                              fontWeight: widget.care == 'market'
+                                  ? FontWeight.bold
+                                  : FontWeight.w100,
+                              fontSize: widget.care == 'market' ? 17 : 16,
+                              fontFamily: 'Roboto Mono',
+                              letterSpacing: 3)))),
+              SizedBox(
+                  height: 38,
+                  width: 130,
+                  child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/assets');
+                        setState(() {
+                          care = 'assets';
+                        });
 //                             showDialog(
 //                       context: context,
 //                       builder: (context) => AlertDialog(
@@ -128,24 +134,24 @@ class _MainMenuState extends State<MainMenu> {
 // Text("We've waited for so long, we can wait a bit longer. Help is on the way.")
 //                           ],)
 //                          ))));
-                          },
-                          child: Text("MY ASSETS",
-                              style: TextStyle(
-                                  fontSize: widget.care == "assets" ? 17 : 16,
-                                  fontWeight: widget.care == "assets"
-                                      ? FontWeight.bold
-                                      : FontWeight.w100,
-                                  fontFamily: "Roboto Mono",
-                                  letterSpacing: 1.3)))),
-                  SizedBox(
-                      height: 38,
-                      width: 130,
-                      child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed("/node");
-                            setState(() {
-                              care = "node";
-                            });
+                      },
+                      child: Text('MY ASSETS',
+                          style: TextStyle(
+                              fontSize: widget.care == 'assets' ? 17 : 16,
+                              fontWeight: widget.care == 'assets'
+                                  ? FontWeight.bold
+                                  : FontWeight.w100,
+                              fontFamily: 'Roboto Mono',
+                              letterSpacing: 1.3)))),
+              SizedBox(
+                height: 38,
+                width: 130,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/node');
+                    setState(() {
+                      care = 'node';
+                    });
 //                              showDialog(
 //                       context: context,
 //                       builder: (context) => AlertDialog(
@@ -158,22 +164,34 @@ class _MainMenuState extends State<MainMenu> {
 // Text("We've waited for so long, we can wait a bit longer. Help is on the way.")
 //                           ],)
 //                          ))));
-                          },
-                          child: Text("NODE",
-                              style: TextStyle(
-                                  fontWeight: widget.care == "node"
-                                      ? FontWeight.bold
-                                      : FontWeight.w100,
-                                  fontSize: widget.care == "node" ? 17 : 16,
-                                  fontFamily: "Roboto Mono",
-                                  letterSpacing: 2)))),
-                ]))),
-        body: widget.porc);
+                  },
+                  child: Text(
+                    'NODE',
+                    style: TextStyle(
+                      fontWeight: widget.care == 'node'
+                          ? FontWeight.bold
+                          : FontWeight.w100,
+                      fontSize: widget.care == 'node' ? 17 : 16,
+                      fontFamily: 'Roboto Mono',
+                      letterSpacing: 2,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: widget.porc,
+    );
   }
 }
 
 class ChatWidget extends StatefulWidget {
-  ChatWidget({this.chat});
+  const ChatWidget({
+    Key key,
+    this.chat,
+  }) : super(key: key);
 
   final Chat chat;
   final bool expanded = false;
@@ -194,7 +212,7 @@ class _ChatWidgetState extends State<ChatWidget> {
     super.initState();
   }
 
-  expand() {
+  void expand() {
     setState(() {
       height = MediaQuery.of(context).size.height - 18;
       width = 500;
@@ -202,7 +220,7 @@ class _ChatWidgetState extends State<ChatWidget> {
     });
   }
 
-  compact() {
+  void compact() {
     setState(() {
       height = 70;
       width = 70;
@@ -214,12 +232,12 @@ class _ChatWidgetState extends State<ChatWidget> {
   Widget build(BuildContext context) {
     return AnimatedContainer(
         height: height,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         child: widget.expanded ? big() : chatBtn());
   }
 
   Widget big() {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height - 18,
       width: 500,
       child: Stack(children: [
@@ -232,7 +250,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                   border: Border.all(
                       color: Theme.of(context).cardColor, width: 1.5),
                 ),
-                duration: Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 300),
                 height: height,
                 width: width,
                 child: widget.chat)),
@@ -248,12 +266,12 @@ class _ChatWidgetState extends State<ChatWidget> {
             color: Theme.of(context).backgroundColor,
             blurRadius: 5.0, // soften the shadow
             spreadRadius: 2, //extend the shadow
-            offset: Offset(
+            offset: const Offset(
               0,
               0,
             ),
           )
-        ], borderRadius: BorderRadius.all(Radius.circular(50))),
+        ], borderRadius: const BorderRadius.all(Radius.circular(50))),
         child: TextButton(
           style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -266,7 +284,7 @@ class _ChatWidgetState extends State<ChatWidget> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(50),
             child: Image.network(
-                "https://i.ibb.co/0n1c7ry/ezgif-com-gif-maker-1.gif"),
+                'https://i.ibb.co/0n1c7ry/ezgif-com-gif-maker-1.gif'),
           ),
         ));
   }

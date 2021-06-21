@@ -1,5 +1,4 @@
-String projectAbi = """
-[
+String projectAbi = '''
 	{
 		"inputs": [],
 		"name": "back",
@@ -182,4 +181,4 @@ String projectAbi = """
 		"type": "function"
 	}
 ]
-""";
+''';
