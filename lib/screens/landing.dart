@@ -4,10 +4,12 @@ import 'dart:async';
 import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:app2/main.dart';
+// ignore: unused_import
 import 'package:app2/services.dart/chain.dart';
 import 'package:app2/services.dart/chatbot.dart';
 import 'package:app2/services.dart/webtrei.dart';
 import 'package:app2/widgets/metabutton.dart';
+// ignore: unused_import
 import 'package:app2/widgets/new_project.dart';
 // import 'package:drawing_animation/drawing_animation.dart';
 // import 'package:drawing_animation/drawing_animation.dart';
@@ -137,24 +139,33 @@ class _LandingState extends State<Landing> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              // OPTION 1
+              // Container(
+              //   color: widget.appstate.lumina
+              //       ? const Color(0xffefefef)
+              //       : Theme.of(context).cardColor,
+              //   width: MediaQuery.of(context).size.width,
+              //   height: 1300,
+              //   child: EditProject(
+              //     p: Project(
+              //       address: null,
+              //       description: null,
+              //       github: 'https://github.com/openai/gpt-3',
+              //       name: null,
+              //       picurl: null,
+              //       category: null,
+              //     ),
+              //   ),
+              // ),
+              // OPTION 2
               Container(
                 color: widget.appstate.lumina
                     ? const Color(0xffefefef)
                     : Theme.of(context).cardColor,
                 width: MediaQuery.of(context).size.width,
                 height: 1300,
-                child: EditProject(
-                  p: Project(
-                    address: null,
-                    description: null,
-                    github: 'https://github.com/openai/gpt-3',
-                    name: null,
-                    picurl: null,
-                    category: null,
-                  ),
-                ),
+                child: everything(),
               ),
-              // everything()),
               SizedBox(
                 height: 100,
                 child: Column(
@@ -726,15 +737,30 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
             ),
           ),
           const SizedBox(height: 20),
-          AnimatedOpacity(
-            duration: const Duration(seconds: 1),
-            opacity: opa,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                DefaultTextStyle(
-                  style: const TextStyle(fontFamily: 'Roboto Mono'),
-                  child: Column(
+          DefaultTextStyle(
+            style: TextStyle(
+              fontFamily: 'Roboto Mono',
+              color: Theme.of(context).textTheme.bodyText1.color,
+            ),
+            child: AnimatedOpacity(
+              duration: const Duration(seconds: 1),
+              opacity: opa,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: const [
+                      SizedBox(height: 4),
+                      Text('Token address: '),
+                      SizedBox(height: 5),
+                      Text('Total supply: '),
+                      Text('Current price: '),
+                      Text('Tokens sold: '),
+                      Text('Accounts: '),
+                    ],
+                  ),
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextButton(
@@ -770,20 +796,8 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
                       const Text('3324'),
                     ],
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: const [
-                    SizedBox(height: 4),
-                    Text('Token address: '),
-                    SizedBox(height: 5),
-                    Text('Total supply: '),
-                    Text('Current price: '),
-                    Text('Tokens sold: '),
-                    Text('Accounts: '),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 25),
@@ -823,11 +837,14 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
                   backgroundColor: Theme.of(context).buttonColor, elevation: 1),
               onPressed: () {
                 showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                        content: us3r == null
-                            ? widget.landing.connect(this)
-                            : widget.landing.buyATN()));
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    content: us3r == null
+                        // ignore: unnecessary_cast
+                        ? widget.landing.connect((this as _BuyATNState))
+                        : widget.landing.buyATN(),
+                  ),
+                );
               },
               child: Container(
                 width: 170,
