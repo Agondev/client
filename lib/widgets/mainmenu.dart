@@ -20,7 +20,7 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
-  final Chat chat = Chat();
+  final Chat chat = const Chat();
   MyAppState appstate;
   String care;
   Widget porc;

@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_dynamic_calls
 import 'dart:convert';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js_util';
@@ -13,7 +14,7 @@ import 'package:flutter_web3_provider/ethers.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart';
 
-String sourceAddress = "0x18A4d5A9039fd15A6576896cd7B445f9e4F3cff1";
+const String _sourceAddress = '0x18A4d5A9039fd15A6576896cd7B445f9e4F3cff1';
 
 class Chain {
   List<Project> projects = [];
@@ -21,17 +22,17 @@ class Chain {
   bool populated = false;
   List adreseleProiectelor;
   String tokenAddress;
-  String chainID = "";
-  var apiUrl = "https://rinkeby.infura.io/v3/e697a6a0ac0a4a7b94b09c88770f14e6";
-  final EthereumAddress sourceAddr = EthereumAddress.fromHex(sourceAddress);
+  String chainID = '';
+  var apiUrl = 'https://rinkeby.infura.io/v3/e697a6a0ac0a4a7b94b09c88770f14e6';
+  final EthereumAddress sourceAddr = EthereumAddress.fromHex(_sourceAddress);
   Future populate(MyAppState state) async {
     populating = true;
-    if (projects.length != 0) {
+    if (projects.isNotEmpty) {
       populating = false;
       return;
     } else {
-      var httpClient = new Client();
-      var ethClient = new Web3Client(apiUrl, httpClient);
+      var httpClient = Client();
+      var ethClient = Web3Client(apiUrl, httpClient);
       final contractSursa = DeployedContract(
           ContractAbi.fromJson(sourceAbi, 'Source'), sourceAddr);
       var tokaddress = contractSursa.function('tokenAddress');
@@ -42,21 +43,19 @@ class Chain {
       var allProjects = await ethClient
           .call(contract: contractSursa, function: proiectef, params: []);
       adreseleProiectelor = allProjects[0];
-      print(adreseleProiectelor);
       for (var i in adreseleProiectelor) {
-        final EthereumAddress projAddr = EthereumAddress.fromHex(i.toString());
+        final projAddr = EthereumAddress.fromHex(i.toString());
         final contractProiect = DeployedContract(
             ContractAbi.fromJson(projectAbi, 'Project'), projAddr);
         var detailsf = contractProiect.function('details');
         var details = await ethClient
             .call(contract: contractProiect, function: detailsf, params: []);
-        print(details);
         // String name = details[0];
         // String desc = details[1];
-        String cat = details[2].toString().split("http")[0];
-        String pic = "http" + details[2].toString().split("http")[1];
-        String git = "http" + details[2].toString().split("http")[2];
-        Project p = Project(
+        var cat = details[2].toString().split('http')[0];
+        var pic = 'http${details[2].toString().split('http')[1]}';
+        var git = 'http${details[2].toString().split('http')[2]}';
+        var p = Project(
           address: i.toString(),
           name: details[0].toString(),
           description: details[1].toString(),
@@ -65,7 +64,7 @@ class Chain {
           github: git,
         );
         projects.add(p);
-        routes["/market/" + p.address] =
+        routes['/market/${p.address}'] =
             ProjectView(address: p.address, appstate: state);
       }
       populating = false;
@@ -75,8 +74,12 @@ class Chain {
 }
 
 class Human {
-  var apiUrl = "https://rinkeby.infura.io/v3/e697a6a0ac0a4a7b94b09c88770f14e6";
-  var httpClient = new Client();
+  Human({this.address, this.web3}) {
+    web3infura = Web3Client(apiUrl, httpClient);
+  }
+
+  var apiUrl = 'https://rinkeby.infura.io/v3/e697a6a0ac0a4a7b94b09c88770f14e6';
+  var httpClient = Client();
   String address;
   bool fetched = false;
   bool creatingContract = false;
@@ -84,58 +87,50 @@ class Human {
   Web3Provider web3;
   Web3Client web3infura;
   EtherAmount balance;
-  Human({this.address, this.web3}) {
-    this.web3infura = new Web3Client(apiUrl, httpClient);
-  }
   List<String> sourceAbi = [
-    "function allProjects() view returns(address[])",
-    "function projects(address) view returns (address)",
-    "function users(address) view returns (address)",
-    "function createUser() returns(address)",
-    "function buy() payable"
+    'function allProjects() view returns(address[])',
+    'function projects(address) view returns (address)',
+    'function users(address) view returns (address)',
+    'function createUser() returns(address)',
+    'function buy() payable'
   ];
   Future<String> buyATN(EtherAmount amount) async {
     creatingContract = true;
-    var sourceContract = Contract(sursa, sourceAbi, this.web3);
+    var sourceContract = Contract(sursa, sourceAbi, web3);
     sourceContract = sourceContract.connect(web3user.getSigner());
     final transaction = await promiseToFuture(callMethod(
-        sourceContract, "buy", [TxParams(value: amount.getInWei.toString())]));
-    final hash = json.decode(stringify(transaction))["hash"];
-    print("hash " + hash.toString());
-    final result = await promiseToFuture(
-        callMethod(this.web3, "waitForTransaction", [hash]));
-    if (json.decode(stringify(result))["status"] == 0) {
+        sourceContract, 'buy', [TxParams(value: amount.getInWei.toString())]));
+    final hash = json.decode(stringify(transaction))['hash'];
+    final result =
+        await promiseToFuture(callMethod(web3, 'waitForTransaction', [hash]));
+    if (json.decode(stringify(result))['status'] == 0) {
       creatingContract = false;
-      throw Exception("something went wrong.");
+      throw Exception('something went wrong.');
     } else {
       var a = json.decode(stringify(result));
-      print(a);
       creatingContract = false;
       return a.toString();
     }
   }
 
+  // ignore: always_declare_return_types
   createContract(State state) async {
     creatingContract = true;
-    var sourceContract = Contract(sursa, sourceAbi, this.web3);
+    var sourceContract = Contract(sursa, sourceAbi, web3);
     sourceContract = sourceContract.connect(web3user.getSigner());
     final transaction =
-        await promiseToFuture(callMethod(sourceContract, "createUser", []));
-    final hash = json.decode(stringify(transaction))["hash"];
-    print("hash " + hash.toString());
-    final result = await promiseToFuture(
-        callMethod(this.web3, "waitForTransaction", [hash]));
-    if (json.decode(stringify(result))["status"] == 0) {
-      throw Exception("something went so fuckcing wrong.");
+        await promiseToFuture(callMethod(sourceContract, 'createUser', []));
+    final hash = json.decode(stringify(transaction))['hash'];
+    final result =
+        await promiseToFuture(callMethod(web3, 'waitForTransaction', [hash]));
+    if (json.decode(stringify(result))['status'] == 0) {
+      throw Exception('something went wrong.');
     } else {
-      print(json.decode(stringify(result)));
-      var first = await callMethod(sourceContract, "users", [this.address]);
-      print("second " + first.toString());
-      var ponse = await promiseToFuture(first);
-      print("new contract address " + ponse.toString());
-      this.contract = UserContract(user: this, assets: {});
+      // var first = await callMethod(sourceContract, 'users', [address]);
+      // var ponse = await promiseToFuture(first);
+      contract = UserContract(user: this, assets: {});
     }
-    this.creatingContract = false;
+    creatingContract = false;
     // state.setState(() {
     //   this.creatingContract = false;
     // });
@@ -143,6 +138,20 @@ class Human {
 }
 
 class Project {
+  Project({
+    this.address,
+    this.name,
+    this.description,
+    this.picurl,
+    this.github,
+    this.category,
+  }) {
+    team = {'0xa9F8F9C0bf3188cEDdb9684ae28655187552bAE9': 100};
+    shareholders = {'0xa9F8F9C0bf3188cEDdb9684ae28655187552bAE9': 5};
+    investors = {};
+    split = 5.0;
+  }
+
   String address;
   Map<String, double> team;
   Map<String, double> shareholders;
@@ -153,17 +162,4 @@ class Project {
   String picurl;
   String github;
   String category;
-  Project({
-    this.address,
-    this.name,
-    this.description,
-    this.picurl,
-    this.github,
-    this.category,
-  }) {
-    team = {"0xa9F8F9C0bf3188cEDdb9684ae28655187552bAE9": 100};
-    shareholders = {"0xa9F8F9C0bf3188cEDdb9684ae28655187552bAE9": 5};
-    investors = {};
-    split = 5.0;
-  }
 }

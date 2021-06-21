@@ -1,3 +1,4 @@
+// ignore_for_file: lines_longer_than_80_chars
 import 'package:app2/main.dart';
 // import 'package:app2/services.dart/webtrei.dart';
 import 'package:app2/widgets/mainmenu.dart';
@@ -6,21 +7,20 @@ import 'package:flutter_switch/flutter_switch.dart';
 
 // import 'package:flutter/foundation.dart';
 bool mineaza = false;
-String miningAddress = "(not set)";
+String miningAddress = '(not set)';
 bool setpressed = false;
 
 class Node extends StatefulWidget {
-  Node({this.appstate, this.title});
+  const Node({Key key, this.appstate, this.title}) : super(key: key);
 
-  static String route = "/node";
+  static String route = '/node';
 
   final String title;
   final MyAppState appstate;
   final bool status = false;
+
   @override
-  State<StatefulWidget> createState() {
-    return NodeState();
-  }
+  State<StatefulWidget> createState() => NodeState();
 }
 
 class NodeState extends State<Node> {
@@ -28,17 +28,17 @@ class NodeState extends State<Node> {
   @override
   Widget build(BuildContext context) {
     return MainMenu(
-        care: "node",
+        care: 'node',
         appstate: widget.appstate,
         porc: Container(
-            padding: EdgeInsets.all(3),
+            padding: const EdgeInsets.all(3),
             width: MediaQuery.of(context).size.width,
             child: Stack(
                 // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Scrollbar(
                       controller: sc,
-                      child: Container(
+                      child: SizedBox(
                           height: MediaQuery.of(context).size.height - 30,
                           width: MediaQuery.of(context).size.width,
                           child: SingleChildScrollView(
@@ -47,16 +47,16 @@ class NodeState extends State<Node> {
                               decoration: BoxDecoration(
                                 color: Theme.of(context).cardColor,
                               ),
-                              padding: EdgeInsets.symmetric(vertical: 12),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    "Mining Node",
+                                  const Text(
+                                    'Mining Node',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 19,
                                   ),
                                   FlutterSwitch(
@@ -70,7 +70,7 @@ class NodeState extends State<Node> {
                                     padding: 8.0,
                                     showOnOff: true,
                                     onToggle: (val) {
-                                      if (miningAddress != "(not set)") {
+                                      if (miningAddress != '(not set)') {
                                         setState(() {
                                           mineaza = val;
                                         });
@@ -81,22 +81,22 @@ class NodeState extends State<Node> {
                               ),
                             ),
                             Container(
-                              padding: EdgeInsets.all(37),
+                              padding: const EdgeInsets.all(37),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
+                                    children: const [
                                       SizedBox(height: 11),
-                                      Text("Contract address:"),
+                                      Text('Contract address:'),
                                       SizedBox(height: 29),
-                                      Text("Uptime:"),
+                                      Text('Uptime:'),
                                       SizedBox(height: 19),
-                                      Text("Total earned:"),
+                                      Text('Total earned:'),
                                     ],
                                   ),
-                                  SizedBox(width: 19),
+                                  const SizedBox(width: 19),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -109,8 +109,8 @@ class NodeState extends State<Node> {
                                                     setpressed = true;
                                                   });
                                                 },
-                                                child: Icon(Icons.edit))
-                                            : Text(""),
+                                                child: const Icon(Icons.edit))
+                                            : const SizedBox(),
                                         setpressed
                                             ? SizedBox(
                                                 width: 340,
@@ -119,23 +119,27 @@ class NodeState extends State<Node> {
                                                   maxLines: 1,
                                                   onChanged: (val) {
                                                     if (val.length > 41) {
-                                                      setState(() {
-                                                        miningAddress = val;
-                                                        setpressed = false;
-                                                      });
+                                                      setState(
+                                                        () {
+                                                          miningAddress = val;
+                                                          setpressed = false;
+                                                        },
+                                                      );
                                                     }
                                                   },
-                                                  decoration: InputDecoration(
+                                                  decoration: const InputDecoration(
                                                       labelText:
-                                                          "Paste contract address"),
-                                                ))
+                                                          'Paste contract address'),
+                                                ),
+                                              )
                                             : Text(miningAddress,
-                                                style: TextStyle(fontSize: 12)),
+                                                style: const TextStyle(
+                                                    fontSize: 12)),
                                       ]),
-                                      SizedBox(height: 27),
-                                      Text("-- hrs, -- sec"),
-                                      SizedBox(height: 19),
-                                      Text("-- ATN"),
+                                      const SizedBox(height: 27),
+                                      const Text('-- hrs, -- sec'),
+                                      const SizedBox(height: 19),
+                                      const Text('-- ATN'),
                                     ],
                                   )
                                 ],

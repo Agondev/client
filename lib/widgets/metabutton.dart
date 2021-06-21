@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_dynamic_calls
 // import 'package:app2/screens/landing.dart';
 import 'package:app2/services.dart/webtrei.dart';
 import 'package:flutter/material.dart';
@@ -5,10 +6,11 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_web3_provider/ethers.dart';
 
 class MetaButton extends StatefulWidget {
-  MetaButton({this.context, this.landingPage, this.state});
+  MetaButton({Key key, this.context, this.landingPage, this.state})
+      : super(key: key);
 
   final bool landingPage;
-  final state;
+  final dynamic state;
   final Web3 webtrei = Web3();
   final BuildContext context;
 
@@ -36,18 +38,16 @@ class MetaButtonState extends State<MetaButton> {
             _isProcessing = true;
           });
           if (!widget.landingPage) {
-            await widget.webtrei.web3sign();
-            Navigator.of(context).pushNamed("/assets");
+            widget.webtrei.web3sign();
+            await Navigator.of(context).pushNamed('/assets');
           } else {
             if (us3r == null) {
-              await widget.webtrei.web3sign();
-              widget.state.setState(() {
-                widget.state.widget.isUser = true;
-              });
+              widget.webtrei.web3sign();
+              widget.state.setState(() => widget.state.widget.isUser = true);
               Navigator.of(context).pop();
             }
 
-            showDialog(
+            await showDialog(
                 context: context,
                 builder: (context) =>
                     AlertDialog(content: widget.state.widget.landing.buyATN()));
@@ -56,33 +56,29 @@ class MetaButtonState extends State<MetaButton> {
             _isProcessing = false;
           });
         },
-        // shape: RoundedRectangleBorder(
-        //     borderRadius: BorderRadius.circular(4),
-        //     side: BorderSide(width: 3, color: Theme.of(context).primaryColor)),
-        // highlightElevation: 0,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
           child: _isProcessing
-              ? CircularProgressIndicator()
+              ? const CircularProgressIndicator()
               : Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    SizedBox(width: 3),
+                    const SizedBox(width: 3),
                     Image.network(
-                      "https://i.ibb.co/dphrBzn/metamask.png",
+                      'https://i.ibb.co/dphrBzn/metamask.png',
                       // "https://i.ibb.co/wSK0Lgb/metaicon.png",
                       height: 26,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 20),
                       child: Text(
                         'CONNECT METAMASK  ',
                         style: TextStyle(
                           fontSize: 16,
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
         ),

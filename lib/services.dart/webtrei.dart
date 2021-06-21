@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_dynamic_calls
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js_util';
 import 'package:app2/services.dart/chain.dart';
@@ -16,62 +17,47 @@ bool data = false;
 Client httpclient;
 bool merge = false;
 Human us3r;
-String sursa = "0x18A4d5A9039fd15A6576896cd7B445f9e4F3cff1";
+String sursa = '0x18A4d5A9039fd15A6576896cd7B445f9e4F3cff1';
 
 class Web3 extends ChangeNotifier {
   bool hopa = false;
-  changeHopa(adresa) async {
-    // var balans = await promiseToFuture(web3user.getBalance(owner));
+  void changeHopa(adresa) async {
     await promiseToFuture(web3user.getBalance(owner));
-    print("iaca s-a intamplat");
   }
 
   List<String> sourceAbi = [
-    "function allProjects() view returns(address[])",
-    "function projects(address) view returns (address)",
-    "function users(address) view returns (address)",
-    "function createUser() returns(address)"
+    'function allProjects() view returns(address[])',
+    'function projects(address) view returns (address)',
+    'function users(address) view returns (address)',
+    'function createUser() returns(address)'
   ];
 
   List<String> userAbi = [
-    "function balanceATN() view returns (uint256)",
-    "function getAssets() view returns (tuple(address,uint256)[])",
+    'function balanceATN() view returns (uint256)',
+    'function getAssets() view returns (tuple(address,uint256)[])',
   ];
 
-  List<String> token = ["function approve"];
-  List<String> projectAbi = ["function details() view returns(string[])"];
-  web3sign() async {
+  List<String> token = ['function approve'];
+  List<String> projectAbi = ['function details() view returns(string[])'];
+  void web3sign() async {
     merge = true;
-    print("etereum " + ethereum.toString());
-    var accounts = await promiseToFuture(
-        ethereum.request(RequestParams(method: 'eth_requestAccounts')));
-    print(accounts);
-    String se = ethereum.selectedAddress;
-    print("selectedAddress: $se");
+    var se = ethereum.selectedAddress;
     web3user = Web3Provider(ethereum);
     var catAre =
         await promiseToFuture(web3user.getBalance(ethereum.selectedAddress));
-    print("de curiozitate " + catAre.toString());
     owner = se;
     var sourceContract = Contract(sursa, sourceAbi, web3user);
-    var first = await callMethod(sourceContract, "users", [se]);
-    print("first" + first.toString());
+    var first = await callMethod(sourceContract, 'users', [se]);
     var ponse = await promiseToFuture(first);
-    print("user address is " + ponse.toString());
-    Map<String, double> assets = {};
-    var tonse;
+    var assets = <String, double>{};
+    dynamic tonse;
     if (!ponse.toString().contains('000000')) {
       var userContract = Contract(ponse.toString(), userAbi, web3user);
-      var firstAndAHaldf = await callMethod(userContract, "balanceATN", []);
+      var firstAndAHaldf = await callMethod(userContract, 'balanceATN', []);
       tonse = await promiseToFuture(firstAndAHaldf);
-      print("from conse we have " + tonse.toString());
-      var second = await callMethod(userContract, "getAssets", []);
+      var second = await callMethod(userContract, 'getAssets', []);
       var donse = await promiseToFuture(second);
-      print("from donse we have $donse " + " |||and||| " + donse.toString());
-      print("Amtrecut cu vine?");
       for (var asset in donse) {
-        print("iteratia");
-        print(asset[0].toString());
         assets[asset[0].toString()] = double.parse(asset[1].toString());
       }
     }
@@ -79,10 +65,13 @@ class Web3 extends ChangeNotifier {
     us3r.balance = EtherAmount.fromUnitAndValue(
         EtherUnit.wei, BigInt.parse(catAre.toString()));
     if (!ponse.toString().contains('000000')) {
-      UserContract uc =
+      var uc =
           UserContract(address: ponse.toString(), user: us3r, assets: assets);
+      // ignore: cascade_invocations
       uc.valoare = EtherAmount.fromUnitAndValue(
-          EtherUnit.wei, BigInt.parse(tonse.toString()));
+        EtherUnit.wei,
+        BigInt.parse(tonse.toString()),
+      );
       us3r.contract = uc;
     }
 

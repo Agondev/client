@@ -6,93 +6,110 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ProjectView extends StatelessWidget {
-  String address;
-  ScrollController sc = ScrollController();
-  MyAppState appstate;
-  ProjectView({this.appstate,this.address});
+  ProjectView({Key key, this.appstate, this.address}) : super(key: key);
+
+  final String address;
+  final ScrollController sc = ScrollController();
+  final MyAppState appstate;
+
   @override
   Widget build(BuildContext context) {
-    var p;
-   if (address==null){ p = (ModalRoute.of(context).settings.arguments as List)[0];}
-   else{
-     for (Project pr in chain.projects){
-       if (address==pr.address){p=pr;}
-     }if (p==null){return Container(child:Center(child:Text("No such resource on Autonet.")));}
-   }
-    print(p.name);
+    Project project;
+    if (address == null) {
+      project = (ModalRoute.of(context).settings.arguments as List)[0];
+    } else {
+      for (var item in chain.projects) {
+        if (address == item.address) {
+          project = item;
+        }
+      }
+      if (project == null) {
+        return const SizedBox(
+            child: Center(child: Text('No such resource on Autonet.')));
+      }
+    }
     return MainMenu(
-        appstate: appstate,
-        porc: Container(
-          padding: EdgeInsets.all(3),
-          width: MediaQuery.of(context).size.width,
-          child: Stack(
-              // crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Scrollbar(
-                  controller: sc,
+      appstate: appstate,
+      porc: Container(
+        padding: const EdgeInsets.all(3),
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Scrollbar(
+              controller: sc,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height - 30,
+                width: MediaQuery.of(context).size.width,
+                child: SingleChildScrollView(
                   child: Container(
-                      height: MediaQuery.of(context).size.height - 30,
-                      width: MediaQuery.of(context).size.width,
-                      child: SingleChildScrollView(
-                          child: Container(
-                              alignment: Alignment.topCenter,
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 50),
-                                  ProjectDetails(p: p),
-                                ],
-                              )))),
+                    alignment: Alignment.topCenter,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 50),
+                        ProjectDetails(p: project),
+                      ],
+                    ),
+                  ),
                 ),
-                Opacity(
-                    opacity: 0.91,
-                    child: Container(
-                      height: 40,
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        border: Border(
-                            bottom: BorderSide(
-                                width: 0.3,
-                                color: Theme.of(context).primaryColor)),
+              ),
+            ),
+            Opacity(
+              opacity: 0.91,
+              child: Container(
+                height: 40,
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  border: Border(
+                      bottom: BorderSide(
+                          width: 0.3, color: Theme.of(context).primaryColor)),
+                ),
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: const [
+                      TextButtonPlaceholder(
+                        text: 'Production',
                       ),
-                      width: MediaQuery.of(context).size.width,
-                      child: Center(
-                          child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          TextButton(
-                              onPressed: () {},
-                              child: Text("Production",
-                                  style: TextStyle(
-                                    fontFamily: "OCR-A",
-                                  ))),
-                          TextButton(
-                              onPressed: () {},
-                              child: Text("Training",
-                                  style: TextStyle(
-                                    fontFamily: "OCR-A",
-                                  ))),
-                          TextButton(
-                              onPressed: () {},
-                              child: Text("Developers",
-                                  style: TextStyle(
-                                    fontFamily: "OCR-A",
-                                  ))),
-                          TextButton(
-                              onPressed: () {},
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "FILTER",
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                  Icon(Icons.sort)
-                                ],
-                              )),
-                        ],
-                      )),
-                    )),
-              ]),
-        ));
+                      TextButtonPlaceholder(text: 'Training'),
+                      TextButtonPlaceholder(
+                        text: 'Developers',
+                      ),
+                      TextButtonPlaceholder(
+                        text: 'FILTER',
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TextButtonPlaceholder extends StatelessWidget {
+  const TextButtonPlaceholder({
+    Key key,
+    this.text,
+  }) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () {},
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontFamily: 'OCR-A',
+        ),
+      ),
+    );
   }
 }
