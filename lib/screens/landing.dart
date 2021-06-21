@@ -89,31 +89,31 @@ class _LandingState extends State<Landing> {
     Future.delayed(Duration(milliseconds: 1300), () {
       setState(() {});
     });
-    // Timer.periodic(Duration(seconds: 24), (timer) {
-    //   bool plus1 = rand.nextBool();
-    //   bool plus2 = rand.nextBool();
-    //   bool plus3 = rand.nextBool();
-    //   setState(() {
-    //     plus1
-    //         ? reqpersec = reqpersec + rand.nextInt(100)
-    //         : reqpersec - rand.nextInt(100);
-    //     plus2 ? netcap = netcap + rand.nextInt(50) : netcap - rand.nextInt(50);
-    //     plus1
-    //         ? activeNodes = activeNodes + rand.nextInt(100)
-    //         : activeNodes - rand.nextInt(100);
-    //     dividents = dividents + rand.nextInt(100);
-    //     if (latency <= 9) {
-    //       latency = latency + rand.nextInt(15);
-    //     }
-    //     if (latency >= 75) {
-    //       latency = latency - rand.nextInt(5);
-    //     }
-    //     if (latency > 9 && latency < 75) {
-    //       latency =
-    //           plus3 ? latency + rand.nextInt(5) : latency - rand.nextInt(5);
-    //     }
-    //   });
-    // });
+    Timer.periodic(Duration(seconds: 24), (timer) {
+      bool plus1 = rand.nextBool();
+      bool plus2 = rand.nextBool();
+      bool plus3 = rand.nextBool();
+      setState(() {
+        plus1
+            ? reqpersec = reqpersec + rand.nextInt(100)
+            : reqpersec - rand.nextInt(100);
+        plus2 ? netcap = netcap + rand.nextInt(50) : netcap - rand.nextInt(50);
+        plus1
+            ? activeNodes = activeNodes + rand.nextInt(100)
+            : activeNodes - rand.nextInt(100);
+        dividents = dividents + rand.nextInt(100);
+        if (latency <= 9) {
+          latency = latency + rand.nextInt(15);
+        }
+        if (latency >= 75) {
+          latency = latency - rand.nextInt(5);
+        }
+        if (latency > 9 && latency < 75) {
+          latency =
+              plus3 ? latency + rand.nextInt(5) : latency - rand.nextInt(5);
+        }
+      });
+    });
     super.initState();
   }
 
@@ -139,16 +139,17 @@ class _LandingState extends State<Landing> {
                         : Theme.of(context).cardColor,
                     width: MediaQuery.of(context).size.width,
                     height: 1300,
-                    child: EditProject(
-                        p: Project(
-                            address: null,
-                            description: null,
-                            github: "https://github.com/openai/gpt-3",
-                            name: null,
-                            picurl: null,
-                            category: null))
+                    child:
+                    //  EditProject(
+                    //     p: Project(
+                    //         address: null,
+                    //         description: null,
+                    //         github: "https://github.com/openai/gpt-3",
+                    //         name: null,
+                    //         picurl: null,
+                    //         category: null))
 
-                    // everything()
+                    everything()
                     ),
                 Container(
                     height: 100,
@@ -367,7 +368,7 @@ class _LandingState extends State<Landing> {
                                   width: 200,
                                   child: Center(
                                       child: Text(
-                                    "Read the whitepaper",
+                                    "Learn more",
                                     style: TextStyle(fontSize: 18),
                                   ))))
                         ]))

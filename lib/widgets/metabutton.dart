@@ -54,7 +54,7 @@ class MetaButtonState extends State<MetaButton> {
           });
         },
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(4),
             side: BorderSide(width: 3, color: Theme.of(context).primaryColor)),
         highlightElevation: 0,
         child: Padding(
@@ -67,7 +67,7 @@ class MetaButtonState extends State<MetaButton> {
                   children: <Widget>[
                     SizedBox(width: 3),
                     Image.network(
-                      "https://i.ibb.co/HrMvRMC/metamask-icon.jpg",
+                      "https://i.ibb.co/dphrBzn/metamask.png",
                       // "https://i.ibb.co/wSK0Lgb/metaicon.png",
                       height: 26,
                     ),

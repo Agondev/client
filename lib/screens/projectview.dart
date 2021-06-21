@@ -6,13 +6,19 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ProjectView extends StatelessWidget {
-  static String route = "/project";
+  String address;
   ScrollController sc = ScrollController();
   MyAppState appstate;
-  ProjectView({this.appstate});
+  ProjectView({this.appstate,this.address});
   @override
   Widget build(BuildContext context) {
-    var p = (ModalRoute.of(context).settings.arguments as List)[0];
+    var p;
+   if (address==null){ p = (ModalRoute.of(context).settings.arguments as List)[0];}
+   else{
+     for (Project pr in chain.projects){
+       if (address==pr.address){p=pr;}
+     }if (p==null){return Container(child:Center(child:Text("No such resource on Autonet.")));}
+   }
     print(p.name);
     return MainMenu(
         appstate: appstate,

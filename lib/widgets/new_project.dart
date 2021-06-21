@@ -77,6 +77,11 @@ class TeamMember extends StatelessWidget {
   }
 }
 
+
+
+
+
+
 class EditProject extends StatefulWidget {
   bool textfield = false;
   bool filepaste = false;
@@ -98,7 +103,7 @@ class _EditProjectState extends State<EditProject> {
     for (var stakeholder in widget.p.team.keys) {
       ownership.add(TeamMember(p:widget.p,percent: widget.p.team[stakeholder].toDouble(),state: this,address: stakeholder));
     }
-    return Container(
+    return Scrollbar(child:SingleChildScrollView (child:Container(
       margin: EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width * 0.8,
       decoration:
@@ -146,10 +151,48 @@ class _EditProjectState extends State<EditProject> {
         SizedBox(height: 20),
         linkGit()
       ]),
-    );
+    )));
   }
 
+  Widget stillLinkGit(){
+      var c=TextEditingController();
+    return Container(
+      width:600,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(height:30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+            Icon(Icons.warning,color: Colors.red),
+Text("  MIND THE FORMAT  ",style: TextStyle(fontWeight: FontWeight.bold,fontSize:19)),Icon(Icons.warning,color:Colors.red)
+          ]),
+          SizedBox(height:19),
+          SizedBox(width:400, child:Text("To ensure compatibility in both training and production environments, Autonet projects need a standardized codebase. As best practice, we recommend cloning the template project and adding your custom logic to it. Make sure your repo is implementing all required methods before committing it to the blockchain:")),
+          SizedBox(height:35),
 
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+              SizedBox(height:30),
+             SizedBox(width:400,height:30,child: TextField(
+               controller:c ,
+               decoration: InputDecoration(labelText: "Paste link to repository",labelStyle: TextStyle(color: Theme.of(context).textTheme.bodyText2.color)),
+             )),
+          ]),
+          SizedBox(height:30),
+          ElevatedButton(
+            child:SizedBox(width:130,height:30,child:Center(child:Text("DONE"))),
+            onPressed: (){
+              widget.p.github=c.text;
+              Navigator.of(context).pop();}),
+      ],),
+    );
+  }
+  
 
   Widget linkGit() {
     List<Widget> team = [];
@@ -157,22 +200,22 @@ class _EditProjectState extends State<EditProject> {
       team.add(TeamMember(address: key,percent: value.toDouble(),p: widget.p,state: this));
     });
     return widget.p.github == null
-        ? TextButton(
+        ? Container(
+          margin:EdgeInsets.all(50),
+          child:TextButton(
             onPressed: () {},
             child: TextButton(
                 style: TextButton.styleFrom(
                     backgroundColor: Theme.of(context).buttonColor,
                     elevation: 1),
                 onPressed: () {
-                  setState(() {
-                    widget.p.github = "https://github.com/openai/gpt-3";
-                  });
-                  showDialog(
+                    showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                          content: Container(child: Text("hello"))));
+                          content: stillLinkGit()));
                 },
                 child: Container(
+                  
                   width: 290,
                   padding: EdgeInsets.all(10),
                   child: Row(
@@ -187,7 +230,7 @@ class _EditProjectState extends State<EditProject> {
                       )
                     ],
                   ),
-                )))
+                ))))
         : DefaultTabController(
             length: 3,
             child: Container(
@@ -330,12 +373,12 @@ class _EditProjectState extends State<EditProject> {
                             child: Column(children: [
                               SizedBox(height:20),
                               Text(
-                                  "Distribution of revenue between devs and miners:",
+                                  "Distribution of revenue between devs and investors:",
                                   style:
                                       TextStyle(fontWeight: FontWeight.bold)),
                               SizedBox(height: 20),
                               SizedBox(
-                                  width: 380,
+                                  width: 390,
                                   child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -366,7 +409,7 @@ class _EditProjectState extends State<EditProject> {
                                             )),
                                         Column(
                                           children: [
-                                            Text("Miners"),
+                                            Text("Investors"),
                                             Text(
                                                 (100.0 - widget.p.split)
                                                     .toStringAsFixed(1),
@@ -453,7 +496,7 @@ class _EditProjectState extends State<EditProject> {
                                 fontSize: 20,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold)),
-                        onPressed: () {})),
+                        onPressed: () {Navigator.of(context).pop();})),
                         SizedBox(width:120),
                          SizedBox(
                     height: 40,
@@ -471,7 +514,7 @@ class _EditProjectState extends State<EditProject> {
                           
                         }))
                 ],),
-               
+               SizedBox(height:20)
               ]),
             ));
   }

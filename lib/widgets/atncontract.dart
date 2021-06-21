@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:app2/contracts/project.dart';
 import 'package:app2/services.dart/chain.dart';
 import 'package:app2/services.dart/webtrei.dart';
+import 'package:app2/widgets/new_project.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web3_provider/ethers.dart';
@@ -22,6 +23,7 @@ class UserContract {
     this.address,
     this.user,
     this.assets,
+   
   }) {
     if (user.fetched == false) {
       assets.forEach((key, value) async {
@@ -57,7 +59,8 @@ class MyContractView extends StatefulWidget {
   // MyContractView({this.contract});
   String address = "adaosijdoasdjfoasidjfpasodijfasd";
   String value = "12312 ATN";
-
+  var appstate;
+  MyContractView({this.appstate});
   @override
   _MyContractViewState createState() => _MyContractViewState();
 }
@@ -84,13 +87,14 @@ class _MyContractViewState extends State<MyContractView> {
             Container(
                 decoration: BoxDecoration(
                     border: Border.all(
-                  color: Theme.of(context).accentColor,
+                      width: 1,
+                  color:  widget.appstate.lumina?Colors.black54:Colors.white54,
                 )),
                 child: Column(
                   children: [
                     Container(
                         height: 200,
-                        color: Theme.of(context).accentColor,
+                        color: widget.appstate.lumina?Colors.black54:Colors.white54,
                         child: Center(
                             child: Column(
                           children: [
@@ -101,7 +105,7 @@ class _MyContractViewState extends State<MyContractView> {
                                 SizedBox(width: 4),
                                 Image.network(
                                     "https://i.ibb.co/kXVw8Z2/logo64x64.png",
-                                    height: 40),
+                                    height: 50),
                                 Spacer(),
                                 Text(
                                   "ATN CONTRACT",
@@ -116,7 +120,7 @@ class _MyContractViewState extends State<MyContractView> {
                                 Spacer(),
                                 Image.network(
                                     "https://i.ibb.co/kXVw8Z2/logo64x64.png",
-                                    height: 40),
+                                    height: 50),
                                 SizedBox(width: 4)
                               ],
                             ),
@@ -282,7 +286,19 @@ class _MyContractViewState extends State<MyContractView> {
                     Column(
                       children: assets,
                     ),
-                    SizedBox(height: 11),
+                    SizedBox(height: 81),
+                    TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                        ),
+                      child: Text("Developing in TensorFlow? Add your project.",style:TextStyle(fontSize:13,color:Theme.of(context).textTheme.bodyText2.color)),
+                      onPressed:(){
+                        showDialog(context: context, 
+                        builder: (context)=>AlertDialog(
+                          content:EditProject(p: Project(address: null,description: null,github: null,name: null,category: null,picurl: null))
+                        ));
+                      }),
+                      SizedBox(height: 7)
                   ],
                 ))
           ],
@@ -302,19 +318,19 @@ class _MyContractViewState extends State<MyContractView> {
               "Contract is currently holding: " +
                   us3r.contract.valoare.getInEther.toString() +
                   " ATN",
-              style: TextStyle(color: Colors.black87, fontSize: 19),
+              style: TextStyle(fontSize: 19),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
                 "Amount to withdraw: ",
-                style: TextStyle(color: Colors.black, fontSize: 19),
+                style: TextStyle(fontSize: 19),
               ),
               SizedBox(
                   width: 100,
                   child: TextField(
                     style: TextStyle(
                       fontSize: 19,
-                      color: Colors.black,
+                      
                     ),
                     keyboardType: TextInputType.numberWithOptions(
                         decimal: true, signed: false),
@@ -323,7 +339,7 @@ class _MyContractViewState extends State<MyContractView> {
                     maxLength: 10,
                     decoration: InputDecoration(
                         labelStyle:
-                            TextStyle(fontSize: 15, color: Colors.black),
+                            TextStyle(fontSize: 15),
                         labelText: "Enter",
                         alignLabelWithHint: true,
                         focusColor: Colors.black,
@@ -331,7 +347,7 @@ class _MyContractViewState extends State<MyContractView> {
                   )),
               Text(
                 "ATN",
-                style: TextStyle(color: Colors.black, fontSize: 19),
+                style: TextStyle( fontSize: 19),
               ),
             ]),
             SizedBox(height: 40),

@@ -4,6 +4,9 @@ import 'dart:js_util';
 import 'dart:convert';
 import 'package:app2/contracts/project.dart';
 import 'package:app2/contracts/source.dart';
+import 'package:app2/main.dart';
+import 'package:app2/screens/market.dart';
+import 'package:app2/screens/projectview.dart';
 import 'package:app2/services.dart/webtrei.dart';
 import 'package:app2/widgets/agent_card.dart';
 import 'package:app2/widgets/atncontract.dart';
@@ -24,7 +27,7 @@ class Chain {
   String chainID = "";
   var apiUrl = "https://rinkeby.infura.io/v3/e697a6a0ac0a4a7b94b09c88770f14e6";
   final EthereumAddress sourceAddr = EthereumAddress.fromHex(sourceAddress);
-  Future populate() async {
+  Future populate(MyAppState state) async {
     populating = true;
     if (projects.length != 0) {
       populating = false;
@@ -65,6 +68,7 @@ class Chain {
           github: git,
         );
         projects.add(p);
+        routes["/market/"+p.address]=ProjectView(address:p.address,appstate: state);
       }
       populating = false;
       populated = true;
@@ -104,12 +108,12 @@ class Human {
         callMethod(this.web3, "waitForTransaction", [hash]));
     if (json.decode(stringify(result))["status"] == 0) {
       creatingContract = false;
-      throw Exception("something went wrong and life is misery.");
+      throw Exception("something went wrong.");
     } else {
       var a = json.decode(stringify(result));
       print(a);
       creatingContract = false;
-      return a.toString();
+      // return a.toString();
     }
   }
 

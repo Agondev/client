@@ -1,18 +1,31 @@
 import 'package:app2/main.dart';
+import 'package:app2/services.dart/webtrei.dart';
 import 'package:app2/widgets/mainmenu.dart';
 import 'package:flutter/material.dart';
-
-class Node extends StatelessWidget {
+import 'package:flutter_switch/flutter_switch.dart';
+import 'package:flutter/foundation.dart';
+bool mineaza=false;
+String miningAddress="(not set)";
+bool setpressed=false;
+class Node extends StatefulWidget{
   String title;
   static String route = "/node";
-  ScrollController sc = ScrollController();
   MyAppState appstate;
   Node({this.appstate, this.title});
+  bool status=false;
+  @override
+  State<StatefulWidget> createState() {
+   return NodeState();
+  }
+}
+
+class NodeState extends State<Node> {
+ScrollController sc = ScrollController();
   @override
   Widget build(BuildContext context) {
     return MainMenu(
         care: "node",
-        appstate: appstate,
+        appstate: widget.appstate,
         porc: Container(
             padding: EdgeInsets.all(3),
             width: MediaQuery.of(context).size.width,
@@ -33,16 +46,25 @@ class Node extends StatelessWidget {
                               padding: EdgeInsets.symmetric(vertical: 12),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Switch(value: false, onChanged: (value) {}),
-                                  SizedBox(
-                                    width: 19,
-                                  ),
-                                  Text(
-                                    "Node is OFF",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
+                                children: [ Text("Mining Node",style:TextStyle(fontWeight: FontWeight.bold),),
+                                  SizedBox( width: 19,),
+                                  FlutterSwitch(
+                                      width: 100.0,
+                                      height: 34.0,
+                                      valueFontSize: 15.0,
+                                      activeColor: Colors.green,
+                                      toggleSize: 34.0,
+                                      value: mineaza,
+                                      borderRadius: 30.0,
+                                      padding: 8.0,
+                                      showOnOff: true,
+                                      onToggle: (val) {
+                                        if (miningAddress!="(not set)"){
+                                          setState(() {
+                                          mineaza = val;
+                                        });
+                                        }
+                                      },),
                                 ],
                               ),
                             ),
@@ -54,9 +76,9 @@ class Node extends StatelessWidget {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      SizedBox(height: 6),
+                                      SizedBox(height: 11),
                                       Text("Contract address:"),
-                                      SizedBox(height: 19),
+                                      SizedBox(height: 29),
                                       Text("Uptime:"),
                                       SizedBox(height: 19),
                                       Text("Total earned:"),
@@ -68,17 +90,33 @@ class Node extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Row(children: [
+                                       setpressed==false? TextButton(onPressed: (){
+                                          setState(() {  setpressed=true;  });
+                                        }, child: Icon(Icons.edit)):Text(""),
+                                        setpressed?
+                                        SizedBox(width:340,
+                                       child: TextField(
+                                          maxLength: 42,
+                                          maxLines: 1,
+                                          onChanged:(val){
+                                             if (val.length >41) {
+                                               setState(() {
+                                                 miningAddress=val;
+                                                 setpressed=false;
+                                                     });
+                                             }
+                                            },
+                                          decoration: InputDecoration(labelText: "Paste contract address"),
+                                        )):
                                         Text(
-                                            "0xf3yvds8yH8yRVJ7vr9Ybyl96975Bbl779BH",
+                                            miningAddress,
                                             style: TextStyle(fontSize: 12)),
-                                        TextButton(
-                                            child: Icon(Icons.copy),
-                                            onPressed: () {})
+                                       
                                       ]),
-                                      SizedBox(height: 13),
-                                      Text("62 hrs, 41 sec"),
+                                      SizedBox(height: 27),
+                                      Text("-- hrs, -- sec"),
                                       SizedBox(height: 19),
-                                      Text("9.132 ATN"),
+                                      Text("-- ATN"),
                                     ],
                                   )
                                 ],
@@ -86,5 +124,5 @@ class Node extends StatelessWidget {
                             ),
                           ]))))
                 ])));
-  }
+    }
 }

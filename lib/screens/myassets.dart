@@ -37,34 +37,40 @@ class MyAssets extends StatelessWidget {
                               alignment: Alignment.topCenter,
                               child: Column(
                                 children: [
-                                  SizedBox(height: 20),
+                                  SizedBox(height: 10),
                                   us3r == null
-                                      ? Column(children: [
+                                      ? Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(height: 100),
                                           Text(
                                             "Web3 provider not connected",
                                             style: TextStyle(fontSize: 20),
                                           ),
-                                          SizedBox(height: 20),
+                                          SizedBox(height: 100),
                                           MetaButton(landingPage: false)
                                         ])
                                       : Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-                                            Row(children: [
-                                              Text("Connected with address " +
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                              Text("Connected with address   " +
                                                   us3r.address),
                                               SizedBox(width: 40),
-                                              TextButton(
-                                                  onPressed: () {
-                                                    us3r.buyATN(EtherAmount
-                                                        .fromUnitAndValue(
-                                                            EtherUnit.finney,
-                                                            8));
-                                                  },
-                                                  child: Text("BUY ATN"))
+                                              // TextButton(
+                                              //     onPressed: () {
+                                              //       us3r.buyATN(EtherAmount
+                                              //           .fromUnitAndValue(
+                                              //               EtherUnit.finney,
+                                              //               8));
+                                              //     },
+                                              //     child: Text("BUY ATN"))
                                             ]),
                                             us3r.contract == null
                                                 ? CreateContractBTN()
-                                                : MyContractView()
+                                                : MyContractView(appstate:appstate)
                                           ],
                                         )
                                 ],
@@ -89,10 +95,12 @@ class _CreateContractBTNState extends State<CreateContractBTN> {
           : Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                SizedBox(height: 100),
                 Text(
                   "Autonet contract not initialized",
                   style: TextStyle(fontSize: 20),
                 ),
+                SizedBox(height: 100),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: TextButton(

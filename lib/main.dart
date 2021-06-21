@@ -13,22 +13,25 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart';
+import 'package:fps_widget/fps_widget.dart';
 import 'package:intl/date_time_patterns.dart';
 
 Chain chain = new Chain();
-void main() {
-  runApp(MyApp());
-}
+bool mining=false;
+void main() {runApp(MyApp());}
+Map<String, Widget> routes = {};
 
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // chain.populate();
-    return MyAppState();
+    var app=MyAppState();
+    // chain.populate(app);
+    return app;
   }
 }
 
 class MyAppState extends State<MyApp> {
+  
   DateTime now = DateTime.now();
   MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];
@@ -80,13 +83,12 @@ class MyAppState extends State<MyApp> {
       primarySwatch: createMaterialColor(Color(0xffefefef)),
       highlightColor: Color(0xff6e6e6e),
     );
-    Map<String, Widget> routes = {
-      '/home': MainMenu(
-          care: "landing", appstate: this, porc: Landing(appstate: this))
-    };
+    print("printing things");
+    routes.forEach((key, value) {print("key "+key.toString()+" value "+value.toString());});
 
     return MaterialApp(
         onGenerateRoute: (settings) {
+        print ("setarili" +settings.name.toString());
           switch (settings.name) {
             case '/node':
               return PageTransition(
@@ -128,8 +130,6 @@ class MyAppState extends State<MyApp> {
             )));
   }
 }
-
-// ignore: must_be_immutable
 class Market extends StatefulWidget {
   static String route = "/market";
   Market({Key key, this.title, this.appstate}) : super(key: key);
@@ -138,8 +138,6 @@ class Market extends StatefulWidget {
   @override
   _MarketState createState() => _MarketState();
 }
-
-
 class _MarketState extends State<Market> {
   var apiUrl = "https://rinkeby.infura.io/v3/e697a6a0ac0a4a7b94b09c88770f14e6";
   final EthereumAddress sourceAddr =

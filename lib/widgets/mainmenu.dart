@@ -17,7 +17,7 @@ class _MainMenuState extends State<MainMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton:
-            widget.care == "landing" ? ChatWidget(chat: widget.chat) : null,
+            ChatWidget(chat: widget.chat),
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(38.0),
             child: AppBar(
@@ -72,6 +72,18 @@ class _MainMenuState extends State<MainMenu> {
                             setState(() {
                               widget.care = "market";
                             });
+//                              showDialog(
+//                       context: context,
+//                       builder: (context) => AlertDialog(
+//                           content: Container(width:300,height:300,child:
+//                        Center(child:    Column(
+//                          crossAxisAlignment: CrossAxisAlignment.center,
+//                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                             children: [
+// Text("Soon...",style:TextStyle(fontSize: 27)), 
+// Text("We've waited for so long, we can wait a bit longer. Help is on the way.")
+//                           ],)
+//                          ))));
                           },
                           child: Text("MARKET",
                               style: TextStyle(
@@ -90,6 +102,18 @@ class _MainMenuState extends State<MainMenu> {
                             setState(() {
                               widget.care = "assets";
                             });
+//                             showDialog(
+//                       context: context,
+//                       builder: (context) => AlertDialog(
+//                           content: Container(width:300,height:300,child:
+//                        Center(child:    Column(
+//                          crossAxisAlignment: CrossAxisAlignment.center,
+//                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                             children: [
+// Text("Soon...",style:TextStyle(fontSize: 27)), 
+// Text("We've waited for so long, we can wait a bit longer. Help is on the way.")
+//                           ],)
+//                          ))));
                           },
                           child: Text("MY ASSETS",
                               style: TextStyle(
@@ -108,6 +132,18 @@ class _MainMenuState extends State<MainMenu> {
                             setState(() {
                               widget.care = "node";
                             });
+//                              showDialog(
+//                       context: context,
+//                       builder: (context) => AlertDialog(
+//                           content: Container(width:300,height:300,child:
+//                        Center(child:    Column(
+//                          crossAxisAlignment: CrossAxisAlignment.center,
+//                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                             children: [
+// Text("Soon...",style:TextStyle(fontSize: 27)), 
+// Text("We've waited for so long, we can wait a bit longer. Help is on the way.")
+//                           ],)
+//                          ))));
                           },
                           child: Text("NODE",
                               style: TextStyle(

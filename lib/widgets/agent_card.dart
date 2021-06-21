@@ -13,7 +13,7 @@ class ProjectCard extends StatelessWidget {
         elevation: 4,
         child: TextButton(
             onPressed: () {
-              Navigator.of(context).pushNamed("/project", arguments: [p]);
+              Navigator.of(context).pushNamed("/market/"+p.address, arguments: [p]);
             },
             child: Container(
                 width: 400,

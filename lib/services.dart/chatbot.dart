@@ -32,7 +32,7 @@ ChatUser botic = ChatUser(
 List<ChatMessage> messages = [
   ChatMessage(
       text:
-          "Hi, I'm the Autonet Natural Language Processor. I only have 41.7 million parameters, but I grow smarter with each added mining node. Tell me something, anything.",
+          "Hi, I'm the Autonet Natural Language Processor set on purposeless chat mode. Feel free to Turing-test me.",
       user: botic)
 ];
 
