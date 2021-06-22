@@ -1,5 +1,3 @@
-// ignore_for_file: lines_longer_than_80_chars
-
 import 'dart:ui';
 import 'package:app2/contracts/project.dart';
 import 'package:app2/services.dart/chain.dart';
@@ -90,17 +88,13 @@ class _MyContractViewState extends State<MyContractView> {
             decoration: BoxDecoration(
                 border: Border.all(
               width: 1,
-              color:
-                  // ignore: avoid_dynamic_calls
-                  widget.appstate.lumina ? Colors.black54 : Colors.white54,
+              color: widget.appstate.lumina ? Colors.black54 : Colors.white54,
             )),
             child: Column(
               children: [
                 Container(
                   height: 200,
-                  // ignore: avoid_dynamic_calls
                   color:
-                      // ignore: avoid_dynamic_calls
                       widget.appstate.lumina ? Colors.black54 : Colors.white54,
                   child: Center(
                     child: Column(

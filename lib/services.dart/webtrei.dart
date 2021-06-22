@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_dynamic_calls
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js_util';
 import 'package:app2/services.dart/chain.dart';
@@ -39,8 +38,11 @@ class Web3 extends ChangeNotifier {
 
   List<String> token = ['function approve'];
   List<String> projectAbi = ['function details() view returns(string[])'];
+
   void web3sign() async {
     merge = true;
+    await promiseToFuture(
+        ethereum.request(RequestParams(method: 'eth_requestAccounts')));
     var se = ethereum.selectedAddress;
     web3user = Web3Provider(ethereum);
     var catAre =
@@ -58,6 +60,7 @@ class Web3 extends ChangeNotifier {
       var second = await callMethod(userContract, 'getAssets', []);
       var donse = await promiseToFuture(second);
       for (var asset in donse) {
+        // ignore: avoid_dynamic_calls
         assets[asset[0].toString()] = double.parse(asset[1].toString());
       }
     }
@@ -69,9 +72,7 @@ class Web3 extends ChangeNotifier {
           UserContract(address: ponse.toString(), user: us3r, assets: assets);
       // ignore: cascade_invocations
       uc.valoare = EtherAmount.fromUnitAndValue(
-        EtherUnit.wei,
-        BigInt.parse(tonse.toString()),
-      );
+          EtherUnit.wei, BigInt.parse(tonse.toString()));
       us3r.contract = uc;
     }
 

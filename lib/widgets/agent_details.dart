@@ -1,4 +1,3 @@
-// ignore_for_file: lines_longer_than_80_chars
 import 'package:app2/services.dart/chain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -149,7 +148,6 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                                 } else {
                                   return SafeArea(
                                     child: Markdown(
-                                      // ignore: avoid_dynamic_calls
                                       data: snapshot.data.body.toString(),
                                     ),
                                   );

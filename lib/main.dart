@@ -116,21 +116,25 @@ class MyAppState extends State<MyApp> {
                 child: MyAssets(appstate: this), type: PageTransitionType.fade);
           case '/home':
             return PageTransition(
-                child: MainMenu(
-                    care: 'landing',
-                    appstate: this,
-                    porc: Landing(appstate: this)),
-                type: PageTransitionType.fade);
+              child: MainMenu(
+                care: 'landing',
+                appstate: this,
+                porc: Landing(appstate: this),
+              ),
+              type: PageTransitionType.fade,
+            );
           default:
             return PageTransition(
-                type: PageTransitionType.fade, child: routes[settings.name]);
+              type: PageTransitionType.fade,
+              child: routes[settings.name],
+            );
         }
       },
       debugShowCheckedModeBanner: false,
       title: 'Autonet',
       theme: lumina ? light : dark,
       home: MainMenu(
-        care: 'landing',
+        care: '/landing',
         appstate: this,
         porc: Landing(
           appstate: this,

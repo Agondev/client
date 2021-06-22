@@ -1,6 +1,3 @@
-// ignore_for_file: avoid_dynamic_calls
-
-// ignore_for_file: lines_longer_than_80_chars
 import 'dart:convert';
 import 'package:app2/services.dart/chain.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';

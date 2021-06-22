@@ -1,4 +1,3 @@
-// ignore_for_file: lines_longer_than_80_chars
 import 'package:app2/main.dart';
 // import 'package:app2/services.dart/webtrei.dart';
 import 'package:app2/widgets/mainmenu.dart';

@@ -1,4 +1,5 @@
 String projectAbi = '''
+[
 	{
 		"inputs": [],
 		"name": "back",

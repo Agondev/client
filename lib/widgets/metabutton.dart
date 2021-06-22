@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_dynamic_calls
 // import 'package:app2/screens/landing.dart';
 import 'package:app2/services.dart/webtrei.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +14,10 @@ class MetaButton extends StatefulWidget {
   final BuildContext context;
 
   @override
-  MetaButtonState createState() => MetaButtonState();
+  _MetaButtonState createState() => _MetaButtonState();
 }
 
-class MetaButtonState extends State<MetaButton> {
+class _MetaButtonState extends State<MetaButton> {
   bool _isProcessing = false;
 
   @override
@@ -34,9 +33,7 @@ class MetaButtonState extends State<MetaButton> {
       ),
       child: ElevatedButton(
         onPressed: () async {
-          setState(() {
-            _isProcessing = true;
-          });
+          setState(() => _isProcessing = true);
           if (!widget.landingPage) {
             widget.webtrei.web3sign();
             await Navigator.of(context).pushNamed('/assets');
@@ -48,13 +45,13 @@ class MetaButtonState extends State<MetaButton> {
             }
 
             await showDialog(
-                context: context,
-                builder: (context) =>
-                    AlertDialog(content: widget.state.widget.landing.buyATN()));
+              context: context,
+              builder: (context) => AlertDialog(
+                content: widget.state.widget.landing.buyATN(),
+              ),
+            );
           }
-          setState(() {
-            _isProcessing = false;
-          });
+          setState(() => _isProcessing = false);
         },
         child: Padding(
           padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),

@@ -1,5 +1,3 @@
-// ignore_for_file: lines_longer_than_80_chars
-
 import 'dart:async';
 import 'dart:math';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -590,52 +588,55 @@ class _LandingState extends State<Landing> {
 
   Widget confirm(double diff) {
     return SizedBox(
-        width: 500,
-        height: MediaQuery.of(context).size.height * 0.7,
-        child: FutureBuilder(
-            future: us3r
-                .buyATN(EtherAmount.fromUnitAndValue(EtherUnit.finney, diff)),
-            builder: (context, shapshot) {
-              if (us3r.creatingContract) {
-                return const Center(
-                  child: SizedBox(
-                    height: 140,
-                    width: 140,
-                    child: CircularProgressIndicator(),
+      width: 500,
+      height: MediaQuery.of(context).size.height * 0.7,
+      child: FutureBuilder(
+        future:
+            us3r.buyATN(EtherAmount.fromUnitAndValue(EtherUnit.finney, diff)),
+        builder: (context, shapshot) {
+          if (us3r.creatingContract) {
+            return const Center(
+              child: SizedBox(
+                height: 140,
+                width: 140,
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Text('Transaction complete!',
+                    style: TextStyle(fontFamily: 'Roboto Mono', fontSize: 18)),
+                const SizedBox(height: 10),
+                const SizedBox(height: 10),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 85),
+                  child: const Text(
+                    "If you don't already have ATN in your wallet, add a custom token with the following address:",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontFamily: 'Roboto Mono'),
                   ),
-                );
-              } else {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Transaction complete!',
-                        style:
-                            TextStyle(fontFamily: 'Roboto Mono', fontSize: 18)),
-                    const SizedBox(height: 10),
-                    const SizedBox(height: 10),
-                    Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 85),
-                        child: const Text(
-                            "If you don't already have ATN in your wallet, add a custom token with the following address:",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontFamily: 'Roboto Mono'))),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(chain.tokenAddress),
-                        TextButton(
-                            onPressed: () {
-                              Clipboard.setData(
-                                  ClipboardData(text: chain.tokenAddress));
-                            },
-                            child: const Icon(Icons.copy)),
-                      ],
-                    ),
-                    const SizedBox(width: 30),
+                    Text(chain.tokenAddress),
+                    TextButton(
+                        onPressed: () {
+                          Clipboard.setData(
+                              ClipboardData(text: chain.tokenAddress));
+                        },
+                        child: const Icon(Icons.copy)),
                   ],
-                );
-              }
-            }));
+                ),
+                const SizedBox(width: 30),
+              ],
+            );
+          }
+        },
+      ),
+    );
   }
 }
 
@@ -840,8 +841,7 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
                   context: context,
                   builder: (context) => AlertDialog(
                     content: us3r == null
-                        // ignore: unnecessary_cast
-                        ? widget.landing.connect((this as _BuyATNState))
+                        ? widget.landing.connect(this)
                         : widget.landing.buyATN(),
                   ),
                 );

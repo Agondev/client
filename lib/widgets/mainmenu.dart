@@ -1,4 +1,3 @@
-// ignore_for_file: lines_longer_than_80_chars
 import 'package:app2/main.dart';
 import 'package:app2/services.dart/chatbot.dart';
 import 'package:flutter/material.dart';
