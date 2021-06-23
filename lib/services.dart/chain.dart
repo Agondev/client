@@ -4,7 +4,6 @@ import 'dart:js_util';
 import 'package:app2/contracts/project.dart';
 import 'package:app2/contracts/source.dart';
 import 'package:app2/main.dart';
-import 'package:app2/screens/projectview.dart';
 import 'package:app2/services.dart/webtrei.dart';
 import 'package:app2/widgets/atncontract.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,7 +18,7 @@ class Chain {
   List<Project> projects = [];
   bool populating = false;
   bool populated = false;
-  List adreseleProiectelor;
+  List addressesOfProjects;
   String tokenAddress;
   String chainID = '';
   var apiUrl = 'https://rinkeby.infura.io/v3/e697a6a0ac0a4a7b94b09c88770f14e6';
@@ -41,9 +40,9 @@ class Chain {
       var proiectef = contractSursa.function('allProjects');
       var allProjects = await ethClient
           .call(contract: contractSursa, function: proiectef, params: []);
-      adreseleProiectelor = allProjects[0];
-      for (var i in adreseleProiectelor) {
-        final projAddr = EthereumAddress.fromHex(i.toString());
+      addressesOfProjects = allProjects[0];
+      for (var item in addressesOfProjects) {
+        final projAddr = EthereumAddress.fromHex(item.toString());
         final contractProiect = DeployedContract(
             ContractAbi.fromJson(projectAbi, 'Project'), projAddr);
         var detailsf = contractProiect.function('details');
@@ -51,22 +50,21 @@ class Chain {
             .call(contract: contractProiect, function: detailsf, params: []);
         // String name = details[0];
         // String desc = details[1];
-        var cat = details[2].toString().split('http')[0];
-        var pic = 'http${details[2].toString().split('http')[1]}';
-        var git = 'http${details[2].toString().split('http')[2]}';
-        var p = Project(
-          address: i.toString(),
+        var category = details[2].toString().split('http')[0];
+        var picUrl = 'http${details[2].toString().split('http')[1]}';
+        var gitLink = 'http${details[2].toString().split('http')[2]}';
+        var project = Project(
+          address: item.toString(),
           name: details[0].toString(),
           description: details[1].toString(),
-          picurl: pic,
-          category: cat,
-          github: git,
+          picurl: picUrl,
+          category: category,
+          github: gitLink,
         );
-        projects.add(p);
-        routes['/market/${p.address}'] =
-            ProjectView(address: p.address, appstate: state);
+        projects.add(project);
+        // routes['/market/${project.address}'] =
+        //     ProjectView(address: project.address, appstate: state);
       }
-      populating = false;
       populated = true;
     }
   }

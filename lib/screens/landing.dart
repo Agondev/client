@@ -24,8 +24,6 @@ class Landing extends StatefulWidget {
     this.title,
   }) : super(key: key);
 
-  static String route = '/home';
-
   final MyAppState appstate;
   final bool isUser = false;
   final String title;
@@ -56,40 +54,39 @@ class _LandingState extends State<Landing> {
   Random rand = Random();
   @override
   void initState() {
+    super.initState();
     reqpersec = 392 + rng.nextInt(100);
     netcap = 483 + rng.nextInt(100);
     activeNodes = 3134 + rng.nextInt(8);
     dividents = 23710 + rng.nextInt(100);
     latency = 29 + rng.nextInt(4);
 
-    Future.delayed(const Duration(milliseconds: 200), () {
-      setState(() {
-        opa0 = 1;
-        w1 = 200;
-        h1 = 90;
-      });
-    });
-    Future.delayed(const Duration(milliseconds: 400), () {
-      setState(() {
-        w2 = 200;
-        h2 = 90;
-      });
-    });
-    Future.delayed(const Duration(milliseconds: 800), () {
-      setState(() {
-        h3 = 90;
-        opa2 = 1;
-      });
-    });
-    Future.delayed(const Duration(milliseconds: 1200), () {
-      setState(() => opa3 = 1);
-    });
-    Future.delayed(const Duration(milliseconds: 670), () {
-      setState(() => opa1 = 1);
-    });
-    Future.delayed(const Duration(milliseconds: 1300), () {
-      setState(() {});
-    });
+    Future.delayed(
+        const Duration(milliseconds: 200),
+        () => setState(() {
+              opa0 = 1;
+              w1 = 200;
+              h1 = 90;
+            }));
+    Future.delayed(
+        const Duration(milliseconds: 400),
+        () => setState(() {
+              w2 = 200;
+              h2 = 90;
+            }));
+    Future.delayed(
+        const Duration(milliseconds: 800),
+        () => setState(() {
+              h3 = 90;
+              opa2 = 1;
+            }));
+    Future.delayed(
+        const Duration(milliseconds: 1200), () => setState(() => opa3 = 1));
+    Future.delayed(
+        const Duration(milliseconds: 670), () => setState(() => opa1 = 1));
+    // Future.delayed(const Duration(milliseconds: 1300), () {
+    //   setState(() {});
+    // });
     // Timer.periodic(const Duration(seconds: 24), (timer) {
     //   var plus1 = rand.nextBool();
     //   var plus2 = rand.nextBool();
@@ -118,71 +115,60 @@ class _LandingState extends State<Landing> {
     //     }
     //   });
     // });
-    super.initState();
   }
 
-  ScrollController sc = ScrollController();
   List<Widget> multe = [];
   bool run = true;
   var cb = Chatbot();
-  // final TextEditingController _controller = TextEditingController();
+
   @override
-  Widget build(BuildContext context) {
-    // final textc = TextEditingController();
-    // String poza = "b" + (rng.nextInt(5) + 1).toString() + ".jpg";
-    return SizedBox(
-      height: MediaQuery.of(context).size.height - 38,
-      child: Scrollbar(
-        controller: sc,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // OPTION 1
-              // Container(
-              //   color: widget.appstate.lumina
-              //       ? const Color(0xffefefef)
-              //       : Theme.of(context).cardColor,
-              //   width: MediaQuery.of(context).size.width,
-              //   height: 1300,
-              //   child: EditProject(
-              //     p: Project(
-              //       address: null,
-              //       description: null,
-              //       github: 'https://github.com/openai/gpt-3',
-              //       name: null,
-              //       picurl: null,
-              //       category: null,
-              //     ),
-              //   ),
-              // ),
-              // OPTION 2
-              Container(
-                color: widget.appstate.lumina
-                    ? const Color(0xffefefef)
-                    : Theme.of(context).cardColor,
-                width: MediaQuery.of(context).size.width,
-                height: 1300,
-                child: everything(),
+  Widget build(BuildContext context) => SizedBox(
+        height: MediaQuery.of(context).size.height - 38,
+        child: ListView(
+          children: [
+            // OPTION 1
+            // Container(
+            //   color: widget.appstate.lumina
+            //       ? const Color(0xffefefef)
+            //       : Theme.of(context).cardColor,
+            //   width: MediaQuery.of(context).size.width,
+            //   height: 1300,
+            //   child: EditProject(
+            //     p: Project(
+            //       address: null,
+            //       description: null,
+            //       github: 'https://github.com/openai/gpt-3',
+            //       name: null,
+            //       picurl: null,
+            //       category: null,
+            //     ),
+            //   ),
+            // ),
+            // OPTION 2
+            Container(
+              color: widget.appstate.lumina
+                  ? const Color(0xffefefef)
+                  : Theme.of(context).cardColor,
+              width: MediaQuery.of(context).size.width,
+              height: 1300,
+              child: everything(),
+            ),
+            SizedBox(
+              height: 100,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'AUTONET © ${DateTime.now().year}',
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 100,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'AUTONET © ${DateTime.now().year}',
-                      style: const TextStyle(fontSize: 15),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ),
-    );
-  }
+      );
 
   String hopa = 'ceva';
 
@@ -200,25 +186,27 @@ class _LandingState extends State<Landing> {
         Positioned(
           top: 340,
           left: 0,
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            Container(
-              height: 100,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 100,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
-                colors: colors,
-                stops: stops,
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              )),
-            ),
-            Container(
-              height: 600,
-              color: widget.appstate.lumina
-                  ? const Color(0xffc3c3c3)
-                  : const Color(0xff4c4c4c),
-              child: SizedBox(
+                    colors: colors,
+                    stops: stops,
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+              ),
+              Container(
+                height: 600,
+                color: widget.appstate.lumina
+                    ? const Color(0xffc3c3c3)
+                    : const Color(0xff4c4c4c),
+                child: SizedBox(
                   height: 600,
                   child: Image.asset(
                     widget.appstate.lumina
@@ -226,20 +214,23 @@ class _LandingState extends State<Landing> {
                         : 'assets/dark.jpg',
                     // fit: BoxFit.fitHeight,
                     width: MediaQuery.of(context).size.width,
-                  )),
-            ),
-            Container(
-              height: 70,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
+                  ),
+                ),
+              ),
+              Container(
+                height: 70,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
-                colors: colors,
-                stops: stops,
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-              )),
-            ),
-          ]),
+                    colors: colors,
+                    stops: stops,
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         Positioned(
           top: 30,
@@ -252,123 +243,146 @@ class _LandingState extends State<Landing> {
                 runSpacing: 30,
                 children: [
                   AnimatedContainer(
-                      duration: const Duration(milliseconds: 400),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Theme.of(context).backgroundColor,
-                            width: 0.9),
-                        color: widget.appstate.lumina
-                            ? const Color(0x54c9c9c9)
-                            : const Color(0x542e2d2d),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
+                    duration: const Duration(milliseconds: 400),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Theme.of(context).backgroundColor, width: 0.9),
+                      color: widget.appstate.lumina
+                          ? const Color(0x54c9c9c9)
+                          : const Color(0x542e2d2d),
+                      borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    ),
+                    height: h1,
+                    width: 200,
+                    child: AnimatedOpacity(
+                      opacity: opa1,
+                      duration: const Duration(milliseconds: 800),
+                      child: Center(
+                        child: item(
+                          'Requests per second',
+                          reqpersec.toString(),
+                        ),
                       ),
-                      height: h1,
-                      width: 200,
-                      child: AnimatedOpacity(
-                        opacity: opa1,
-                        duration: const Duration(milliseconds: 800),
-                        child: Center(
-                            child: item(
-                                'Requests per second', reqpersec.toString())),
-                      )),
+                    ),
+                  ),
                   AnimatedContainer(
-                      duration: const Duration(milliseconds: 400),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Theme.of(context).backgroundColor,
-                            width: 0.9),
-                        color: widget.appstate.lumina
-                            ? const Color(0x54c9c9c9)
-                            : const Color(0x542e2d2d),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
+                    duration: const Duration(milliseconds: 400),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context).backgroundColor,
+                        width: 0.9,
                       ),
-                      height: h2,
-                      width: 200,
-                      child: AnimatedOpacity(
-                        opacity: opa2,
-                        duration: const Duration(milliseconds: 800),
-                        child: Center(
-                            child: item('Network Capacity', '$netcap EhS')),
-                      )),
+                      color: widget.appstate.lumina
+                          ? const Color(0x54c9c9c9)
+                          : const Color(0x542e2d2d),
+                      borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    ),
+                    height: h2,
+                    width: 200,
+                    child: AnimatedOpacity(
+                      opacity: opa2,
+                      duration: const Duration(milliseconds: 800),
+                      child: Center(
+                        child: item('Network Capacity', '$netcap EhS'),
+                      ),
+                    ),
+                  ),
                   AnimatedContainer(
-                      duration: const Duration(milliseconds: 400),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).backgroundColor,
-                              width: 0.9),
-                          color: widget.appstate.lumina
-                              ? const Color(0x54c9c9c9)
-                              : const Color(0x542e2d2d),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(21))),
-                      height: h3,
-                      width: 200,
-                      child: AnimatedOpacity(
-                        opacity: opa3,
-                        duration: const Duration(milliseconds: 1200),
-                        child: Center(child: item('Mature Agents', '14')),
-                      )),
+                    duration: const Duration(milliseconds: 400),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context).backgroundColor,
+                        width: 0.9,
+                      ),
+                      color: widget.appstate.lumina
+                          ? const Color(0x54c9c9c9)
+                          : const Color(0x542e2d2d),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(21),
+                      ),
+                    ),
+                    height: h3,
+                    width: 200,
+                    child: AnimatedOpacity(
+                      opacity: opa3,
+                      duration: const Duration(milliseconds: 1200),
+                      child: Center(
+                        child: item('Mature Agents', '14'),
+                      ),
+                    ),
+                  ),
                   AnimatedContainer(
-                      duration: const Duration(milliseconds: 400),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).backgroundColor,
-                              width: 0.9),
-                          color: widget.appstate.lumina
-                              ? const Color(0x54c9c9c9)
-                              : const Color(0x542e2d2d),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20))),
-                      height: h2,
-                      width: 200,
-                      child: AnimatedOpacity(
-                        opacity: opa2,
-                        duration: const Duration(milliseconds: 700),
-                        child: Center(
-                            child:
-                                item('Active Nodes', activeNodes.toString())),
-                      )),
+                    duration: const Duration(milliseconds: 400),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Theme.of(context).backgroundColor, width: 0.9),
+                      color: widget.appstate.lumina
+                          ? const Color(0x54c9c9c9)
+                          : const Color(0x542e2d2d),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                    height: h2,
+                    width: 200,
+                    child: AnimatedOpacity(
+                      opacity: opa2,
+                      duration: const Duration(milliseconds: 700),
+                      child: Center(
+                        child: item(
+                          'Active Nodes',
+                          activeNodes.toString(),
+                        ),
+                      ),
+                    ),
+                  ),
                   AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).backgroundColor,
-                              width: 0.9),
-                          color: widget.appstate.lumina
-                              ? const Color(0x54c9c9c9)
-                              : const Color(0x542e2d2d),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20))),
-                      height: h3,
-                      width: 200,
-                      child: AnimatedOpacity(
-                        opacity: opa3,
-                        duration: const Duration(milliseconds: 800),
-                        child: Center(
-                            child: item(
-                                'Dividends Paid / Last 24h', '$dividents ATN')),
-                      )),
+                    duration: const Duration(milliseconds: 300),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Theme.of(context).backgroundColor, width: 0.9),
+                      color: widget.appstate.lumina
+                          ? const Color(0x54c9c9c9)
+                          : const Color(0x542e2d2d),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                    height: h3,
+                    width: 200,
+                    child: AnimatedOpacity(
+                      opacity: opa3,
+                      duration: const Duration(milliseconds: 800),
+                      child: Center(
+                        child:
+                            item('Dividends Paid / Last 24h', '$dividents ATN'),
+                      ),
+                    ),
+                  ),
                   AnimatedContainer(
-                      duration: const Duration(milliseconds: 500),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).backgroundColor,
-                              width: 0.9),
-                          color: widget.appstate.lumina
-                              ? const Color(0x54c9c9c9)
-                              : const Color(0x542e2d2d),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20))),
-                      height: h3,
-                      width: 200,
-                      child: AnimatedOpacity(
-                        opacity: opa3,
-                        duration: const Duration(milliseconds: 900),
-                        child: Center(
-                            child: item('Average Latency', '$latency ms')),
-                      )),
+                    duration: const Duration(milliseconds: 500),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context).backgroundColor,
+                        width: 0.9,
+                      ),
+                      color: widget.appstate.lumina
+                          ? const Color(0x54c9c9c9)
+                          : const Color(0x542e2d2d),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                    height: h3,
+                    width: 200,
+                    child: AnimatedOpacity(
+                      opacity: opa3,
+                      duration: const Duration(milliseconds: 900),
+                      child: Center(
+                        child: item('Average Latency', '$latency ms'),
+                      ),
+                    ),
+                  ),
                   SizedBox(
                     width: 660,
                     child: Column(
@@ -397,9 +411,8 @@ class _LandingState extends State<Landing> {
                                 : const Color(0xff595c61),
                             elevation: 1.5,
                           ),
-                          onPressed: () {
-                            launchURL('https://www.autonet.tk/#/projects/atn');
-                          },
+                          onPressed: () => launchURL(
+                              'https://www.autonet.tk/#/projects/atn'),
                           child: const SizedBox(
                             height: 50,
                             width: 200,
@@ -530,43 +543,41 @@ class _LandingState extends State<Landing> {
     );
   }
 
-  Widget connect(_BuyATNState state) {
-    return SizedBox(
-      width: 400,
-      height: 400,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            'Before connecting your wallet, please switch to the RINKEBY TESTNET.',
-            textAlign: TextAlign.center,
-            maxLines: 4,
-            style: TextStyle(
-              fontWeight: FontWeight.w300,
-              // letterSpacing: 3,
+  Widget connect(_BuyATNState state) => SizedBox(
+        width: 400,
+        height: 400,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Before connecting your wallet, please switch to the RINKEBY TESTNET.',
+              textAlign: TextAlign.center,
+              maxLines: 4,
+              style: TextStyle(
+                fontWeight: FontWeight.w300,
+                // letterSpacing: 3,
+              ),
             ),
-          ),
-          const SizedBox(height: 70),
-          MetaButton(landingPage: true, state: state)
-        ],
-      ),
-    );
-  }
+            const SizedBox(height: 70),
+            MetaButton(landingPage: true, state: state)
+          ],
+        ),
+      );
 
-  Widget item(ce, cat) {
+  Widget item(String what, String amount) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          ce,
+          what,
           style: const TextStyle(),
         ),
         const SizedBox(
           height: 5,
         ),
         Text(
-          cat,
+          amount,
           style: const TextStyle(
             fontSize: 20,
             fontFamily: 'OCR-A',
@@ -578,13 +589,9 @@ class _LandingState extends State<Landing> {
     );
   }
 
-  void launchURL(url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw UnimplementedError('Could not launch $url');
-    }
-  }
+  void launchURL(url) async => await canLaunch(url)
+      ? await launch(url)
+      : throw UnimplementedError('Could not launch $url');
 
   Widget confirm(double diff) {
     return SizedBox(
@@ -623,11 +630,13 @@ class _LandingState extends State<Landing> {
                   children: [
                     Text(chain.tokenAddress),
                     TextButton(
-                        onPressed: () {
-                          Clipboard.setData(
-                              ClipboardData(text: chain.tokenAddress));
-                        },
-                        child: const Icon(Icons.copy)),
+                      onPressed: () => Clipboard.setData(
+                        ClipboardData(
+                          text: chain.tokenAddress,
+                        ),
+                      ),
+                      child: const Icon(Icons.copy),
+                    ),
                   ],
                 ),
                 const SizedBox(width: 30),
@@ -671,20 +680,26 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
       duration: const Duration(seconds: 1),
     );
     controller.forward();
-    Future.delayed(const Duration(milliseconds: 100), () {
-      setState(() {
-        left = -0.3;
-        down = 2.3;
-        spread = 0.3;
-        sime = 500;
-        gro = 0;
-        height = 425;
-      });
-    });
-    Future.delayed(const Duration(milliseconds: 500), () {
-      opa = 1;
-      gro = 500.0;
-    });
+    Future.delayed(
+      const Duration(milliseconds: 100),
+      () => setState(
+        () {
+          left = -0.3;
+          down = 2.3;
+          spread = 0.3;
+          sime = 500;
+          gro = 0;
+          height = 425;
+        },
+      ),
+    );
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () {
+        opa = 1;
+        gro = 500.0;
+      },
+    );
     super.initState();
   }
 
@@ -709,7 +724,7 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
               left,
               down,
             ),
-          )
+          ),
         ],
         borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(150)),
         gradient: RadialGradient(colors: colors, stops: stops),
@@ -852,14 +867,16 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.network('https://i.ibb.co/kXVw8Z2/logo64x64.png',
-                        height: 30),
+                    Image.network(
+                      'https://i.ibb.co/kXVw8Z2/logo64x64.png',
+                      height: 30,
+                    ),
                     const SizedBox(width: 7),
                     const Text(
                       'Buy ATN',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    )
+                    ),
                   ],
                 ),
               ),

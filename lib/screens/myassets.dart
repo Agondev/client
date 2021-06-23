@@ -13,8 +13,6 @@ import 'package:flutter/material.dart';
 class MyAssets extends StatelessWidget {
   MyAssets({Key key, this.appstate, this.title}) : super(key: key);
 
-  static String route = '/assets';
-
   final String title;
   final ScrollController sc = ScrollController();
   final MyAppState appstate;
@@ -22,8 +20,8 @@ class MyAssets extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainMenu(
       appstate: appstate,
-      care: 'assets',
-      porc: Container(
+      displayStyle: 'assets',
+      child: Container(
         padding: const EdgeInsets.all(3),
         width: MediaQuery.of(context).size.width,
         child: Stack(
@@ -123,12 +121,16 @@ class _CreateContractBTNState extends State<CreateContractBTN> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.network('https://i.ibb.co/kXVw8Z2/logo64x64.png',
-                            height: 40),
+                        Image.network(
+                          'https://i.ibb.co/kXVw8Z2/logo64x64.png',
+                          height: 40,
+                        ),
                         const Text(
                           'CREATE ATN CONTRACT',
                           style: TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.bold),
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                          ),
                         )
                       ],
                     ),

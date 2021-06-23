@@ -120,8 +120,9 @@ class _MyContractViewState extends State<MyContractView> {
                             ),
                             const Spacer(),
                             Image.network(
-                                'https://i.ibb.co/kXVw8Z2/logo64x64.png',
-                                height: 50),
+                              'https://i.ibb.co/kXVw8Z2/logo64x64.png',
+                              height: 50,
+                            ),
                             const SizedBox(width: 4)
                           ],
                         ),

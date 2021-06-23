@@ -12,8 +12,6 @@ bool setpressed = false;
 class Node extends StatefulWidget {
   const Node({Key key, this.appstate, this.title}) : super(key: key);
 
-  static String route = '/node';
-
   final String title;
   final MyAppState appstate;
   final bool status = false;
@@ -27,9 +25,9 @@ class NodeState extends State<Node> {
   @override
   Widget build(BuildContext context) {
     return MainMenu(
-        care: 'node',
+        displayStyle: 'node',
         appstate: widget.appstate,
-        porc: Container(
+        child: Container(
             padding: const EdgeInsets.all(3),
             width: MediaQuery.of(context).size.width,
             child: Stack(

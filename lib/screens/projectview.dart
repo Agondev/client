@@ -6,17 +6,31 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ProjectView extends StatelessWidget {
-  ProjectView({Key key, this.appstate, this.address}) : super(key: key);
+  const ProjectView({
+    Key key,
+    this.appstate,
+  }) : super(key: key);
 
-  final String address;
-  final ScrollController sc = ScrollController();
+  // final String address;
   final MyAppState appstate;
 
   @override
   Widget build(BuildContext context) {
+    var address = ModalRoute.of(context).settings.arguments;
     Project project;
     if (address == null) {
-      project = (ModalRoute.of(context).settings.arguments as List)[0];
+      try {
+        project = (ModalRoute.of(context).settings.arguments as List)[0];
+      } catch (e) {
+        project = project = Project(
+          address: 'addr123',
+          category: 'cat123',
+          description: 'desc123',
+          github: 'git123',
+          name: 'name123',
+          picurl: 'pic123',
+        );
+      }
     } else {
       for (var item in chain.projects) {
         if (address == item.address) {
@@ -28,16 +42,16 @@ class ProjectView extends StatelessWidget {
             child: Center(child: Text('No such resource on Autonet.')));
       }
     }
+
     return MainMenu(
       appstate: appstate,
-      porc: Container(
+      child: Container(
         padding: const EdgeInsets.all(3),
         width: MediaQuery.of(context).size.width,
         child: Stack(
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Scrollbar(
-              controller: sc,
               child: SizedBox(
                 height: MediaQuery.of(context).size.height - 30,
                 width: MediaQuery.of(context).size.width,
@@ -47,7 +61,7 @@ class ProjectView extends StatelessWidget {
                     child: Column(
                       children: [
                         const SizedBox(height: 50),
-                        ProjectDetails(p: project),
+                        ProjectDetails(project: project),
                       ],
                     ),
                   ),

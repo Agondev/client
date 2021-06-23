@@ -2,20 +2,21 @@ import 'package:app2/main.dart';
 import 'package:app2/services.dart/chain.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class ProjectCard extends StatelessWidget {
-  ProjectCard({Key key, this.p, this.appstate}) : super(key: key);
+  const ProjectCard({Key key, this.project, this.appstate}) : super(key: key);
 
-  Project p;
-  MyAppState appstate;
+  final Project project;
+  final MyAppState appstate;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 4,
       child: TextButton(
-        onPressed: () => Navigator.of(context)
-            .pushNamed('/market/${p.address}', arguments: [p]),
+        onPressed: () => Navigator.of(context).pushNamed(
+          '/market/${project.address}',
+          arguments: [project],
+        ),
         child: SizedBox(
           width: 400,
           child: Column(
@@ -25,17 +26,18 @@ class ProjectCard extends StatelessWidget {
                 child: Row(
                   children: [
                     ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          p.picurl,
-                          height: 90,
-                        )),
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.network(
+                        project.picurl,
+                        height: 90,
+                      ),
+                    ),
                     const SizedBox(width: 16),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          p.name,
+                          project.name,
                           style: const TextStyle(
                               fontSize: 21, fontWeight: FontWeight.bold),
                         ),
@@ -49,7 +51,7 @@ class ProjectCard extends StatelessWidget {
               ),
               Container(
                 padding: const EdgeInsets.all(19),
-                child: Text(p.description),
+                child: Text(project.description),
               ),
             ],
           ),
