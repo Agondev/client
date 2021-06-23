@@ -565,27 +565,29 @@ class _LandingState extends State<Landing> {
       );
 
   Widget item(String what, String amount) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          what,
-          style: const TextStyle(),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        Text(
-          amount,
-          style: const TextStyle(
-            fontSize: 20,
-            fontFamily: 'OCR-A',
-            letterSpacing: 1.3,
-            fontWeight: FontWeight.bold,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            what,
+            style: const TextStyle(),
           ),
-        ),
-      ],
+          const SizedBox(
+            height: 5,
+          ),
+          Text(
+            amount,
+            style: const TextStyle(
+              fontSize: 20,
+              fontFamily: 'OCR-A',
+              letterSpacing: 1.3,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -666,12 +668,11 @@ class BuyATN extends StatefulWidget {
 
 class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
   double left = 0.0;
-  double opa = 0;
+  double opacity = 0;
   double spread = 0.0;
   double down = 0.0;
-  double sime = 3;
-  double gro = 0;
-  double height = 330;
+  double width = 500;
+  double height = 425;
   AnimationController controller;
   @override
   void initState() {
@@ -687,18 +688,14 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
           left = -0.3;
           down = 2.3;
           spread = 0.3;
-          sime = 500;
-          gro = 0;
-          height = 425;
+          // sime = 500;
+          // height = 425;
         },
       ),
     );
     Future.delayed(
       const Duration(milliseconds: 500),
-      () {
-        opa = 1;
-        gro = 500.0;
-      },
+      () => opacity = 1,
     );
     super.initState();
   }
@@ -712,7 +709,7 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
     var stops = <double>[0.03, 5.8];
     return AnimatedContainer(
       duration: const Duration(milliseconds: 400),
-      width: sime,
+      width: width,
       height: height,
       decoration: BoxDecoration(
         boxShadow: [
@@ -736,7 +733,7 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
           AnimatedContainer(
             duration: const Duration(milliseconds: 700),
             padding: const EdgeInsets.symmetric(vertical: 4),
-            width: sime,
+            width: width,
             color: Theme.of(context).cardColor,
             child: Center(
               child: TyperAnimatedTextKit(
@@ -760,7 +757,7 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
             ),
             child: AnimatedOpacity(
               duration: const Duration(seconds: 1),
-              opacity: opa,
+              opacity: opacity,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -819,7 +816,7 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
           const SizedBox(height: 25),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 1600),
-            opacity: opa,
+            opacity: opacity,
             child: Container(
               width: 420,
               decoration: BoxDecoration(color: Theme.of(context).cardColor),
@@ -847,7 +844,7 @@ class _BuyATNState extends State<BuyATN> with TickerProviderStateMixin {
           const SizedBox(height: 39),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 1300),
-            opacity: opa,
+            opacity: opacity,
             child: TextButton(
               style: TextButton.styleFrom(
                   backgroundColor: Theme.of(context).buttonColor, elevation: 1),

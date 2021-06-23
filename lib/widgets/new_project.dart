@@ -153,30 +153,29 @@ class _EditProjectState extends State<EditProject> {
             Column(
               children: [
                 TextButton(
-                    onPressed: () async {
-                      var myFile = await FilePickerCross.importFromStorage(
-                          type: FileTypeCross.any, fileExtension: 'txt, md');
-                      var res = await uploadImage(myFile, widget.url);
-                      setState(() {
-                        widget.p.picurl = res;
-                      });
-                    },
-                    child: SizedBox(
-                        height: 140,
-                        width: 179,
-                        child: widget.p.picurl == null
-                            ? Column(
-                                children: [
-                                  Image.network(
-                                      'https://i.ibb.co/2dphSM9/cogs.png',
-                                      height: 120),
-                                  const Text(
-                                    'CHANGE ICON',
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                ],
-                              )
-                            : Image.network(widget.p.picurl))),
+                  onPressed: () async {
+                    var myFile = await FilePickerCross.importFromStorage(
+                        type: FileTypeCross.any, fileExtension: 'txt, md');
+                    var res = await uploadImage(myFile, widget.url);
+                    setState(() => widget.p.picurl = res);
+                  },
+                  child: SizedBox(
+                    height: 140,
+                    width: 179,
+                    child: widget.p.picurl == null
+                        ? Column(
+                            children: [
+                              Image.network('https://i.ibb.co/2dphSM9/cogs.png',
+                                  height: 120),
+                              const Text(
+                                'CHANGE ICON',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ],
+                          )
+                        : Image.network(widget.p.picurl),
+                  ),
+                ),
               ],
             ),
             const SizedBox(width: 50),
@@ -320,8 +319,10 @@ class _EditProjectState extends State<EditProject> {
                       padding: const EdgeInsets.all(50),
                       child: FutureBuilder(
                         future: http.get(
-                          Uri.https('raw.githubusercontent.com',
-                              '${widget.p.github.split('github.com/')[1]}/master/README.md'),
+                          Uri.https(
+                            'raw.githubusercontent.com',
+                            '${widget.p.github.split('github.com/')[1]}/master/README.md',
+                          ),
                         ),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState !=

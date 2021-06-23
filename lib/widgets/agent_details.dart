@@ -1,4 +1,5 @@
 import 'package:app2/services.dart/chain.dart';
+import 'package:app2/utils/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 // ignore: unused_import
@@ -45,15 +46,19 @@ class _ProjectDetailsState extends State<ProjectDetails> {
               children: [
                 Row(
                   children: [
-                    Container(
+                    Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 19),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(11.0),
-                        // child: Image.network(
-                        //   widget.project.picurl,
-                        //   height: 114,
-                        // )
-                        child: const Placeholder(),
+                      child: ConstrainedBox(
+                        constraints:
+                            const BoxConstraints(maxHeight: 120, minWidth: 120),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(11.0),
+                          child: isValidImageExtension(widget.project.picurl)
+                              ? Image.network(
+                                  widget.project.picurl,
+                                )
+                              : const Placeholder(),
+                        ),
                       ),
                     ),
                     Column(

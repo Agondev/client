@@ -5,6 +5,7 @@ import 'package:app2/screens/node.dart';
 import 'package:app2/services.dart/chain.dart';
 import 'package:app2/widgets/agent_card.dart';
 import 'package:app2/widgets/mainmenu.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -57,7 +58,7 @@ class MyAppState extends State<MyApp> {
   }
 
   bool lumina = false;
-  bool bypass = false;
+  bool bypass = kDebugMode;
 
   @override
   void initState() {

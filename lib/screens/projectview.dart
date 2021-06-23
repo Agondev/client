@@ -16,11 +16,11 @@ class ProjectView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var address = ModalRoute.of(context).settings.arguments;
-    Project project;
-    if (address == null) {
+    Project project = ModalRoute.of(context).settings.arguments;
+    // Project project;
+    if (project == null) {
       try {
-        project = (ModalRoute.of(context).settings.arguments as List)[0];
+        project = ModalRoute.of(context).settings.arguments as Project;
       } catch (e) {
         project = project = Project(
           address: 'addr123',
@@ -33,13 +33,16 @@ class ProjectView extends StatelessWidget {
       }
     } else {
       for (var item in chain.projects) {
-        if (address == item.address) {
+        if (project.address == item.address) {
           project = item;
         }
       }
       if (project == null) {
         return const SizedBox(
-            child: Center(child: Text('No such resource on Autonet.')));
+          child: Center(
+            child: Text('No such resource on Autonet.'),
+          ),
+        );
       }
     }
 
@@ -76,8 +79,11 @@ class ProjectView extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                   border: Border(
-                      bottom: BorderSide(
-                          width: 0.3, color: Theme.of(context).primaryColor)),
+                    bottom: BorderSide(
+                      width: 0.3,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
                 ),
                 width: MediaQuery.of(context).size.width,
                 child: Center(
