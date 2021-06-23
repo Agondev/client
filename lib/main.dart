@@ -105,6 +105,7 @@ class MyAppState extends State<MyApp> {
       '/market': (context) => Market(appstate: this),
       '/project': (context) => ProjectView(appstate: this),
     };
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Autonet',
@@ -134,15 +135,15 @@ class _MarketState extends State<Market> {
   final EthereumAddress projAddr =
       EthereumAddress.fromHex('0x0670C0357432Ac4812463A73907Da8f94E34Ab78');
 
-  var proiectili = <Widget>[];
+  var projectList = <Widget>[];
 
   @override
   void initState() {
     super.initState();
-    for (var p in chain.projects) {
-      proiectili.add(
+    for (var project in chain.projects) {
+      projectList.add(
         ProjectCard(
-          project: p,
+          project: project,
           appstate: widget.appstate,
         ),
       );
@@ -168,7 +169,7 @@ class _MarketState extends State<Market> {
                       child: Column(
                         children: [
                           const SizedBox(height: 50),
-                          Wrap(children: proiectili),
+                          Wrap(children: projectList),
                         ],
                       ),
                     ),

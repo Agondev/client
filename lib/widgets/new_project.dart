@@ -10,13 +10,14 @@ import 'package:http/http.dart' as http;
 const _textStyle = TextStyle(fontSize: 19, fontWeight: FontWeight.bold);
 
 class TeamMember extends StatelessWidget {
-  const TeamMember({Key key, this.p, this.address, this.percent, this.state})
+  const TeamMember(
+      {Key key, this.project, this.address, this.percent, this.state})
       : super(key: key);
 
   final String address;
   final double percent;
   final _EditProjectState state;
-  final Project p;
+  final Project project;
 
   @override
   Widget build(BuildContext context) {
@@ -29,31 +30,32 @@ class TeamMember extends StatelessWidget {
             SizedBox(
               width: 300,
               child: Slider(
-                value: p.team[address],
+                value: project.team[address],
                 min: 0,
                 max: 100,
                 onChanged: (value) {
-                  var cati = p.team.keys.length - 1;
+                  var cati = project.team.keys.length - 1;
                   var sum = .0;
-                  p.team.forEach((k, v) {
+                  project.team.forEach((k, v) {
                     sum = sum + v;
                   });
-                  if (p.team.keys.length > 1 && value <= 100 - cati) {
-                    var diff = p.team[address] - value;
+                  if (project.team.keys.length > 1 && value <= 100 - cati) {
+                    var diff = project.team[address] - value;
                     // ignore: invalid_use_of_protected_member
                     state.setState(
                       () {
-                        p.team[address] = value;
-                        p.team.forEach(
+                        project.team[address] = value;
+                        project.team.forEach(
                           (k, v) {
                             if (k != address) {
-                              if ((diff < 0 && p.team[k] < 1) ||
-                                  (diff > 0 && p.team[k] > 99)) {
+                              if ((diff < 0 && project.team[k] < 1) ||
+                                  (diff > 0 && project.team[k] > 99)) {
                                 cati = cati - 1;
                               }
-                              if (diff < 0 && p.team[k] > 1 ||
-                                  diff > 0 && p.team[k] < 99) {
-                                p.team[k] = p.team[k] + (diff / cati);
+                              if (diff < 0 && project.team[k] > 1 ||
+                                  diff > 0 && project.team[k] < 99) {
+                                project.team[k] =
+                                    project.team[k] + (diff / cati);
                               }
                             }
                           },
@@ -78,7 +80,7 @@ class TeamMember extends StatelessWidget {
               children: [
                 const Text('Total share'),
                 Text(
-                  (percent * (p.split / 100)).toStringAsFixed(2),
+                  (percent * (project.split / 100)).toStringAsFixed(2),
                   style: _textStyle,
                 ),
               ],
@@ -91,12 +93,12 @@ class TeamMember extends StatelessWidget {
 }
 
 class EditProject extends StatefulWidget {
-  const EditProject({Key key, this.p}) : super(key: key);
+  const EditProject({Key key, this.project}) : super(key: key);
 
   final bool textfield = false;
   final bool filepaste = false;
   final bool socket = false;
-  final Project p;
+  final Project project;
   final String url = 'https://discord-ro.tk:5000/v1/post_image';
 
   @override
@@ -105,7 +107,6 @@ class EditProject extends StatefulWidget {
 
 class _EditProjectState extends State<EditProject> {
   String rootPath;
-  String state = 'Stare1';
   List<Widget> ownership = [];
 
   bool textfield = false;
@@ -123,12 +124,13 @@ class _EditProjectState extends State<EditProject> {
   @override
   Widget build(BuildContext context) {
     ownership = [];
-    for (var stakeholder in widget.p.team.keys) {
+    for (var stakeholder in widget.project.team.keys) {
       ownership.add(TeamMember(
-          p: widget.p,
-          percent: widget.p.team[stakeholder].toDouble(),
-          state: this,
-          address: stakeholder));
+        project: widget.project,
+        percent: widget.project.team[stakeholder].toDouble(),
+        state: this,
+        address: stakeholder,
+      ));
     }
     return Scrollbar(
         child: SingleChildScrollView(
@@ -154,15 +156,21 @@ class _EditProjectState extends State<EditProject> {
               children: [
                 TextButton(
                   onPressed: () async {
-                    var myFile = await FilePickerCross.importFromStorage(
-                        type: FileTypeCross.any, fileExtension: 'txt, md');
-                    var res = await uploadImage(myFile, widget.url);
-                    setState(() => widget.p.picurl = res);
+                    try {
+                      var myFile = await FilePickerCross.importFromStorage(
+                        type: FileTypeCross.custom,
+                        fileExtension: 'jpg, jpeg, png, gif',
+                      );
+                      var res = await uploadImage(myFile, widget.url);
+                      setState(() => widget.project.imgUrl = res);
+                    } catch (e) {
+                      print;
+                    }
                   },
                   child: SizedBox(
                     height: 140,
                     width: 179,
-                    child: widget.p.picurl == null
+                    child: widget.project.imgUrl == null
                         ? Column(
                             children: [
                               Image.network('https://i.ibb.co/2dphSM9/cogs.png',
@@ -173,7 +181,7 @@ class _EditProjectState extends State<EditProject> {
                               ),
                             ],
                           )
-                        : Image.network(widget.p.picurl),
+                        : Image.network(widget.project.imgUrl),
                   ),
                 ),
               ],
@@ -235,7 +243,7 @@ class _EditProjectState extends State<EditProject> {
           const SizedBox(height: 30),
           ElevatedButton(
             onPressed: () {
-              widget.p.github = c.text;
+              widget.project.github = c.text;
               Navigator.of(context).pop();
             },
             child: const SizedBox(
@@ -253,13 +261,16 @@ class _EditProjectState extends State<EditProject> {
 
   Widget linkGit() {
     var team = <Widget>[];
-    widget.p.team.forEach(
+    widget.project.team.forEach(
       (key, value) => team.add(
         TeamMember(
-            address: key, percent: value.toDouble(), p: widget.p, state: this),
+            address: key,
+            percent: value.toDouble(),
+            project: widget.project,
+            state: this),
       ),
     );
-    if (widget.p.github == null) {
+    if (widget.project.github == null) {
       return Container(
         margin: const EdgeInsets.all(50),
         child: TextButton(
@@ -321,7 +332,7 @@ class _EditProjectState extends State<EditProject> {
                         future: http.get(
                           Uri.https(
                             'raw.githubusercontent.com',
-                            '${widget.p.github.split('github.com/')[1]}/master/README.md',
+                            '${widget.project.github.split('github.com/')[1]}/master/README.md',
                           ),
                         ),
                         builder: (context, snapshot) {
@@ -456,7 +467,8 @@ class _EditProjectState extends State<EditProject> {
                                       children: [
                                         const Text('Devs'),
                                         Text(
-                                          widget.p.split.toStringAsFixed(1),
+                                          widget.project.split
+                                              .toStringAsFixed(1),
                                           style: const TextStyle(
                                             fontSize: 19,
                                             fontWeight: FontWeight.bold,
@@ -470,10 +482,10 @@ class _EditProjectState extends State<EditProject> {
                                           min: 0.1,
                                           max: 9.0,
                                           divisions: 90,
-                                          value: widget.p.split,
+                                          value: widget.project.split,
                                           onChanged: (value) {
                                             setState(() {
-                                              widget.p.split = value;
+                                              widget.project.split = value;
                                             });
                                           },
                                         )),
@@ -481,7 +493,7 @@ class _EditProjectState extends State<EditProject> {
                                       children: [
                                         const Text('Investors'),
                                         Text(
-                                          (100.0 - widget.p.split)
+                                          (100.0 - widget.project.split)
                                               .toStringAsFixed(1),
                                           style: const TextStyle(
                                             fontSize: 19,
@@ -545,20 +557,19 @@ class _EditProjectState extends State<EditProject> {
                                                     if (address.length > 41) {
                                                       setState(
                                                         () {
-                                                          widget.p.team[
+                                                          widget.project.team[
                                                               address] = 1;
-                                                          widget.p.team.forEach(
+                                                          widget.project.team
+                                                              .forEach(
                                                             (k, v) {
                                                               if (k !=
                                                                   address) {
-                                                                widget.p.team[
+                                                                widget.project
+                                                                        .team[
                                                                     k] = widget
-                                                                            .p
-                                                                            .team[
-                                                                        k] -
-                                                                    1 /
-                                                                        (widget.p.team.keys.length -
-                                                                            1);
+                                                                        .project
+                                                                        .team[k] -
+                                                                    1 / (widget.project.team.keys.length - 1);
                                                               }
                                                             },
                                                           );
@@ -658,16 +669,16 @@ class _EditProjectState extends State<EditProject> {
             style: const TextStyle(fontSize: 21),
             decoration: const InputDecoration(hintText: 'Set project name'),
             onChanged: (value) {
-              widget.p.name = value;
+              widget.project.name = value;
             },
           );
     return SizedBox(
       width: 460,
       height: 30,
-      child: widget.p.name == null
+      child: widget.project.name == null
           ? whatis
           : Text(
-              widget.p.name,
+              widget.project.name,
               style: const TextStyle(fontSize: 21),
             ),
     );
@@ -696,17 +707,17 @@ class _EditProjectState extends State<EditProject> {
             decoration: const InputDecoration(
                 hintText: 'Describe value proposition or utility function.'),
             onChanged: (value) {
-              widget.p.description = value;
+              widget.project.description = value;
             },
           );
     return Container(
       width: 470,
       height: 90,
       margin: const EdgeInsets.only(top: 26),
-      child: widget.p.description == null
+      child: widget.project.description == null
           ? whatis
           : Text(
-              widget.p.description,
+              widget.project.description,
               style: const TextStyle(fontSize: 17),
             ),
     );

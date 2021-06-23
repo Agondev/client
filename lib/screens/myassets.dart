@@ -54,27 +54,27 @@ class MyAssets extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Connected with address   ${us3r.address}',
-                                        ),
-                                        const SizedBox(width: 40),
-                                        // TextButton(
-                                        //     onPressed: () {
-                                        //       us3r.buyATN(EtherAmount
-                                        //           .fromUnitAndValue(
-                                        //               EtherUnit.finney,
-                                        //               8));
-                                        //     },
-                                        //     child: Text("BUY ATN"))
-                                      ]),
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Connected with address   ${us3r.address}',
+                                      ),
+                                      const SizedBox(width: 40),
+                                      // TextButton(
+                                      //     onPressed: () {
+                                      //       us3r.buyATN(EtherAmount
+                                      //           .fromUnitAndValue(
+                                      //               EtherUnit.finney,
+                                      //               8));
+                                      //     },
+                                      //     child: Text("BUY ATN"))
+                                    ],
+                                  ),
                                   us3r.contract == null
                                       ? const CreateContractBTN()
                                       : MyContractView(appstate: appstate)
                                 ],
-                              )
+                              ),
                       ],
                     ),
                   ),

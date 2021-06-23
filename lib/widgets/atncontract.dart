@@ -33,7 +33,7 @@ class UserContract {
             address: key,
             name: details[0].toString(),
             description: details[1].toString(),
-            picurl: pic,
+            imgUrl: pic,
             category: cat,
             github: git,
           );
@@ -57,8 +57,8 @@ class MyContractView extends StatefulWidget {
 
   // UserContract contract;
   // MyContractView({this.contract});
-  final String address = 'adaosijdoasdjfoasidjfpasodijfasd';
-  final String value = '12312 ATN';
+  // final String address = 'adaosijdoasdjfoasidjfpasodijfasd';
+  // final String value = '12312 ATN';
   final dynamic appstate;
 
   @override
@@ -70,26 +70,41 @@ class _MyContractViewState extends State<MyContractView> {
   // Human user = us3r;
   @override
   Widget build(BuildContext context) {
-    assets = [];
     // print("how many projects ${user.contract.projects.values}");
     // user.contract.projects.forEach((k, v) {
     //   assets.add(asset(v, 100.0));
     // });
+    print('test123: $us3r');
+    print('test123: ${us3r.address}');
+    print('test123: ${us3r.apiUrl}');
+    print('test123: ${us3r.balance}');
+    print('test123: ${us3r.contract}');
+    print('test123: ${us3r.contract.address}');
+    print('test123: ${us3r.contract.assets}');
+    print('test123: ${us3r.contract.projects}');
+    print('test123: ${us3r.contract.user}');
+    print('test123: ${us3r.contract.valoare}');
+    print('test123: ${us3r.contract.web3user}');
+    print('test123: ${us3r.creatingContract}');
+    print('test123: ${us3r.fetched}');
+    print('test123: ${us3r.httpClient}');
+    print('test123: ${us3r.sourceAbi}');
+    print('test123: ${us3r.web3}');
+    print('test123: ${us3r.web3infura}');
     return Container(
       padding: const EdgeInsets.all(30),
       width: MediaQuery.of(context).size.width * 0.7,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(
-            height: 19,
-          ),
+          const SizedBox(height: 19),
           Container(
             decoration: BoxDecoration(
-                border: Border.all(
-              width: 1,
-              color: widget.appstate.lumina ? Colors.black54 : Colors.white54,
-            )),
+              border: Border.all(
+                width: 1,
+                color: widget.appstate.lumina ? Colors.black54 : Colors.white54,
+              ),
+            ),
             child: Column(
               children: [
                 Container(
@@ -105,8 +120,9 @@ class _MyContractViewState extends State<MyContractView> {
                           children: [
                             const SizedBox(width: 4),
                             Image.network(
-                                'https://i.ibb.co/kXVw8Z2/logo64x64.png',
-                                height: 50),
+                              'https://i.ibb.co/kXVw8Z2/logo64x64.png',
+                              height: 50,
+                            ),
                             const Spacer(),
                             Text(
                               'ATN CONTRACT',
@@ -134,16 +150,21 @@ class _MyContractViewState extends State<MyContractView> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 const SizedBox(height: 2),
-                                Text('address:',
-                                    style: TextStyle(
-                                      fontFamily: 'Roboto Mono',
-                                      color: Theme.of(context).canvasColor,
-                                    )),
+                                Text(
+                                  'address:',
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto Mono',
+                                    color: Theme.of(context).canvasColor,
+                                  ),
+                                ),
                                 const SizedBox(height: 13),
-                                Text('liquid funds:',
-                                    style: TextStyle(
-                                        fontFamily: 'Roboto Mono',
-                                        color: Theme.of(context).canvasColor)),
+                                Text(
+                                  'liquid funds:',
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto Mono',
+                                    color: Theme.of(context).canvasColor,
+                                  ),
+                                ),
                               ],
                             ),
                             const SizedBox(width: 18),
@@ -161,7 +182,8 @@ class _MyContractViewState extends State<MyContractView> {
                                       onPressed: () {
                                         Clipboard.setData(
                                           ClipboardData(
-                                              text: us3r.contract.address),
+                                            text: us3r.contract.address,
+                                          ),
                                         );
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
@@ -190,13 +212,15 @@ class _MyContractViewState extends State<MyContractView> {
                                   ],
                                 ),
                                 const SizedBox(height: 8),
-                                Text('${us3r.contract.valoare.getInEther} ATN',
-                                    style: TextStyle(
-                                      fontFamily: 'Roboto Mono',
-                                      color: Theme.of(context).canvasColor,
-                                    ))
+                                Text(
+                                  '${us3r.contract.valoare.getInEther} ATN',
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto Mono',
+                                    color: Theme.of(context).canvasColor,
+                                  ),
+                                ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                         const SizedBox(height: 20),
@@ -205,23 +229,30 @@ class _MyContractViewState extends State<MyContractView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: Theme.of(context).canvasColor)),
-                                width: 210,
-                                height: 40,
-                                child: TextButton(
-                                    onPressed: () => showDialog(
-                                        context: context,
-                                        builder: (context) =>
-                                            AlertDialog(content: withdraw())),
-                                    child: Text(
-                                      'WITHDRAW',
-                                      style: TextStyle(
-                                          color: Theme.of(context).canvasColor,
-                                          fontSize: 18),
-                                    ))),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Theme.of(context).canvasColor,
+                                ),
+                              ),
+                              width: 210,
+                              height: 40,
+                              child: TextButton(
+                                onPressed: () => showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    content: withdraw(),
+                                  ),
+                                ),
+                                child: Text(
+                                  'WITHDRAW',
+                                  style: TextStyle(
+                                    color: Theme.of(context).canvasColor,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ),
                             const SizedBox(
                               width: 30,
                             ),
@@ -244,8 +275,9 @@ class _MyContractViewState extends State<MyContractView> {
                                 child: Text(
                                   'ADD FUNDS',
                                   style: TextStyle(
-                                      color: Theme.of(context).canvasColor,
-                                      fontSize: 18),
+                                    color: Theme.of(context).canvasColor,
+                                    fontSize: 18,
+                                  ),
                                 ),
                               ),
                             ),
@@ -255,54 +287,55 @@ class _MyContractViewState extends State<MyContractView> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 19),
+                const SizedBox(height: 20),
                 const Text(
                   'PORTFOLIO',
                   style: TextStyle(fontSize: 20),
                 ),
-                const SizedBox(height: 9),
-                Opacity(
-                  opacity: 0.6,
-                  child: Container(
-                    height: 1,
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    color: Theme.of(context).accentColor,
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .2,
+                        child: const Text('AGENT NAME'),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .2,
+                        child: const Text('CATEGORY'),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .2,
+                        child: const Text('SHARES OWNED'),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 19),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
-                    SizedBox(width: 30),
-                    Text('AGENT NAME'),
-                    SizedBox(width: 153),
-                    Text('CATEGORY'),
-                    SizedBox(width: 230),
-                    Text('SHARES OWNED'),
-                  ],
-                ),
-                const SizedBox(height: 11),
+                const SizedBox(height: 12),
                 Column(
                   children: assets,
                 ),
-                const SizedBox(height: 81),
+                const SizedBox(height: 40),
                 TextButton(
                   style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.transparent),
+                    backgroundColor: MaterialStateProperty.all(
+                      Colors.transparent,
+                    ),
                   ),
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
                         content: EditProject(
-                          p: Project(
+                          project: Project(
                             address: null,
                             description: null,
                             github: null,
                             name: null,
                             category: null,
-                            picurl: null,
+                            imgUrl: null,
                           ),
                         ),
                       ),
@@ -338,34 +371,39 @@ class _MyContractViewState extends State<MyContractView> {
             'Contract is currently holding: ${us3r.contract.valoare.getInEther} ATN',
             style: const TextStyle(fontSize: 19),
           ),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const Text(
-              'Amount to withdraw: ',
-              style: TextStyle(fontSize: 19),
-            ),
-            SizedBox(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Amount to withdraw: ',
+                style: TextStyle(fontSize: 19),
+              ),
+              SizedBox(
                 width: 100,
                 child: TextField(
-                  style: const TextStyle(
-                    fontSize: 19,
-                  ),
+                  style: const TextStyle(fontSize: 19),
                   keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true, signed: false),
+                    decimal: true,
+                    signed: false,
+                  ),
                   onChanged: (value) {},
                   maxLines: 1,
                   maxLength: 10,
                   decoration: const InputDecoration(
-                      labelStyle: TextStyle(fontSize: 15),
-                      labelText: 'Enter',
-                      alignLabelWithHint: true,
-                      focusColor: Colors.black,
-                      fillColor: Colors.black),
-                )),
-            const Text(
-              'ATN',
-              style: TextStyle(fontSize: 19),
-            ),
-          ]),
+                    labelStyle: TextStyle(fontSize: 15),
+                    labelText: 'Enter',
+                    alignLabelWithHint: true,
+                    focusColor: Colors.black,
+                    fillColor: Colors.black,
+                  ),
+                ),
+              ),
+              const Text(
+                'ATN',
+                style: TextStyle(fontSize: 19),
+              ),
+            ],
+          ),
           const SizedBox(height: 40),
           SizedBox(
             width: 290,
@@ -424,16 +462,19 @@ class _MyContractViewState extends State<MyContractView> {
                     color: Colors.black,
                   ),
                   keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true, signed: false),
+                    decimal: true,
+                    signed: false,
+                  ),
                   onChanged: (value) {},
                   maxLines: 1,
                   maxLength: 10,
                   decoration: const InputDecoration(
-                      labelStyle: TextStyle(fontSize: 15, color: Colors.black),
-                      labelText: 'Enter',
-                      alignLabelWithHint: true,
-                      focusColor: Colors.black,
-                      fillColor: Colors.black),
+                    labelStyle: TextStyle(fontSize: 15, color: Colors.black),
+                    labelText: 'Enter',
+                    alignLabelWithHint: true,
+                    focusColor: Colors.black,
+                    fillColor: Colors.black,
+                  ),
                 ),
               ),
               const Text(
@@ -448,7 +489,8 @@ class _MyContractViewState extends State<MyContractView> {
             height: 50,
             child: TextButton(
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.red)),
+                backgroundColor: MaterialStateProperty.all(Colors.red),
+              ),
               onPressed: () {},
               child: const Text(
                 'COMMIT TO BLOCKCHAIN',

@@ -51,13 +51,13 @@ class Chain {
         // String name = details[0];
         // String desc = details[1];
         var category = details[2].toString().split('http')[0];
-        var picUrl = 'http${details[2].toString().split('http')[1]}';
+        var imgUrl = 'http${details[2].toString().split('http')[1]}';
         var gitLink = 'http${details[2].toString().split('http')[2]}';
         var project = Project(
           address: item.toString(),
           name: details[0].toString(),
           description: details[1].toString(),
-          picurl: picUrl,
+          imgUrl: imgUrl,
           category: category,
           github: gitLink,
         );
@@ -139,7 +139,7 @@ class Project {
     this.address,
     this.name,
     this.description,
-    this.picurl,
+    this.imgUrl,
     this.github,
     this.category,
   }) {
@@ -156,7 +156,7 @@ class Project {
   double split;
   String name;
   String description;
-  String picurl;
+  String imgUrl;
   String github;
   String category;
 }

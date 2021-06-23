@@ -17,7 +17,6 @@ class ProjectView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Project project = ModalRoute.of(context).settings.arguments;
-    // Project project;
     if (project == null) {
       try {
         project = ModalRoute.of(context).settings.arguments as Project;
@@ -28,7 +27,7 @@ class ProjectView extends StatelessWidget {
           description: 'desc123',
           github: 'git123',
           name: 'name123',
-          picurl: 'pic123',
+          imgUrl: 'pic123',
         );
       }
     } else {

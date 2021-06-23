@@ -32,8 +32,8 @@ class ProjectCard extends StatelessWidget {
                             const BoxConstraints(maxHeight: 90, maxWidth: 90),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
-                          child: isValidImageExtension(project.picurl)
-                              ? Image.network(project.picurl)
+                          child: isValidImageExtension(project.imgUrl)
+                              ? Image.network(project.imgUrl)
                               : const Placeholder(),
                           // child: const Placeholder(),
                         ),

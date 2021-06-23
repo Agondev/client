@@ -53,9 +53,9 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                             const BoxConstraints(maxHeight: 120, minWidth: 120),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(11.0),
-                          child: isValidImageExtension(widget.project.picurl)
+                          child: isValidImageExtension(widget.project.imgUrl)
                               ? Image.network(
-                                  widget.project.picurl,
+                                  widget.project.imgUrl,
                                 )
                               : const Placeholder(),
                         ),

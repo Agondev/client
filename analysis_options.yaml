@@ -5,3 +5,4 @@ linter:
     lines_longer_than_80_chars: false
     implementation_imports: false
     avoid_dynamic_calls: false
+    avoid_web_libraries_in_flutter: false
